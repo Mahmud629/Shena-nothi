@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>সেনানথি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --bg:#F1F5F2; --card:#FFFFFF; --ink:#12241C; --muted:#5A6B63; --line:#DBE4DE;
+  --green:#006A4E; --green-ink:#FFFFFF; --red:#D81F36; --gold:#A8690A; --ok:#0B8457;
+  --soft:rgba(0,106,78,.08); --band:#006A4E; --band-2:#00543E; --band-ink:#F2FFF8; --disc:#F42A41;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1310; --card:#12201A; --ink:#E6EFEA; --muted:#93A69D; --line:#25372F;
+    --green:#35C795; --green-ink:#06251A; --red:#FF6B7A; --gold:#F0B94A; --ok:#4ADE9C;
+    --soft:rgba(53,199,149,.10); --band:#0B3B2D; --band-2:#082C22; --band-ink:#E6FFF4; --disc:#F0475A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1310; --card:#12201A; --ink:#E6EFEA; --muted:#93A69D; --line:#25372F;
+  --green:#35C795; --green-ink:#06251A; --red:#FF6B7A; --gold:#F0B94A; --ok:#4ADE9C;
+  --soft:rgba(53,199,149,.10); --band:#0B3B2D; --band-2:#082C22; --band-ink:#E6FFF4; --disc:#F0475A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Hind Siliguri","Noto Sans Bengali","Nirmala UI",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3,p{margin:0}
+h1{font-size:1.9rem;line-height:1.15;font-weight:700}
+h2{font-size:1.3rem;font-weight:700;line-height:1.25}
+h3{font-size:1.02rem;font-weight:600}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.muted{color:var(--muted)} .small{font-size:.875rem}
+[hidden]{display:none !important}
+
+.btn{border:1px solid var(--line);background:var(--card);padding:.5rem .95rem;border-radius:8px;cursor:pointer;font-weight:500;white-space:nowrap;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--green);border-color:var(--green);color:var(--green-ink);font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.plain{border-color:transparent;background:none;padding:.3rem .5rem;color:var(--green);font-weight:600}
+.btn.danger{color:var(--red)}
+label{display:block;font-size:.875rem;font-weight:500;margin-bottom:.2rem}
+input[type=text],input[type=password],input[type=date],input[type=number],input[type=search],select,textarea{
+  width:100%;padding:.5rem .65rem;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+input[type=file]{width:100%}
+textarea{min-height:4.2rem;resize:vertical}
+.field{margin-bottom:.85rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.check{display:flex;gap:.5rem;align-items:flex-start;font-weight:400;font-size:1rem}
+.check input{margin-top:.3rem;width:1rem;height:1rem;accent-color:var(--green)}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.1rem;align-items:center}
+
+/* ---- gate ---- */
+#gate{min-height:100%;display:grid;place-items:center;padding:1.25rem;background:linear-gradient(160deg,var(--band),var(--band-2))}
+.cover{width:min(35rem,100%);background:var(--card);border-radius:16px;padding:2rem;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.cover .mark{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem}
+.cover .mark .logo{width:3.4rem;height:3.4rem;flex:none}
+.hero{text-align:center;margin-bottom:1.5rem}
+.hero .logo{width:6.5rem;height:6.5rem;margin-bottom:.6rem}
+.hero h1{font-size:2.4rem}
+.btn.big{display:flex;width:100%;justify-content:center;align-items:center;gap:.6rem;font-size:1.1rem;padding:.8rem 1rem;border-radius:12px}
+.btn.big svg{width:1.4rem;height:1.4rem}
+.center{text-align:center}
+#setup{border:1px solid var(--line);border-radius:12px;padding:1rem;margin-top:1rem;animation:rise .3s ease-out}
+#demo{display:block;margin:.9rem auto 0}
+.cover p{margin-bottom:1rem}
+.cover ol{padding-left:1.2rem;margin:0 0 1rem}
+.cover li{margin-bottom:.35rem}
+.cover code{background:var(--soft);padding:.1rem .3rem;border-radius:4px;font-size:.875em;word-break:break-all}
+
+/* ---- header band ---- */
+#top{background:linear-gradient(120deg,var(--band),var(--band-2));color:var(--band-ink);display:flex;align-items:center;gap:1.25rem;padding:.8rem 1.5rem;position:sticky;top:0;z-index:20}
+.brand{line-height:1.05;display:flex;align-items:center;gap:.7rem}
+.brand .logo{width:2.9rem;height:2.9rem;flex:none}
+.brand b{display:block;font-size:1.7rem;font-weight:700}
+.brand span{font-size:.8rem;opacity:.8}
+.who{display:flex;align-items:center;gap:.8rem;margin-left:.5rem;padding-left:1.25rem;border-left:1px solid rgba(255,255,255,.22);min-width:0}
+.disc{width:3.4rem;height:3.4rem;border-radius:50%;background:var(--disc);flex:none;display:grid;place-items:center;font-weight:700;font-size:1.25rem;color:#fff;overflow:hidden;box-shadow:0 0 0 3px var(--disc)}
+.disc img{width:100%;height:100%;object-fit:cover}
+#hName{font-size:1.15rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#hSub{font-size:.875rem;opacity:.85}
+.clock{margin-left:auto;text-align:right;line-height:1.2}
+#cTime{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}
+#cDate{font-size:.85rem;opacity:.85}
+#themeBtn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:inherit;border-radius:999px;padding:.4rem .9rem;cursor:pointer;font-weight:500;white-space:nowrap}
+#themeBtn:hover{background:rgba(255,255,255,.2)}
+
+/* ---- shell ---- */
+#shell{display:grid;grid-template-columns:16.5rem 1fr;align-items:start}
+#rail{padding:1rem .75rem;position:sticky;top:var(--stick,5rem);max-height:calc(100vh - var(--stick,5rem));overflow:auto}
+.nv{display:flex;align-items:center;gap:.65rem;width:100%;border:0;background:none;text-align:left;padding:.42rem .6rem;border-radius:8px;cursor:pointer}
+.nv:hover{background:var(--soft)}
+.nv[aria-current=true]{background:var(--card);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08),inset 3px 0 0 var(--c,var(--green))}
+.nv .chip{min-width:1.9rem;padding:0 .3rem;height:1.5rem;border-radius:6px;background:var(--c,var(--green));color:#fff;font-size:.78rem;font-weight:700;display:grid;place-items:center;flex:none}
+.nv .lb{flex:1;min-width:0}
+.nv .ct{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.rail-sep{height:1px;background:var(--line);margin:.6rem .6rem}
+#main{min-width:0;padding:1.25rem 1.5rem 4rem 0.75rem}
+.viewhead{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.viewhead .ttl{margin-right:auto;min-width:0}
+.viewhead input[type=search]{width:min(15rem,100%)}
+#status{font-size:.85rem;color:var(--muted)}
+
+/* ---- dashboard ---- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem}
+.stat b{display:block;font-size:1.7rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat.alert b{color:var(--red)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr));gap:.75rem;margin-bottom:1.25rem}
+.tile{background:var(--c);color:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.2)}
+.tile button{border:0;background:none;color:inherit;cursor:pointer;text-align:left}
+.tgo{padding:.8rem .95rem .6rem;display:flex;flex-direction:column;gap:.7rem;flex:1}
+.tgo b{font-size:1.5rem;line-height:1;font-variant-numeric:tabular-nums}
+.tgo span{font-weight:600;line-height:1.2}
+.tadd{padding:.4rem .95rem;background:rgba(0,0,0,.18) !important;font-weight:600;font-size:.9rem;transition:background-color .15s}
+.tadd:hover{background:rgba(0,0,0,.32) !important}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1rem}
+.panel h3{margin-bottom:.2rem}
+.panel > p{margin-bottom:.8rem}
+.grid{display:grid;gap:4px;font-size:.9rem;overflow-x:auto}
+.grid > div{padding:.4rem .55rem}
+.grid .h{font-weight:600;color:var(--muted);font-size:.8rem}
+.grid .y{font-weight:700;font-variant-numeric:tabular-nums}
+.cell{border:0;text-align:left;padding:.4rem .55rem;border-radius:6px;cursor:pointer;font-weight:600;white-space:nowrap}
+.cell.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.cell.warn{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--gold)}
+.cell.bad{background:color-mix(in srgb,var(--red) 13%,transparent);color:var(--red)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;gap:.6rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.list .t{margin-right:auto;min-width:0}
+.dot{display:inline-block;width:.65rem;height:.65rem;border-radius:50%;background:var(--c);flex:none}
+
+/* ---- register table ---- */
+table.reg{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.reg th,.reg td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+.reg th{font-size:.8rem;font-weight:600;color:var(--muted);background:var(--soft)}
+.reg tr:last-child td{border-bottom:0}
+.reg td.num{font-variant-numeric:tabular-nums;color:var(--muted);width:3rem}
+.reg .fn{display:block;font-size:.8rem;color:var(--muted);word-break:break-all}
+.reg td.acts{white-space:nowrap;text-align:right}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.05rem .45rem;border-radius:999px;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c);margin-right:.35rem;white-space:nowrap}
+:root[data-theme="dark"] .badge{color:color-mix(in srgb,var(--c) 55%,#fff)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .badge{color:color-mix(in srgb,var(--c) 55%,#fff)}}
+.yes{color:var(--ok);font-weight:600} .no-{color:var(--red);font-weight:600}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:2rem;text-align:center}
+.empty p{margin:0 auto .9rem;max-width:46ch}
+
+/* ---- form 2043 ---- */
+.bar{height:.5rem;border-radius:999px;background:var(--line);overflow:hidden;margin:.4rem 0 0}
+.bar i{display:block;height:100%;background:var(--green);border-radius:999px}
+.subtabs{display:flex;flex-wrap:wrap;gap:.4rem;padding:.55rem 0;position:sticky;top:var(--stick,5rem);z-index:10;background:var(--bg);margin-bottom:.4rem}
+.subtabs button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:.32rem .8rem;cursor:pointer;font-weight:500;display:flex;gap:.45rem;align-items:center;transition:background-color .15s,color .15s,border-color .15s}
+.subtabs button:hover{border-color:var(--green)}
+.subtabs button i{font-style:normal;font-size:.75rem;color:var(--muted);background:var(--soft);border-radius:999px;padding:0 .45rem}
+.subtabs button.full i{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.subtabs button[aria-selected=true]{background:var(--green);border-color:var(--green);color:var(--green-ink);font-weight:600}
+.subtabs button[aria-selected=true] i{background:rgba(255,255,255,.25);color:inherit}
+.parthead{font-size:.8rem;font-weight:600;color:var(--muted);margin:.7rem 0 .3rem}
+.formpanel .item:first-of-type{border-top:0}
+.pbody{padding:0 1.1rem 1.1rem}
+.item{border-top:1px solid var(--line);padding:.8rem 0 .2rem;display:grid;grid-template-columns:2.2rem 1fr;gap:.4rem}
+.item > .n{font-weight:700;color:var(--green)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.1rem .8rem}
+.fgrid .wide{grid-column:1/-1}
+.fgrid .field{display:flex;flex-direction:column;justify-content:flex-end}
+.ftwrap{overflow-x:auto;margin:.3rem 0 .6rem}
+table.ft{border-collapse:collapse;width:100%;min-width:38rem}
+.ft th{font-size:.78rem;font-weight:600;color:var(--muted);text-align:left;padding:.25rem .3rem;vertical-align:bottom}
+.ft td{padding:.15rem .2rem;vertical-align:top}
+.ft textarea{min-height:2.35rem;height:2.35rem;padding:.35rem .45rem;font-size:.92rem}
+@supports (field-sizing:content){.ft textarea{field-sizing:content;height:auto;max-height:9rem}}
+.ft .rm{border:0;background:none;color:var(--red);cursor:pointer;font-size:1.1rem;padding:.3rem .4rem;border-radius:6px}
+
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:1.5rem;width:min(34rem,calc(100% - 2rem));max-height:calc(100% - 2rem)}
+dialog::backdrop{background:rgba(5,15,11,.6)}
+dialog h2{margin-bottom:1rem}
+#viewer{width:min(60rem,calc(100% - 2rem))}
+#viewer iframe,#viewer img{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
+#viewer iframe{height:65vh} #viewer img{max-height:65vh;object-fit:contain}
+#toast{position:fixed;left:50%;bottom:1.25rem;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:8px;max-width:calc(100% - 2rem);z-index:60}
+#busy{position:fixed;inset:0;background:rgba(5,15,11,.5);display:grid;place-items:center;z-index:50}
+#busy div{background:var(--card);border:1px solid var(--line);padding:1rem 1.4rem;border-radius:10px;font-weight:500}
+.photoRow{display:flex;gap:1rem;align-items:center;margin-bottom:1rem}
+.photoRow .disc{width:4.5rem;height:4.5rem;font-size:1.5rem}
+
+@media (max-width:900px){
+  #top{flex-wrap:wrap;gap:.6rem .9rem;padding:.7rem 1rem;position:static}
+  .brand b{font-size:1.4rem} .brand span{display:none}
+  .subtabs{flex-wrap:nowrap;overflow-x:auto}
+  .brand .logo{width:2.2rem;height:2.2rem}
+  .who{order:3;flex:1 1 60%;margin:0;padding:0;border-left:0}
+  #themeBtn{order:4}
+  .tiles{grid-template-columns:1fr 1fr}
+  .reg td[data-l]:empty{display:none}
+  .clock{margin-left:auto} #cTime{font-size:1.15rem} #cDate{font-size:.78rem}
+  #shell{grid-template-columns:1fr}
+  #rail{position:sticky;top:0;z-index:15;background:var(--bg);display:flex;gap:.3rem;overflow-x:auto;padding:.6rem 1rem;max-height:none;border-bottom:1px solid var(--line)}
+  .nv{width:auto;flex:none;border:1px solid var(--line);background:var(--card);padding:.3rem .65rem .3rem .35rem}
+  .nv .ct{display:none} .rail-sep{display:none}
+  #main{padding:1rem 1rem 4rem}
+  .stats{grid-template-columns:1fr 1fr}
+  .row2{grid-template-columns:1fr}
+  table.reg,.reg tbody,.reg tr,.reg td{display:block}
+  .reg thead{display:none}
+  table.reg{border:0;background:none}
+  .reg tr{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:.6rem;padding:.55rem .8rem}
+  .reg td{border:0;padding:.12rem 0;width:auto !important}
+  .reg td[data-l]::before{content:attr(data-l) ": ";color:var(--muted);font-size:.85rem}
+  .reg td.num{display:none} .reg td.acts{text-align:left;padding-top:.4rem}
+  .item{grid-template-columns:1fr} .item > .n{margin-bottom:-.3rem}
+}
+/* ---- motion ---- */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes stamp{0%{opacity:0;transform:scale(2.4) rotate(-30deg)}60%{opacity:1;transform:scale(.88) rotate(4deg)}100%{transform:none}}
+@keyframes grow{from{width:0}}
+body,#top,.panel,.stat,table.reg,.nv,.subtabs button,input,select,textarea{transition:background-color .25s,border-color .25s,color .25s}
+.btn{transition:background-color .15s,filter .15s,transform .1s}
+.btn:active{transform:scale(.96)}
+.cell{transition:filter .15s,transform .15s} .cell:hover{filter:brightness(1.12);transform:scale(1.02)}
+.cover{animation:pop .45s cubic-bezier(.2,.9,.3,1.2)}
+.logo .seal{transform-origin:42px 43px;animation:stamp .6s .3s cubic-bezier(.2,.9,.3,1.2) backwards}
+#view.enter{animation:rise .3s ease-out}
+#view.enter .tile,#view.enter .stat{animation:rise .4s ease-out backwards;animation-delay:calc(var(--i,0)*40ms)}
+#view.enter .bar i{animation:grow .8s .2s ease-out backwards}
+#view.enter .reg tbody tr{animation:rise .3s ease-out backwards;animation-delay:calc(min(var(--i,0),12)*30ms)}
+dialog[open]{animation:pop .22s ease-out} dialog[open]::backdrop{animation:fade .22s}
+#toast:not([hidden]){animation:fade .25s ease-out}
+#busy:not([hidden]){animation:fade .15s}
+.disc img{animation:fade .4s}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+@media print{
+  #top,#rail,.viewhead input,.viewhead .btn,.acts,#toast{display:none !important}
+  #shell{display:block} body{background:#fff;color:#000}
+  table.reg{border:1px solid #999} .reg th,.reg td{border-bottom:1px solid #bbb}
+}
+</style>
+</head>
+<body>
+
+<div id="gate"><div class="cover" id="gateBody"></div></div>
+
+<div id="app" hidden>
+  <header id="top">
+    <div class="brand"><span id="hLogo"></span><div><b>সেনানথি</b><span>Shenanothi</span></div></div>
+    <div class="who">
+      <div class="disc" id="hDisc"></div>
+      <div style="min-width:0"><div id="hName"></div><div id="hSub"></div></div>
+    </div>
+    <div class="clock"><div id="cTime"></div><div id="cDate"></div></div>
+    <button id="themeBtn" type="button"></button>
+  </header>
+  <div id="shell">
+    <nav id="rail" aria-label="Sections"></nav>
+    <main id="main"><div id="view"></div></main>
+  </div>
+</div>
+
+<dialog id="docDlg">
+  <form id="docForm" method="dialog">
+    <h2 id="docDlgTitle">Add document</h2>
+    <div class="field" id="typeBox"><label for="fType">Type</label><select id="fType"></select></div>
+    <div class="row2" id="yearRow">
+      <div class="field"><label for="fYear" id="fYearLb">Year</label><input type="number" id="fYear" min="1970" max="2100"></div>
+      <div class="field" id="termBox"><label for="fTerm">IPFT</label><select id="fTerm"></select></div>
+    </div>
+    <div class="field"><label for="fTitle">Document</label><input type="text" id="fTitle" maxlength="120"></div>
+    <div class="row2">
+      <div class="field"><label for="fRef" id="fRefLb">Ref or letter no</label><input type="text" id="fRef" maxlength="100"></div>
+      <div class="field"><label for="fDate">Date of document</label><input type="date" id="fDate"></div>
+    </div>
+    <div class="field"><label for="fFile">Scan (PDF or photo)</label><input type="file" id="fFile" accept="application/pdf,image/*"><div class="small muted" id="fFileNote"></div></div>
+    <div class="field"><label class="check"><input type="checkbox" id="fPhys"> The paper copy is in my physical file</label></div>
+    <div class="field"><label for="fRem">Remarks</label><textarea id="fRem" maxlength="400"></textarea></div>
+    <div class="actions">
+      <button class="btn primary" type="submit" id="docSave">Save</button>
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn plain danger" type="button" id="docDelete" hidden>Delete</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="viewer">
+  <h2 id="viewerTitle"></h2>
+  <div id="viewerBody"></div>
+  <div class="actions">
+    <a class="btn primary" id="viewerDl">Download</a>
+    <a class="btn" id="viewerOpen" target="_blank" rel="noopener">Open in new tab</a>
+    <button class="btn" data-close>Close</button>
+  </div>
+</dialog>
+
+<dialog id="askDlg">
+  <p id="askMsg" style="margin-bottom:1.25rem"></p>
+  <div class="actions"><button class="btn primary" id="askOk"></button><button class="btn" id="askNo">Cancel</button></div>
+</dialog>
+
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+<input type="file" id="photoFile" accept="image/*" hidden>
+<div id="busy" hidden><div id="busyMsg"></div></div>
+<div id="toast" hidden role="status"></div>
+
+<script>
+'use strict';
+/* ------------------------------------------------------------------
+   SET-UP: paste your Google OAuth client ID here before hosting.
+   If left empty, the app asks for it on the first screen instead.
+------------------------------------------------------------------- */
+const CONFIG = { CLIENT_ID: '' };
+
+const APP_ID = 'senanothi';
+const INDEX_NAME = 'personal-file-index.json';
+const SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
+const API = 'https://www.googleapis.com/drive/v3';
+const UP = 'https://www.googleapis.com/upload/drive/v3';
+const MAX_FILE = 50 * 1024 * 1024;
+const PBKDF2_ITER = 310000;
+const DEFAULT_TERMS = ['1st half', '2nd half'];
+const DOCX_LIB = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
+const ZIP_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+
+const SECS = [
+  {id:1, one:'personal document', name:'Personal documents', short:'Personal', color:'#2563EB', types:['Passport photo','NID','Birth certificate','Passport','Driving licence','Other'], ph:'NID card, both sides'},
+  {id:2, one:'education document', name:'Civil education', short:'Education', color:'#7C3AED', types:['SSC','HSC','BSc','MSc','Other'], ph:'SSC certificate'},
+  {id:3, one:'IPFT DivO', refLb:'DivO no', name:'IPFT DivO', short:'IPFT', color:'#059669', yearly:true, terms:true, ph:'Leave blank to name it automatically'},
+  {id:4, one:'RET DivO', refLb:'DivO no', name:'RET DivO', short:'RET', color:'#D97706', yearly:true, ph:'Leave blank to name it automatically'},
+  {id:5, one:'course document', name:'Courses', short:'Course', color:'#DB2777', types:['Course report','Course certificate'], ph:'OBC-47'},
+  {id:6, one:'CORO', refLb:'CORO no', name:'CORO', short:'CORO', color:'#0891B2', ph:'Promotion to Capt'},
+  {id:7, one:'BAO', refLb:'BAO no', name:'BAO', short:'BAO', color:'#4338CA', ph:'Subject of the Bangladesh Army Order'},
+  {id:8, one:'posting order', refLb:'PO or letter no', name:'Posting orders', short:'PO', color:'#EA580C', ph:'Posting to 5 Sig Bn'},
+  {id:9, one:'award or punishment', refLb:'Auth or letter no', name:'Awards and punishments', short:'Award', color:'#65A30D', types:['Award','Punishment'], ph:'Name of the award'},
+  {id:10, one:'tax document', name:'Tax', short:'Tax', color:'#0D9488', types:['Tax return','Tax certificate','TIN certificate','Other'], yearly:true, ph:'Leave blank to name it automatically'},
+  {id:11, one:'other document', name:'Other documents', short:'Other', color:'#64748B', types:['Commission','Promotion','Mov order','Leave','Medical','Misc'], ph:'Short description'}
+];
+const secOf = id => SECS.find(s => s.id === Number(id)) || SECS[10];
+const pad2 = n => String(n).padStart(2, '0');
+
+/*<<FORM*/
+/* ------------------------------------------------------------------
+   Form 2043: one schema drives both the on-screen form and the Word file.
+   f = [key, label, long?]   t = table {key, cols, w, title, serial, group}
+   A column written as [group, label] sits under a merged heading.
+------------------------------------------------------------------- */
+const DUR = [['Duration','From'],['Duration','To']];
+const NOTE = ['Please briefly specify the nature of Occupation/Profession with details of Job Description, Designation and Details of Organization including Name and Address.', 'In case of Deceased specify the Previous Occupation/Profession with Details.'];
+const parent = (p, who, eg) => [
+  [p+'Name', `a. ${who}'s Name in Full`], [p+'Nat', 'b. Nationality'], [p+'PrevNat', 'Previous Nationality (if Any)'],
+  [p+'Citizen', 'Date of Bangladeshi Citizenship and Authority (if Applicable)'], [p+'Addr', 'c. Present Address with Contact Numbers', 1],
+  [p+'Age', 'd. Present Age'], [p+'Decease', 'or Date of Decease'],
+  [p+'Occ', `e. ${who}'s Occupation/Profession (Examples: ${eg} etc. with details)`, 1], [p+'Income', 'f. Annual Average Income']
+];
+const FORM = [
+ {part:'PART I – PERSONAL INFORMATION', items:[
+  {n:'1', f:[['personalNo','(a) Personal Number'],['nid','(b) National ID Number']]},
+  {n:'2', f:[['rankTemp','(a) Rank (Temporary)'],['rankTempAuth','(b) Auth (Gazette Notification/MS Br/CORO Order etc)'],['rankSubs','(c) Rank (Substantive/Substantive Temporary)'],['rankSubsAuth','(d) Auth (Gazette Notification/MS Br/CORO Order etc)']]},
+  {n:'3', f:[['name','NAME (IN BLOCK CAPITAL)'],['nameBn','নাম (বাংলা)']]},
+  {n:'4', f:[['arm','Arms/Service']]},
+  {n:'5', f:[['dob','(a) Date of Birth'],['pob','(b) Place (Village/City)'],['birthCertNo','(c) Birth Certificate Number']]},
+  {n:'6', f:[['heightIn','(a) Height (in inch)'],['heightCm','Height (in cm)'],['weightLb','(b) Weight (in pound)'],['weightKg','Weight (in kg)'],['build','(c) Build']]},
+  {n:'7', f:[['complexion','(a) Complexion'],['eyes','(b) Eyes (Colour)']]},
+  {n:'8', f:[['idMarks','Visible Identification Mark(s)']]},
+  {n:'9', f:[['blood','Blood Group']]},
+  {n:'10', title:'Medical History Details', f:[['medCat','(a) Present Medical Category'],['disability','(b) Present Nature of Disability (if any)'],['attrib','(c) Present Attributably (if any)']],
+   t:{key:'medHistory', title:'(d) Previous Medical History', cols:['Name of Disease(s)','Nature of Injury (Severe/Minor)',['Date of Hospital Admission','From'],['Date of Hospital Admission','To'],['Medical Category','Class'],['Medical Category','From'],['Medical Category','To']], w:[2,2,1,1,1,1,1]}},
+  {n:'11', f:[['religion','a. Religion'],['caste','b. Caste']]},
+  {n:'12', f:[['nationality','Nationality'],['prevNationality','Previous Nationality (if any)']]},
+  {n:'13', title:'Address(s)', f:[['addrPerm','a. Permanent Address',1],['addrPres','b. Present Address',1],['addrAlt','c. Alternate Present Address (If Any)',1]]},
+  {n:'14', title:'Contact Details', f:[['email','a. Personal e-mail Address'],['phone','b. T&T Phone Number'],['mobile','c. Mobile Number']]},
+  {n:'15', f:[['ppNo','a. Passport Number'],['ppIssue','b. Date of Issue'],['ppPlace','c. Place of Issue'],['ppExpiry','d. Date of Expiry'],['ppAuth','e. Issuing Auth'],['ppType','f. Type of Passport'],['ppReason','g. Reasons for Obtaining']]},
+  {n:'16', title:'Countries Visited', t:{key:'countries', serial:true, cols:['Name of Country',...DUR,'Reasons for Visiting'], w:[2,1,1,3]}},
+  {n:'17', title:'Language Skill (Except Bengali & English) - Please specify Speaking, Writing & Reading', t:{key:'languages', serial:true, cols:['Language','Efficiency'], w:[2,3]}},
+  {n:'18', f:parent('fa','Father','Farmer, Business, Politician'), note:true},
+  {n:'19', f:parent('mo','Mother','Farmer, Business, Politician'), note:true},
+  {n:'20', title:'Own Brothers and Sisters', t:{key:'siblings', cols:['Name in Full','Age','Nationality','Occupation and Present Address','Dependency (On You)'], w:[2,.7,1.3,3,1.2]}},
+  {n:'21', f:[['sibPosition','Position of Own within Brothers and Sisters']]},
+  {n:'22', f:[['marital','(a) Marital Status'],['marriageDate','(b) Date of Marriage'],['marriageAuth','(c) Authority (CORO Order)']]},
+  {n:'23', title:'Details of Spouse', f:[['spName','a. NAME (IN BLOCK CAPITAL)'],['spNameBn','নাম (বাংলায়)'],['spDob','b. Date of Birth'],['spPob','c. Place of Birth'],['spBirthReg','d. Birth Registration Number'],['spNat','e. Nationality'],['spPrevNat','Previous Nationality (if any)'],['spCitizen','Authority of Bangladeshi Citizenship (If Applicable)'],['spNid','f. National ID Card Number'],['spEdu','g. Educational Qualification'],['spOcc','h. Occupation of Spouse'],['spOccDetail','j. Details of Occupation',1]]},
+  {n:'24', title:'Particulars of Children (As per CORO Order)', t:{key:'children', cols:['Name of Children','Sex','Date of Birth','Occupation','Present Address'], w:[2,.7,1.2,1.3,2.5]}},
+  {n:'25', title:'Particulars of Chronic/Severe Disease of Self/Spouse/Children', t:{key:'diseases', cols:['Name','Name of Disease','Nature of Disease','Date of Illness','Present Condition']}},
+  {n:'26', title:'Details of Father In-Law', f:parent('fil','Father-in-Law','Farmer, Business, Politician'), note:true},
+  {n:'27', title:'Details of Mother In-Law', f:parent('mil','Mother-in-Law','Housewife, Business, Politician'), note:true},
+  {n:'28', title:'Details of Next of Kin (NOK) Name in Full (With Relationship, Occupation and Address)', t:{key:'nok', cols:['Allowance/Project/Fund/Assets','Name','Relation','Rate %','Address and Phone','Auth'], w:[2,1.6,1,.8,2.6,1]}},
+  {n:'29', title:'Near Relations in Defence Services (To Include Brothers, Sisters, First Cousins and Uncles of Both Husband and Wife)', t:{key:'defenceRel', cols:['Rank','Name','Relationship','Arms/Svc','Present Address'], w:[.8,2,1.2,1,2.5]}},
+  {n:'30', title:'Name and Address of all Brother and Sister-in-Laws', t:{key:'inLaws', cols:['Name in Full','Address','Occupation'], w:[2,3,1.5]}},
+  {n:'31', title:'Details of Bank Accounts', t:{key:'banks', cols:['Name of Bank','Account Number','Type of Account']}}
+ ]},
+ {part:'PART II – EDUCATION', items:[
+  {n:'32', title:'Educational Qualification(s)', t:{key:'education', cols:[...DUR,'School/College/University','Examination Passed (Give Subjects)','Division/GPA Obtained','Year of Passing the Exam','Remarks (Include Standing in the Board if any)'], w:[.8,.8,2.4,1.6,1.2,1,1.6]}}
+ ]},
+ {part:'PART III – PRE COMMISSION', items:[
+  {n:'33', title:'Pre Commission (Government/Non-Government) Service', t:{key:'preService', cols:[...DUR,'Name of Unit/Establishment','Designation & Appointment','Remarks'], w:[1,1,2.5,2,1.5]}},
+  {n:'34', title:'Pre Commission Training', t:{key:'preTraining', cols:[...DUR,'Name and Location of Training Establishment','Any Appointment Held','Any Distinction Obtained','Remarks'], w:[1,1,2.5,1.5,1.5,1.2]}}
+ ]},
+ {part:'PART IV – COMMISSION', items:[
+  {n:'35', f:[['academyCourse','a. Course at Academy'],['academyJoin','b. Date of Joining at Academy'],['commDate','c. Date of Commission'],['commType','d. Type of Commission'],['commAuth','Authority (Ministry of Defence letter/Gazette/Notification/CORO Order Number etc)',1],
+    ['anteDate','f. Ante Date Seniority'],['anteAuth','Authority (Ministry of Defence letter/Gazette/Notification/CORO Order Number etc)',1],
+    ['prcDate','g. Date Granted Permanent Regular Commission in case of Originally Granted a Non-Regular Commission'],['prcAuth','Authority (Ministry of Defence letter/Gazette/Notification/CORO Order Number etc)',1],
+    ['joinArmy','h. Date of Joining Bangladesh Army'],['joinAuth','Authority (Ministry of Defence letter/Gazette/Notification/CORO Order Number etc)',1],
+    ['origArm','j. Arms/Services into which Originally Commissioned (Name of Arms/Services and Unit/Regiment)'],['prevArm','k. Name of Previous Arms/Service in case of change of Arms/Service']]}
+ ]},
+ {part:'PART V – POST COMMISSION', items:[
+  {n:'36', title:'Post Commission Training (Home and Abroad)', t:{key:'training', cols:[...DUR,'Name and Location of Training Establishment','Name of Course Attended','Qualification/Grading Obtained on Completion'], w:[1,1,2.5,2,2]}},
+  {n:'37', f:[['addQual','Additional Qualification (If Any)']]},
+  {n:'38', title:'Qualification in Officers Standard/Advanced Map Reading and Promotion Examinations', t:{key:'exams', cols:['Name of Examination','Year of Passing','Authority'], w:[2,1,3.5]}}
+ ]},
+ {part:'PART VI – RANKS HELD', items:[
+  {n:'39', title:'Promotions and Held Appointments', t:{key:'ranks', cols:['Date',['Type of Promotion','Temporary'],['Type of Promotion','Substantive/ Substantive Temporary'],'Rank','Any Retrospective effect','Notified in What Orders (Quote Number and Date of Notification if known)'], w:[1,1,1.4,.8,1.2,3]}}
+ ]},
+ {part:'PART VII – BRIEF RECORD OF SERVICE IN CHRONOLOGICAL ORDER', items:[
+  {n:'40', title:'Record of Service', t:{key:'service', group:true, cols:['Unit or Establishment',...DUR,'Regimental and Command Appointments','On the Staff Appointments','Instructional Appointments'], w:[2,1,1,2.4,2,2]}}
+ ]},
+ {part:'PART VIII – PARTICULARS OF ACTIVE SERVICE (WAR)', items:[
+  {n:'41', title:'Operational Awards', t:{key:'opAwards', cols:[...DUR,'Name of Operation/War','Appointment held in Operation/War','Any Gallantry Award Received Authority (Gazette Notification/CORO Order)','Remarks'], w:[1,1,1.8,1.8,2.4,1.2]}},
+  {n:'42', title:'Non-Operational Awards', t:{key:'awards', cols:['Description of Honors and Awards','Date and Year Granted','Brief details of Service for which awarded with auth (Gazette Notification/CORO Order etc)','Remarks'], w:[2,1.2,3.5,1]}}
+ ]},
+ {part:'PART IX – EVENTS AFFECTING CAREER', items:[
+  {n:'43', title:'Details of Breaking Military Law (e.g. Court Martial, Summary Award, Court of inquiry affecting the officer even if he was acquitted/exonerated and also adverse report)', t:{key:'milLaw', cols:['Dates','Details of Events','Finding/Final Decision (State by Whom)'], w:[1,3,2.5]}},
+  {n:'44', title:'Details of Breaking Civil Law (If Applicable)', t:{key:'civLaw', cols:['Section','Details of Crimes','Place and Date of Judgment','Punishments'], w:[1,2.5,2,1.5]}}
+ ]},
+ {part:'PART X – ADDITIONAL INFORMATION FOR CORO', items:[
+  {n:'45', title:'Fill up by Concerned Officer: Five Fingers print of concerned officer by permanent ink', special:'fingers'},
+  {n:'46', f:[['idMarks2','Identification Marks'],['teethUp','Number of teeth: Upper lock-jaw'],['teethDown','Down lock-jaw'],['fillYes','(a) Teeth filling'],['fillNo','Number'],['fillPos','Position'],['rootYes','(b) Root Canal'],['rootNo','Number'],['rootPos','Position'],['crownYes','(c) Crown Prosthesis'],['crownNo','Number'],['crownPos','Position']]}
+ ]},
+ {part:'PART XI – CERTIFICATE', items:[
+  {n:'47', title:'Certificate (rank and name are taken from Part I)', special:'cert', f:[['certAppt','Appt'],['certUnit','Unit'],['certSta','Station (for countersign)']]}
+ ]}
+];
+const colLabel = c => Array.isArray(c) ? `${c[0]}: ${c[1]}` : c;
+const titleCase = s => String(s || '').toLowerCase().replace(/(^|[\s.-])([a-z])/g, (m, a, b) => a + b.toUpperCase());
+
+function build2043(D, form, photo){
+  const {Document, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, Header, Footer, PageNumber, ImageRun, BorderStyle, ShadingType, VerticalAlign, TabStopType, HeightRule} = D;
+  const fv = k => String(form.f?.[k] ?? '').trim();
+  const tv = k => (form.t?.[k] || []).filter(r => r.some(c => String(c ?? '').trim()));
+  const W = 9746, SZ = 22, FONT = 'Times New Roman';
+  const run = (text, o = {}) => new TextRun({text, size:SZ, font:FONT, ...o});
+  const para = (children, o = {}) => new Paragraph({spacing:{after:100}, ...o, children:[].concat(children)});
+  const hang = {indent:{left:720, hanging:720}, tabStops:[{type:TabStopType.LEFT, position:720}]};
+  const noB = {style:BorderStyle.NONE, size:0, color:'FFFFFF'}, noBorders = {top:noB, bottom:noB, left:noB, right:noB};
+  const cell = (text, o = {}) => new TableCell({
+    margins:{top:50, bottom:50, left:80, right:80}, verticalAlign:VerticalAlign.CENTER, ...(o.cell || {}),
+    children:String(text ?? '').split('\n').map(l => new Paragraph({alignment:o.center ? AlignmentType.CENTER : AlignmentType.LEFT, children:[run(l, {bold:!!o.bold, size:20})]}))
+  });
+  const dxa = n => ({size:n, type:WidthType.DXA});
+
+  function table(t){
+    let cols = t.cols.map(c => Array.isArray(c) ? {g:c[0], l:c[1]} : {l:c});
+    let wts = (t.w || cols.map(() => 1)).slice();
+    if (t.group){ cols = cols.slice(1); wts = wts.slice(1); }
+    if (t.serial){ cols.unshift({l:'Serial'}); wts.unshift(.6); }
+    const sum = wts.reduce((a, b) => a + b, 0), widths = wts.map(x => Math.round(W * x / sum));
+    const shade = {type:ShadingType.CLEAR, fill:'E7E6E6', color:'auto'};
+    const hd = (text, width, extra = {}) => cell(text, {bold:true, center:true, cell:{width:dxa(width), shading:shade, ...extra}});
+    const out = [];
+    if (cols.some(c => c.g)){
+      const r1 = [], r2 = [];
+      for (let i = 0; i < cols.length; i++){
+        const c = cols[i];
+        if (c.g){
+          let n = 1; while (cols[i + n] && cols[i + n].g === c.g) n++;
+          r1.push(hd(c.g, widths.slice(i, i + n).reduce((a, b) => a + b, 0), {columnSpan:n}));
+          for (let j = 0; j < n; j++) r2.push(hd(cols[i + j].l, widths[i + j]));
+          i += n - 1;
+        } else r1.push(hd(c.l, widths[i], {rowSpan:2}));
+      }
+      out.push(new TableRow({children:r1, tableHeader:true}), new TableRow({children:r2, tableHeader:true}));
+    } else out.push(new TableRow({children:cols.map((c, i) => hd(c.l, widths[i])), tableHeader:true}));
+    const data = tv(t.key);
+    if (!data.length) out.push(new TableRow({children:cols.map((c, i) => cell('', {cell:{width:dxa(widths[i])}}))}));
+    let last = null;
+    data.forEach((r, idx) => {
+      let vals = r.map(v => String(v ?? ''));
+      if (t.group){
+        const g = vals[0].trim(); vals = vals.slice(1);
+        if (g && g !== last) out.push(new TableRow({children:[cell(g, {bold:true, center:true, cell:{columnSpan:cols.length, width:dxa(W)}})]}));
+        if (g) last = g;
+      }
+      if (t.serial) vals.unshift((idx + 1) + '.');
+      out.push(new TableRow({children:cols.map((c, i) => cell(vals[i] || '', {cell:{width:dxa(widths[i])}}))}));
+    });
+    return new Table({width:dxa(W), columnWidths:widths, rows:out});
+  }
+
+  const fieldP = (num, label, val) => para([run(num + '\t'), run(label + ':  '), run(val || '______________________', val ? {bold:true, underline:{}} : {})], hang);
+  const body = [];
+
+  // title block with the photo box
+  const photoCell = new TableCell({width:dxa(2600), verticalAlign:VerticalAlign.CENTER, margins:{top:40, bottom:40, left:40, right:40},
+    children: photo ? [new Paragraph({alignment:AlignmentType.CENTER, children:[new ImageRun({data:photo, transformation:{width:160, height:160}})]})]
+      : [para(run('PHOTO', {bold:true}), {alignment:AlignmentType.CENTER, spacing:{before:700, after:60}}), para(run('4.5 cm x 4.5 cm', {size:18}), {alignment:AlignmentType.CENTER, spacing:{after:700}})]});
+  body.push(new Table({width:dxa(W), columnWidths:[W - 2600, 2600], rows:[new TableRow({children:[
+    new TableCell({width:dxa(W - 2600), borders:noBorders, verticalAlign:VerticalAlign.CENTER, children:[
+      para(run('PARTICULARS AND RECORD OF SERVICE', {bold:true, size:28, underline:{}}), {alignment:AlignmentType.CENTER}),
+      para(run('OFFICERS', {bold:true, size:26, underline:{}}), {alignment:AlignmentType.CENTER})]}),
+    photoCell]})]}));
+  body.push(para([]));
+
+  const rank = fv('rankTemp') && !/^n\/?a$/i.test(fv('rankTemp')) ? fv('rankTemp') : fv('rankSubs');
+  const fullName = titleCase(fv('name'));
+
+  for (const part of FORM){
+    body.push(para(run(part.part, {bold:true, underline:{}}), {alignment:AlignmentType.CENTER, spacing:{before:280, after:160}, keepNext:true}));
+    for (const it of part.items){
+      const empty = it.t && !tv(it.t.key).length;
+      if (it.special === 'fingers'){
+        body.push(para([run(it.n + '.\t'), run(it.title + ':')], hang));
+        const names = ['First Finger','Fore Finger','Middle Finger','Ring Finger','Small Finger'], w5 = Math.floor(W / 5);
+        for (const hand of ['Right Hand','Left Hand']){
+          body.push(para(run(hand, {bold:true}), {spacing:{before:160, after:80}, keepNext:true}));
+          body.push(new Table({width:dxa(W), columnWidths:names.map(() => w5), rows:[
+            new TableRow({height:{value:1500, rule:HeightRule.EXACT}, children:names.map((n, i) => cell('(' + (i + 1) + ')', {cell:{width:dxa(w5), verticalAlign:VerticalAlign.TOP}}))}),
+            new TableRow({children:names.map(n => cell('(' + n + ')', {center:true, cell:{width:dxa(w5)}}))})]}));
+        }
+        body.push(para([]));
+        continue;
+      }
+      if (it.special === 'cert'){
+        body.push(para([run('47.\tI '), run(`${rank} ${fullName}`.trim() || '______________________', {bold:true, underline:{}}),
+          run(' (rank and full name) do hereby solemnly state that, the statement and particulars given by me in part I to IX above, are true, complete and I have not withheld any relevant facts. I understand that in the events of any of the contents of the preceding parts being found incorrect or incomplete, I shall be liable to punishment, including dismissal from the service.')],
+          {...hang, alignment:AlignmentType.JUSTIFIED}));
+        const yr = new Date().getFullYear();
+        const sig = (l, v, b) => para([run(l), run(v || '', {bold:!!b})], {indent:{left:5600}, spacing:{after:60}});
+        body.push(para([], {spacing:{before:900}}), sig('Signature of Officer', ''));
+        body.push(para([run(`Dated:        /        / ${yr}`), run('\tRank:  '), run(rank, {bold:true})], {tabStops:[{type:TabStopType.LEFT, position:5600}], spacing:{after:60}}));
+        body.push(sig('Appt:  ', fv('certAppt'), 1), sig('Unit:  ', fv('certUnit'), 1));
+        body.push(para(run('COUNTERSIGN', {bold:true, underline:{}}), {alignment:AlignmentType.CENTER, spacing:{before:500, after:900}}));
+        body.push(para([run('Sta:  '), run(fv('certSta'))]), para(run(`Dated:        /        / ${yr}`)));
+        body.push(para(run('PARTICULARS AND RECORD OF SERVICE- OFFICER', {bold:true}), {alignment:AlignmentType.CENTER, spacing:{before:700, after:60}}));
+        body.push(para(run([fv('personalNo'), rank.toUpperCase(), fv('name').toUpperCase()].filter(Boolean).join(' ') + (fv('arm') ? ', ' + fv('arm').toUpperCase() : ''), {bold:true}), {alignment:AlignmentType.CENTER, spacing:{after:60}}));
+        body.push(para(run(fv('certUnit').toUpperCase(), {bold:true}), {alignment:AlignmentType.CENTER}));
+        continue;
+      }
+      let numbered = false;
+      if (it.title){ body.push(para([run(it.n + '.\t'), run(it.title + ':'), ...(empty && !it.t.title ? [run('  N/A', {bold:true})] : [])], {...hang, keepNext:!!it.t})); numbered = true; }
+      (it.f || []).forEach(([k, label]) => { body.push(fieldP(numbered ? '' : it.n + '.', label, fv(k))); numbered = true; });
+      if (it.note) NOTE.forEach(n => body.push(para(run('- ' + n, {size:18, italics:true}), {indent:{left:720}, spacing:{after:40}})));
+      if (it.t){
+        if (it.t.title) body.push(para([run('\t'), run(it.t.title + ':'), ...(empty ? [run('  N/A', {bold:true})] : [])], {...hang, keepNext:true}));
+        body.push(table(it.t), para([]));
+      }
+    }
+  }
+  const conf = () => para(run('CONFIDENTIAL', {bold:true}), {alignment:AlignmentType.CENTER, spacing:{after:0}});
+  return new Document({
+    creator:'Senanothi', title:'Particulars and Record of Service',
+    sections:[{
+      properties:{page:{size:{width:11906, height:16838}, margin:{top:1200, bottom:1200, left:1080, right:1080}}},
+      headers:{default:new Header({children:[conf()]})},
+      footers:{default:new Footer({children:[para(new TextRun({children:[PageNumber.CURRENT], size:SZ, font:FONT}), {alignment:AlignmentType.CENTER, spacing:{after:0}}), conf()]})},
+      children:body
+    }]
+  });
+}
+/*FORM>>*/
+const FORM_KEYS = FORM.flatMap(p => p.items.flatMap(i => (i.f || []).map(x => x[0])));
+
+const S = { be:null, demo:false, index:null, indexId:null, key:null, encMeta:null, sealed:null, user:null, view:'dash', cat:0, q:'', editing:null };
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const te = new TextEncoder(), td = new TextDecoder();
+
+/* ---------- small UI helpers ---------- */
+let toastTimer;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 6000); }
+function busy(msg){ $('#busy').hidden = !msg; $('#busyMsg').textContent = msg || ''; }
+function setStatus(s){ const el = $('#status'); if (el) el.textContent = s; S.status = s; }
+function ask(msg, okLabel){
+  return new Promise(res => {
+    const d = $('#askDlg'); $('#askMsg').textContent = msg; $('#askOk').textContent = okLabel;
+    const done = v => { d.close(); res(v); };
+    $('#askOk').onclick = () => done(true); $('#askNo').onclick = () => done(false);
+    d.oncancel = () => res(false);
+    d.showModal();
+  });
+}
+document.addEventListener('click', e => { if (e.target.matches('[data-close]')) e.target.closest('dialog').close(); });
+function download(blob, name){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 30000); }
+function loadScript(src, what){ return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error(`Could not load the ${what} library. Check your connection.`)); document.head.append(s); }); }
+
+/* ---------- day and night mode, clock ---------- */
+function systemDark(){ return window.matchMedia?.('(prefers-color-scheme: dark)').matches; }
+function currentTheme(){ return document.documentElement.dataset.theme || (systemDark() ? 'dark' : 'light'); }
+function applyTheme(t){
+  if (t) document.documentElement.dataset.theme = t;
+  $('#themeBtn').textContent = currentTheme() === 'dark' ? 'Day mode' : 'Night mode';
+}
+try { const t = localStorage.getItem('sn_theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}
+$('#themeBtn').onclick = () => { const t = currentTheme() === 'dark' ? 'light' : 'dark'; applyTheme(t); try { localStorage.setItem('sn_theme', t); } catch {} };
+function tick(){
+  const d = new Date();
+  $('#cTime').textContent = pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  $('#cDate').textContent = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+}
+
+/* ---------- encryption (optional) ---------- */
+function b64(u8){ let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
+function unb64(s){ const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+async function deriveKey(pass, salt, iter){
+  const base = await crypto.subtle.importKey('raw', te.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations:iter, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+}
+async function seal(key, buf){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, buf));
+  const out = new Uint8Array(12 + ct.length); out.set(iv); out.set(ct, 12); return out;
+}
+async function unseal(key, buf){ const u = new Uint8Array(buf); return crypto.subtle.decrypt({name:'AES-GCM', iv:u.slice(0, 12)}, key, u.slice(12)); }
+
+/* ---------- Google sign-in ---------- */
+let tokenClient = null, tokenWait = null;
+function clientId(){
+  if (CONFIG.CLIENT_ID) return CONFIG.CLIENT_ID;
+  try { return localStorage.getItem('pf_client_id') || ''; } catch { return ''; }
+}
+function requestToken(prompt){
+  return new Promise((resolve, reject) => {
+    if (!window.google?.accounts?.oauth2) return reject(new Error('Google sign-in did not load. Check your connection, and that this page is opened from its https address.'));
+    if (!tokenClient) tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: clientId(), scope: SCOPE,
+      callback: r => {
+        if (r.error) return tokenWait?.reject(new Error(r.error_description || r.error));
+        if (!google.accounts.oauth2.hasGrantedAllScopes(r, SCOPE)) return tokenWait?.reject(new Error('Drive permission was not ticked. Sign in again and allow access to the app’s own data.'));
+        drive.token = r.access_token; tokenWait?.resolve();
+      },
+      error_callback: e => tokenWait?.reject(new Error(e?.type === 'popup_closed' ? 'The sign-in window was closed.' : 'Sign-in failed. Allow pop-ups for this site and try again.'))
+    });
+    tokenWait = {resolve, reject};
+    let hint = ''; try { hint = localStorage.getItem('sn_email') || ''; } catch {}
+    tokenClient.requestAccessToken(hint ? {prompt, login_hint:hint} : {prompt});
+  });
+}
+async function reauth(){
+  busy('');
+  if (!await ask('Your Google session has expired. Sign in again to carry on.', 'Sign in again')) throw new Error('Signed out. Reload the page to sign in.');
+  await requestToken('');
+}
+
+/* ---------- storage: Google Drive hidden app folder ---------- */
+const drive = {
+  token: null,
+  async req(url, opts = {}, retry = true){
+    const r = await fetch(url, {...opts, headers:{...(opts.headers || {}), Authorization:'Bearer ' + this.token}});
+    if (r.status === 401 && retry){ await reauth(); return this.req(url, opts, false); }
+    if (!r.ok){ let m = 'Google Drive returned error ' + r.status; try { m = (await r.json()).error.message || m; } catch {} throw new Error(m); }
+    return r;
+  },
+  async who(){ const j = await (await this.req(API + '/about?fields=user(displayName,emailAddress)')).json(); return {name:j.user.displayName, email:j.user.emailAddress}; },
+  async findIndex(){
+    const q = encodeURIComponent(`name = '${INDEX_NAME}' and 'appDataFolder' in parents`);
+    const j = await (await this.req(`${API}/files?spaces=appDataFolder&q=${q}&fields=files(id)&pageSize=5`)).json();
+    return j.files?.[0]?.id || null;
+  },
+  async read(id){ return (await this.req(`${API}/files/${id}?alt=media`)).arrayBuffer(); },
+  async mkdir(name){
+    const r = await this.req(API + '/files?fields=id', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name, mimeType:'application/vnd.google-apps.folder', parents:['appDataFolder']})});
+    return (await r.json()).id;
+  },
+  async create(name, mime, blob, parent){
+    const meta = {name, parents:[parent || 'appDataFolder']};
+    if (blob.size <= 4.5 * 1024 * 1024){
+      const bd = 'sn' + Math.random().toString(36).slice(2);
+      const body = new Blob([`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n--${bd}\r\nContent-Type: ${mime}\r\n\r\n`, blob, `\r\n--${bd}--`]);
+      const r = await this.req(UP + '/files?uploadType=multipart&fields=id', {method:'POST', headers:{'Content-Type':'multipart/related; boundary=' + bd}, body});
+      return (await r.json()).id;
+    }
+    const s = await this.req(UP + '/files?uploadType=resumable&fields=id', {method:'POST',
+      headers:{'Content-Type':'application/json; charset=UTF-8', 'X-Upload-Content-Type':mime}, body: JSON.stringify(meta)});
+    const loc = s.headers.get('Location');
+    if (!loc) throw new Error('Could not start the upload of a large file.');
+    return (await (await this.req(loc, {method:'PUT', body: blob})).json()).id;
+  },
+  async update(id, mime, blob){ await this.req(`${UP}/files/${id}?uploadType=media`, {method:'PATCH', headers:{'Content-Type':mime}, body: blob}); },
+  async remove(id){ await this.req(`${API}/files/${id}`, {method:'DELETE'}); }
+};
+
+/* ---------- storage: in-memory, for the demo ---------- */
+function memoryBackend(){
+  const files = new Map(); let n = 0;
+  return {
+    async who(){ return {name:'Demo', email:''}; },
+    async findIndex(){ for (const [id, f] of files) if (f.name === INDEX_NAME) return id; return null; },
+    async read(id){ return files.get(id).data; },
+    async mkdir(){ return 'm' + (++n); },
+    async create(name, mime, blob){ const id = 'm' + (++n); files.set(id, {name, data: await blob.arrayBuffer()}); return id; },
+    async update(id, mime, blob){ files.get(id).data = await blob.arrayBuffer(); },
+    async remove(id){ files.delete(id); }
+  };
+}
+
+/* ---------- index: register, form 2043 and photo in one JSON file ---------- */
+async function packIndex(){
+  if (S.key) return JSON.stringify({app:APP_ID, v:2, enc:S.encMeta, data:b64(await seal(S.key, te.encode(JSON.stringify(S.index))))});
+  return JSON.stringify({app:APP_ID, v:2, enc:null, data:S.index});
+}
+let saveChain = Promise.resolve();
+const idleStatus = () => S.demo ? 'Demo: nothing is saved' : 'Saved to Drive';
+function saveIndex(){
+  setStatus('Saving…');
+  saveChain = saveChain.then(async () => {
+    await S.be.update(S.indexId, 'application/json', new Blob([await packIndex()]));
+    setStatus(idleStatus());
+  }).catch(e => { setStatus('Not saved'); toast('Your changes could not be saved: ' + e.message); });
+  return saveChain;
+}
+async function folderFor(catId){
+  const f = S.index.folders;
+  if (!f[catId]){ const c = secOf(catId); f[catId] = await S.be.mkdir(`${pad2(c.id)}_${c.name}`); }
+  return f[catId];
+}
+function migrate(ix){
+  ix.profile ||= {}; ix.docs ||= []; ix.folders ||= {};
+  if (ix.schema !== 2){
+    const map = {1:1, 2:11, 4:5, 5:6, 6:8, 7:11, 8:11, 9:11, 10:9, 11:11};
+    ix.docs.forEach(d => {
+      if (d.cat === 3){ const ipft = /^ipft/i.test(d.test || d.title || ''); d.cat = ipft ? 3 : 4; if (ipft) d.term = (d.test || '').replace(/^ipft\s*/i, '') || DEFAULT_TERMS[0]; delete d.test; }
+      else d.cat = map[d.cat] || 11;
+    });
+    ix.folders = {}; ix.schema = 2;
+  }
+  ix.form ||= {f:{}, t:{}}; ix.form.f ||= {}; ix.form.t ||= {};
+  if (!ix.profile.ipftTerms?.length) ix.profile.ipftTerms = [...DEFAULT_TERMS];
+  return ix;
+}
+
+/* ---------- gate screens ---------- */
+const LOGO = `<svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Shenanothi logo"><rect x="3" y="3" width="58" height="58" rx="15" fill="#006A4E" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/><path d="M20 13h16l10 10v24a4 4 0 0 1-4 4H20a4 4 0 0 1-4-4V17a4 4 0 0 1 4-4z" fill="#fff"/><path d="M36 13l10 10h-7a3 3 0 0 1-3-3z" fill="#9FD8C2"/><rect x="21" y="26" width="17" height="3" rx="1.5" fill="#006A4E"/><rect x="21" y="32.5" width="12" height="3" rx="1.5" fill="#006A4E" opacity=".5"/><rect x="21" y="39" width="8" height="3" rx="1.5" fill="#006A4E" opacity=".5"/><g class="seal"><circle cx="42" cy="43" r="10" fill="#F42A41" stroke="#006A4E" stroke-width="3"/><path d="M37.2 43.2l3.3 3.3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`;
+const MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg>';
+const MARK = `<div class="mark">${LOGO}<div><h1>সেনানথি</h1><div class="muted">Shenanothi, my service file</div></div></div>`;
+$('#hLogo').innerHTML = LOGO;
+{ const l = document.createElement('link'); l.rel = 'icon'; l.href = 'data:image/svg+xml,' + encodeURIComponent(LOGO); document.head.append(l); }
+
+function gateSignIn(){
+  let last = ''; try { last = localStorage.getItem('sn_email') || ''; } catch {}
+  $('#gateBody').innerHTML = `
+    <div class="hero">${LOGO}<h1>সেনানথি</h1><p class="muted">Shenanothi, my service file</p></div>
+    <button class="btn primary big" id="signin">${MAIL}Login with Gmail</button>
+    ${last ? `<p class="small muted center" style="margin:.5rem 0 0">Last used: ${esc(last)}</p>` : ''}
+    <div id="setup" hidden>
+      <h3 style="margin-bottom:.3rem">One-time set-up</h3>
+      <p class="small muted">Login needs a Google OAuth client ID for this site. Do this once; after that it is one press on Login with Gmail.</p>
+      <ol class="small">
+        <li>In Google Cloud Console, create a project and enable the Google Drive API.</li>
+        <li>Configure the OAuth consent screen and add the scope <code>drive.appdata</code>.</li>
+        <li>Create an OAuth client ID of type “Web application”. Under Authorised JavaScript origins add <code>${esc(location.origin)}</code></li>
+        <li>Paste the client ID here, or into <code>CONFIG.CLIENT_ID</code> at the top of the script so nobody sees this step again.</li>
+      </ol>
+      <div class="field"><label for="cid">OAuth client ID</label><input type="text" id="cid" placeholder="1234567890-abc.apps.googleusercontent.com"></div>
+      <button class="btn primary" id="cidSave">Save and login</button>
+    </div>
+    <button class="btn plain" id="demo">Look around without logging in</button>`;
+  const login = async () => { try { await requestToken(''); await enter(drive, false); } catch (e) { toast(e.message); } };
+  $('#signin').onclick = () => { if (!clientId()){ $('#setup').hidden = false; $('#cid').focus(); return; } login(); };
+  $('#cidSave').onclick = () => {
+    const v = $('#cid').value.trim();
+    if (!/\.apps\.googleusercontent\.com$/.test(v)) return toast('Paste the OAuth client ID first. It ends in .apps.googleusercontent.com');
+    try { localStorage.setItem('pf_client_id', v); } catch {}
+    CONFIG.CLIENT_ID = v; login();
+  };
+  $('#demo').onclick = startDemo;
+}
+
+async function enter(be, demo){
+  S.be = be; S.demo = demo;
+  busy('Opening your file…');
+  try {
+    S.user = await be.who();
+    if (!demo && S.user.email) try { localStorage.setItem('sn_email', S.user.email); } catch {}
+    const id = await be.findIndex();
+    if (!id){ busy(''); return gateOnboard(); }
+    S.indexId = id;
+    const wrap = JSON.parse(td.decode(await be.read(id)));
+    busy('');
+    if (wrap.enc){ S.encMeta = wrap.enc; S.sealed = wrap.data; return gateUnlock(); }
+    S.index = wrap.data; showApp();
+  } catch (e) { busy(''); toast('Could not open your file: ' + e.message); }
+}
+
+function gateOnboard(){
+  $('#gateBody').innerHTML = `${MARK}
+    <p>Signed in as ${esc(S.user.email || S.user.name)}. These details show at the top of every page. You can change them later.</p>
+    <form id="ob">
+      <div class="row2">
+        <div class="field"><label for="oBa">BA no</label><input type="text" id="oBa" required maxlength="20"></div>
+        <div class="field"><label for="oRank">Rank</label><input type="text" id="oRank" maxlength="20"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="oName">Name</label><input type="text" id="oName" required maxlength="60"></div>
+        <div class="field"><label for="oUnit">Unit</label><input type="text" id="oUnit" maxlength="60"></div>
+      </div>
+      <div class="field"><label for="oYear">Year of commission</label><input type="number" id="oYear" required min="1970" max="${new Date().getFullYear()}"></div>
+      <div class="field"><label class="check"><input type="checkbox" id="oEnc"> Encrypt everything with a passphrase before it leaves this device</label></div>
+      <div id="oPassBox" hidden>
+        <div class="row2">
+          <div class="field"><label for="oP1">Passphrase</label><input type="password" id="oP1" autocomplete="new-password"></div>
+          <div class="field"><label for="oP2">Repeat passphrase</label><input type="password" id="oP2" autocomplete="new-password"></div>
+        </div>
+        <p class="small" style="color:var(--red)">A forgotten passphrase cannot be reset. The scans would be unreadable for good.</p>
+      </div>
+      <div class="actions"><button class="btn primary" type="submit">Create my file</button></div>
+    </form>`;
+  $('#oEnc').onchange = e => $('#oPassBox').hidden = !e.target.checked;
+  $('#ob').onsubmit = async e => {
+    e.preventDefault();
+    const pass = $('#oEnc').checked ? $('#oP1').value : '';
+    if ($('#oEnc').checked){
+      if (pass.length < 8) return toast('Use a passphrase of at least 8 characters.');
+      if (pass !== $('#oP2').value) return toast('The two passphrases do not match.');
+    }
+    busy('Creating the hidden folder…');
+    try {
+      if (pass){
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        S.encMeta = {salt:b64(salt), iter:PBKDF2_ITER};
+        S.key = await deriveKey(pass, salt, PBKDF2_ITER);
+      }
+      const ids = await Promise.all(SECS.map(c => S.be.mkdir(`${pad2(c.id)}_${c.name}`)));
+      const folders = {}; SECS.forEach((c, i) => folders[c.id] = ids[i]);
+      S.index = {schema:2, folders, docs:[], form:{f:{}, t:{}}, created:new Date().toISOString(),
+        profile:{ba:$('#oBa').value.trim(), rank:$('#oRank').value.trim(), name:$('#oName').value.trim(), unit:$('#oUnit').value.trim(), startYear:Number($('#oYear').value), ipftTerms:[...DEFAULT_TERMS]}};
+      S.indexId = await S.be.create(INDEX_NAME, 'application/json', new Blob([await packIndex()]), null);
+      busy(''); showApp();
+    } catch (err) { busy(''); toast('Could not create the file: ' + err.message); }
+  };
+}
+
+function gateUnlock(){
+  $('#gateBody').innerHTML = `${MARK}
+    <p>This file is encrypted. Enter the passphrase you chose when you created it.</p>
+    <form id="ul">
+      <div class="field"><label for="uP">Passphrase</label><input type="password" id="uP" autocomplete="current-password" required></div>
+      <div class="actions"><button class="btn primary" type="submit">Unlock</button></div>
+    </form>`;
+  $('#uP').focus();
+  $('#ul').onsubmit = async e => {
+    e.preventDefault();
+    busy('Unlocking…');
+    try {
+      const key = await deriveKey($('#uP').value, unb64(S.encMeta.salt), S.encMeta.iter);
+      S.index = JSON.parse(td.decode(await unseal(key, unb64(S.sealed))));
+      S.key = key; S.sealed = null; busy(''); showApp();
+    } catch { busy(''); toast('Wrong passphrase.'); }
+  };
+}
+
+async function startDemo(){
+  const be = memoryBackend();
+  S.be = be; S.demo = true; S.user = {name:'Demo', email:''};
+  const y = new Date().getFullYear();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800"><rect width="600" height="800" fill="#fff"/><text x="40" y="80" font-family="sans-serif" font-size="26">Sample scan</text><text x="40" y="120" font-family="sans-serif" font-size="16" fill="#555">A real PDF or photo appears here.</text></svg>`;
+  const fid = await be.create('sample.svg', 'image/svg+xml', new Blob([svg]));
+  const mk = (cat, title, ref, date, physical, extra = {}) => ({id:crypto.randomUUID(), cat, title, ref, date, physical, remarks:'', added:new Date().toISOString(), ...extra});
+  S.index = {schema:2, folders:{}, created:new Date().toISOString(),
+    profile:{ba:'BA-0000', rank:'Capt', name:'Sample Officer', unit:'Sample Unit', startYear:y - 3, ipftTerms:[...DEFAULT_TERMS]},
+    form:{f:{personalNo:'BA-0000', rankTemp:'Capt', name:'SAMPLE OFFICER', arm:'Sigs', blood:'O+', certAppt:'Coy Officer', certUnit:'Sample Unit'},
+      t:{education:[['2010','2012','Sample College','HSC','GPA-5.00','2012','']], languages:[['Arabic','Reading']]}},
+    docs:[
+      mk(1, 'NID card', '', `${y - 5}-03-11`, true, {type:'NID'}),
+      mk(2, 'HSC certificate', '', `${y - 8}-08-20`, true, {type:'HSC'}),
+      mk(3, `IPFT DivO ${y - 1} 1st half`, 'Sample/DivO/14', `${y - 1}-04-18`, true, {year:y - 1, term:'1st half', fileId:fid, fileName:`${y - 1}-04-18_IPFT_IPFT-DivO-${y - 1}-1st-half.svg`, mime:'image/svg+xml', size:svg.length}),
+      mk(4, `RET DivO ${y - 1}`, 'Sample/DivO/22', `${y - 1}-11-05`, true, {year:y - 1}),
+      mk(5, 'Basic course', '', `${y - 2}-06-30`, true, {type:'Course report'}),
+      mk(6, 'Promotion to Capt', 'CORO 00/' + (y - 1), `${y - 1}-01-21`, false),
+      mk(8, 'Posting to Sample Unit', 'Sample/PO/31', `${y - 1}-08-02`, false),
+      mk(10, `Tax return ${y - 1}–${String(y).slice(2)}`, '', `${y - 1}-11-20`, true, {type:'Tax return', year:y - 1})
+    ]};
+  S.indexId = await be.create(INDEX_NAME, 'application/json', new Blob([await packIndex()]));
+  showApp();
+}
+
+/* ---------- app shell ---------- */
+function showApp(){
+  migrate(S.index);
+  $('#gate').hidden = true; $('#app').hidden = false;
+  S.status = idleStatus();
+  applyTheme(); tick(); setInterval(tick, 15000); setStick(); addEventListener('resize', setStick);
+  render();
+}
+function setStick(){ const el = innerWidth <= 900 ? $('#rail') : $('#top'); document.documentElement.style.setProperty('--stick', el.offsetHeight + 'px'); }
+function renderHeader(){
+  const p = S.index.profile;
+  $('#hName').textContent = [p.rank, p.name].filter(Boolean).join(' ') || 'Add your details in Settings';
+  $('#hSub').textContent = [p.ba, p.unit].filter(Boolean).join(', ');
+  $('#hDisc').innerHTML = S.index.photo ? `<img src="${S.index.photo}" alt="Your photo">` : esc((p.name || '?').trim().charAt(0).toUpperCase());
+}
+function render(){
+  renderHeader();
+  const docs = S.index.docs, cur = (v, c) => S.view === v && (c == null || S.cat === c);
+  const nv = (view, cat, chip, label, color, count) => `<button class="nv" data-view="${view}" data-cat="${cat ?? ''}" aria-current="${cur(view, cat)}" style="${color ? '--c:' + color : ''}"><span class="chip">${chip}</span><span class="lb">${esc(label)}</span>${count == null ? '' : `<span class="ct">${count}</span>`}</button>`;
+  $('#rail').innerHTML =
+    nv('dash', null, '⌂', 'Dashboard') + nv('form', null, '2043', 'BAFZ 2043', '#B4233A') + nv('reg', 0, 'All', 'All documents', '#334155', docs.length) +
+    '<div class="rail-sep"></div>' +
+    SECS.map(s => nv('reg', s.id, pad2(s.id), s.name, s.color, docs.filter(d => d.cat === s.id).length)).join('') +
+    '<div class="rail-sep"></div>' + nv('settings', null, '⚙', 'Settings', '#475569');
+  ({dash:renderDash, form:renderForm, reg:renderRegister, settings:renderSettings})[S.view]();
+  const key = [S.view, S.cat, S.formTab].join('|'), v = $('#view');
+  v.classList.remove('enter');
+  if (key !== S.lastKey){ void v.offsetWidth; v.classList.add('enter'); S.lastKey = key; }
+  const st = $('#status'); if (st) st.textContent = S.status;
+}
+$('#rail').onclick = e => { const b = e.target.closest('.nv'); if (!b) return; S.view = b.dataset.view; if (b.dataset.cat !== '') S.cat = Number(b.dataset.cat); S.q = ''; render(); window.scrollTo(0, 0); };
+
+const byDateDesc = (a, b) => (b.date || '').localeCompare(a.date || '') || (b.added || '').localeCompare(a.added || '');
+const fmtDate = d => { if (!d) return ''; const [y, m, dd] = d.split('-'); return `${dd} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m - 1]} ${y}`; };
+const taxYear = y => `${y}–${String(y + 1).slice(2)}`;
+
+/* ---------- dashboard ---------- */
+function trackerCols(){
+  const terms = S.index.profile.ipftTerms?.length ? S.index.profile.ipftTerms : DEFAULT_TERMS;
+  return [...terms.map(t => ({label:'IPFT ' + t, cat:3, term:t})), {label:'RET', cat:4}, {label:'Tax return', cat:10, type:'Tax return'}];
+}
+const trackerHit = (c, y) => S.index.docs.find(d => d.cat === c.cat && Number(d.year) === y && (!c.term || d.term === c.term) && (!c.type || d.type === c.type));
+function formProgress(){ const f = S.index.form.f; const done = FORM_KEYS.filter(k => String(f[k] ?? '').trim()).length; return {done, total:FORM_KEYS.length, pct:Math.round(100 * done / FORM_KEYS.length)}; }
+
+function renderDash(){
+  const p = S.index.profile, docs = S.index.docs, now = new Date().getFullYear();
+  const cols = trackerCols(), start = Math.min(Number(p.startYear) || now, now);
+  let missing = 0, grid = `<div class="grid" style="grid-template-columns:4rem repeat(${cols.length},minmax(7.5rem,1fr))"><div class="h">Year</div>${cols.map(c => `<div class="h">${esc(c.label)}</div>`).join('')}`;
+  for (let y = now; y >= start; y--){
+    grid += `<div class="y">${y}</div>`;
+    cols.forEach((c, i) => {
+      const d = trackerHit(c, y);
+      if (d && d.fileId) grid += `<button class="cell ok" data-edit="${d.id}">Scanned</button>`;
+      else if (d) grid += `<button class="cell warn" data-edit="${d.id}">Entered, no scan</button>`;
+      else { missing++; grid += `<button class="cell bad" data-new="${i}" data-year="${y}">Missing</button>`; }
+    });
+  }
+  grid += '</div>';
+  const noScan = docs.filter(d => !d.fileId).sort(byDateDesc), fp = formProgress();
+  const li = d => `<li><span class="dot" style="--c:${secOf(d.cat).color}"></span><span class="t">${esc(d.title)} <span class="muted small">${esc(secOf(d.cat).name)}${d.date ? ', ' + fmtDate(d.date) : ''}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`;
+  $('#view').innerHTML = `
+    <div class="viewhead"><div class="ttl"><h2>Dashboard</h2><span id="status"></span></div></div>
+    <div class="stats">
+      <div class="stat" style="--i:0"><b>${docs.length}</b><span class="muted small">documents in the register</span></div>
+      <div class="stat" style="--i:1"><b>${docs.filter(d => d.fileId).length}</b><span class="muted small">have a scan</span></div>
+      <div class="stat ${missing ? 'alert' : ''}" style="--i:2"><b>${missing}</b><span class="muted small">yearly results missing</span></div>
+      <div class="stat" style="--i:3"><b>${fp.pct}%</b><span class="muted small">of BAFZ 2043 filled</span><div class="bar"><i style="width:${fp.pct}%"></i></div></div>
+    </div>
+    <div class="tiles">${SECS.map((s, i) => `<div class="tile" style="--c:${s.color};--i:${i + 4}"><button class="tgo" data-go="${s.id}" aria-label="Open ${esc(s.name)}"><b>${docs.filter(d => d.cat === s.id).length}</b><span>${esc(s.name)}</span></button><button class="tadd" data-add="${s.id}">+ Add ${esc(s.one)}</button></div>`).join('')}</div>
+    <div class="panel"><h3>IPFT, RET and tax return by year</h3>
+      <p class="muted small">${missing ? `Select a missing cell to add that result.` : `Nothing is missing since ${start}.`}</p>${grid}</div>
+    <div class="panel"><h3>Entered without a scan</h3>
+      ${noScan.length ? `<ul class="list">${noScan.slice(0, 12).map(li).join('')}</ul>${noScan.length > 12 ? `<p class="muted small" style="margin:.5rem 0 0">and ${noScan.length - 12} more in the register.</p>` : ''}` : '<p class="muted" style="margin:0">Every entry in the register has a scan.</p>'}</div>`;
+}
+
+/* ---------- register ---------- */
+function renderRegister(){
+  const c = S.cat ? secOf(S.cat) : null, q = S.q.trim().toLowerCase();
+  const rows = S.index.docs.filter(d => (!c || d.cat === c.id) && (!q || [d.title, d.ref, d.remarks, d.type, d.fileName].some(v => (v || '').toLowerCase().includes(q)))).sort(byDateDesc);
+  const head = `<div class="viewhead"><div class="ttl"><h2>${c ? esc(c.name) : 'All documents'}</h2><span id="status"></span></div>
+    <input type="search" id="q" placeholder="Search" value="${esc(S.q)}" aria-label="Search the register">${c ? `<button class="btn primary" data-add="${c.id}">Add ${esc(c.one)}</button>` : ''}</div>`;
+  let body;
+  if (!rows.length){
+    body = `<div class="empty"><p>${q ? 'Nothing here matches your search.' : c ? `No ${esc(c.one)} filed yet. Add the first one, with or without a scan.` : 'Nothing filed yet. Open a section on the left and add its first document.'}</p>${!q && c ? `<button class="btn primary" data-add="${c.id}">Add ${esc(c.one)}</button>` : ''}</div>`;
+  } else {
+    body = `<table class="reg"><thead><tr><th>S/No</th><th>Document</th><th>Ref or letter no</th><th>Date</th><th>Paper copy</th><th>Scan</th><th>Remarks</th><th></th></tr></thead><tbody>` +
+      rows.map((d, i) => { const k = secOf(d.cat); const tag = c ? d.type : k.name; return `<tr style="--i:${i}">
+        <td class="num">${i + 1}</td>
+        <td>${tag ? `<span class="badge" style="--c:${k.color}">${esc(tag)}</span>` : ''}<strong>${esc(d.title)}</strong>${d.fileName ? `<span class="fn">${esc(d.fileName)}</span>` : ''}</td>
+        <td data-l="Ref">${esc(d.ref)}</td>
+        <td data-l="Date" style="white-space:nowrap">${fmtDate(d.date)}</td>
+        <td data-l="Paper copy">${d.physical ? '<span class="yes">Yes</span>' : '<span class="no-">No</span>'}</td>
+        <td data-l="Scan">${d.fileId ? '<span class="yes">Yes</span>' : '<span class="no-">No</span>'}</td>
+        <td data-l="Remarks">${esc(d.remarks)}</td>
+        <td class="acts">${d.fileId ? `<button class="btn plain" data-open="${d.id}">Open scan</button>` : ''}<button class="btn plain" data-edit="${d.id}">Edit</button></td>
+      </tr>`; }).join('') + `</tbody></table>`;
+  }
+  $('#view').innerHTML = head + body;
+  $('#q').oninput = e => { S.q = e.target.value; const pos = e.target.selectionStart; renderRegister(); $('#status').textContent = S.status; const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
+}
+
+/* ---------- form 2043 ---------- */
+const TABS = [['Personal',1,12],['Contact and passport',13,17],['Parents and siblings',18,21],['Marriage and family',22,27],['NOK and bank',28,31],['Education',32,34],['Commission',35,35],['Training and ranks',36,39],['Record of service',40,40],['Awards and events',41,44],['CORO and certificate',45,47]];
+const ALL_ITEMS = FORM.flatMap(p => p.items.map(i => ({...i, part:p.part})));
+const tabItems = i => ALL_ITEMS.filter(it => Number(it.n) >= TABS[i][1] && Number(it.n) <= TABS[i][2]);
+function tabState(i){
+  const F = S.index.form, its = tabItems(i), keys = its.flatMap(x => (x.f || []).map(y => y[0]));
+  return {keys:keys.length, done:keys.filter(k => String(F.f[k] ?? '').trim()).length, rows:its.filter(x => x.t).reduce((a, x) => a + (F.t[x.t.key] || []).length, 0)};
+}
+function renderForm(){
+  const F = S.index.form, fp = formProgress(), ti = S.formTab || 0;
+  const field = ([k, label, long]) => `<div class="field ${long ? 'wide' : ''}"><label for="f_${k}">${esc(label)}</label>${long
+    ? `<textarea id="f_${k}" data-f="${k}">${esc(F.f[k])}</textarea>` : `<input type="text" id="f_${k}" data-f="${k}" value="${esc(F.f[k])}">`}</div>`;
+  const tbl = t => { const rows = F.t[t.key] || []; return `${t.title ? `<h3 class="small" style="margin:.4rem 0 0">${esc(t.title)}</h3>` : ''}
+    <div class="ftwrap"><table class="ft"><thead><tr>${t.cols.map(c => `<th>${esc(colLabel(c))}</th>`).join('')}<th></th></tr></thead><tbody>
+    ${rows.map((r, ri) => `<tr>${t.cols.map((c, ci) => `<td><textarea data-t="${t.key}" data-r="${ri}" data-c="${ci}" aria-label="${esc(colLabel(c))}, row ${ri + 1}">${esc(r[ci])}</textarea></td>`).join('')}<td><button class="rm" data-rm="${t.key}" data-r="${ri}" title="Remove this row" aria-label="Remove row ${ri + 1}">✕</button></td></tr>`).join('')}
+    </tbody></table></div>
+    <button class="btn" data-addrow="${t.key}" data-n="${t.cols.length}">Add row</button>${rows.length ? '' : ' <span class="muted small">No rows. The Word file prints N/A.</span>'}`; };
+  let lastPart = '';
+  const items = tabItems(ti).map(it => { const ph = it.part !== lastPart ? `<div class="parthead">${esc(it.part)}</div>` : ''; lastPart = it.part;
+    return `${ph}<div class="item"><div class="n">${it.n}.</div><div>
+      ${it.title ? `<h3 style="margin-bottom:.4rem">${esc(it.title)}</h3>` : ''}
+      ${it.special === 'fingers' ? '<p class="muted small">The Word file prints empty boxes for both hands. Give the prints in ink on the printed copy.</p>' : ''}
+      ${it.f ? `<div class="fgrid">${it.f.map(field).join('')}</div>` : ''}
+      ${it.t ? tbl(it.t) : ''}</div></div>`; }).join('');
+  $('#view').innerHTML = `
+    <div class="viewhead"><div class="ttl"><h2>BAFZ 2043</h2><span class="muted small">Particulars and record of service. ${fp.done} of ${fp.total} fields filled. </span><span id="status"></span></div>
+      <button class="btn primary" id="dlDocx">Download as Word</button><button class="btn" id="impBtn">Import data file</button><button class="btn" id="expBtn">Export data file</button></div>
+    <div class="subtabs" id="subtabs" role="tablist" aria-label="Sub-sections of BAFZ 2043">${TABS.map((t, i) => { const st = tabState(i);
+      const info = st.keys ? `${st.done}/${st.keys}` : st.rows ? `${st.rows} row${st.rows > 1 ? 's' : ''}` : '';
+      return `<button role="tab" aria-selected="${i === ti}" data-tab="${i}" class="${(st.keys ? st.done === st.keys : st.rows > 0) ? 'full' : ''}">${esc(t[0])}${info ? `<i>${info}</i>` : ''}</button>`; }).join('')}</div>
+    <div class="panel formpanel"><h3>${esc(TABS[ti][0])}</h3>${items}
+      <div class="actions">${ti > 0 ? `<button class="btn" data-tab="${ti - 1}">Back: ${esc(TABS[ti - 1][0])}</button>` : ''}${ti < TABS.length - 1 ? `<button class="btn primary" data-tab="${ti + 1}">Next: ${esc(TABS[ti + 1][0])}</button>` : ''}</div></div>`;
+  const sel = $('#subtabs [aria-selected=true]'), bar = $('#subtabs');
+  if (sel && bar.scrollWidth > bar.clientWidth) bar.scrollLeft = sel.offsetLeft - bar.clientWidth / 2 + sel.offsetWidth / 2;
+  $('#dlDocx').onclick = downloadDocx;
+  $('#expBtn').onclick = () => download(new Blob([JSON.stringify({app:APP_ID, form2043:S.index.form}, null, 1)], {type:'application/json'}), `2043-data_${(S.index.form.f.personalNo || 'form').replace(/[^\w-]+/g, '')}.json`);
+  $('#impBtn').onclick = () => { $('#importFile').value = ''; $('#importFile').click(); };
+}
+let formTimer;
+function formChanged(){ setStatus('Unsaved changes'); clearTimeout(formTimer); formTimer = setTimeout(saveIndex, 1500); }
+$('#view').addEventListener('input', e => {
+  const el = e.target, F = S.index?.form; if (!F) return;
+  if (el.dataset.f){ F.f[el.dataset.f] = el.value; formChanged(); }
+  else if (el.dataset.t){ F.t[el.dataset.t][Number(el.dataset.r)][Number(el.dataset.c)] = el.value; formChanged(); }
+});
+$('#importFile').onchange = async e => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const j = JSON.parse(await file.text()), data = j.form2043 || j;
+    if (!data || typeof data.f !== 'object' || typeof data.t !== 'object') throw new Error('This is not a BAFZ 2043 data file.');
+    if (!await ask('Replace everything now in BAFZ 2043 with the contents of this file?', 'Replace form data')) return;
+    const f = {}, t = {};
+    for (const k of FORM_KEYS) if (data.f[k] != null) f[k] = String(data.f[k]);
+    for (const it of FORM.flatMap(p => p.items)) if (it.t && Array.isArray(data.t[it.t.key])) t[it.t.key] = data.t[it.t.key].filter(Array.isArray).map(r => it.t.cols.map((c, i) => String(r[i] ?? '')));
+    S.index.form = {f, t}; render(); await saveIndex(); toast('Form data imported.');
+  } catch (err) { toast('Import failed: ' + err.message); }
+};
+async function photoBytes(){ if (!S.index.photo) return null; return unb64(S.index.photo.split(',')[1]); }
+async function downloadDocx(){
+  try {
+    busy('Building the Word file…');
+    clearTimeout(formTimer);
+    if (!window.docx) await loadScript(DOCX_LIB, 'Word');
+    const blob = await docx.Packer.toBlob(build2043(docx, S.index.form, await photoBytes()));
+    const f = S.index.form.f, rank = f.rankTemp && !/^n\/?a$/i.test(f.rankTemp) ? f.rankTemp : f.rankSubs;
+    download(blob, ['2043', f.personalNo, rank, titleCase(f.name)].filter(Boolean).join('_').replace(/[^\w.-]+/g, '_') + '.docx');
+    busy('');
+  } catch (err) { busy(''); toast('Could not build the Word file: ' + err.message); }
+}
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  const p = S.index.profile;
+  $('#view').innerHTML = `
+    <div class="viewhead"><div class="ttl"><h2>Settings</h2><span id="status"></span></div></div>
+    <div class="panel"><h3>Your photo and details</h3><p class="muted small">Shown at the top of every page. The photo also goes in the photo box of BAFZ 2043.</p>
+      <div class="photoRow"><div class="disc">${S.index.photo ? `<img src="${S.index.photo}" alt="">` : esc((p.name || '?').charAt(0).toUpperCase())}</div>
+        <div><button class="btn" id="phBtn">${S.index.photo ? 'Change photo' : 'Add photo'}</button> ${S.index.photo ? '<button class="btn plain danger" id="phRm">Remove photo</button>' : ''}</div></div>
+      <form id="pf">
+        <div class="row2"><div class="field"><label for="sBa">BA no</label><input type="text" id="sBa" value="${esc(p.ba)}" maxlength="20"></div>
+        <div class="field"><label for="sRank">Rank</label><input type="text" id="sRank" value="${esc(p.rank)}" maxlength="20"></div></div>
+        <div class="row2"><div class="field"><label for="sName">Name</label><input type="text" id="sName" value="${esc(p.name)}" maxlength="60"></div>
+        <div class="field"><label for="sUnit">Unit</label><input type="text" id="sUnit" value="${esc(p.unit)}" maxlength="60"></div></div>
+        <div class="row2"><div class="field"><label for="sYear">Year of commission</label><input type="number" id="sYear" value="${esc(p.startYear)}" min="1970" max="2100"></div>
+        <div class="field"><label for="sTerms">IPFT tests in a year, separated by commas</label><input type="text" id="sTerms" value="${esc((p.ipftTerms || DEFAULT_TERMS).join(', '))}"></div></div>
+        <button class="btn primary" type="submit">Save changes</button>
+      </form></div>
+    <div class="panel"><h3>Backup</h3>
+      <p class="muted small">The Drive folder is hidden, so this app is the only way in. Export a copy regularly and keep it on an offline drive. The export holds every scan in section folders, the register as a spreadsheet file and your BAFZ 2043 data.</p>
+      <div class="actions" style="margin-top:0"><button class="btn primary" id="exportBtn">Export everything</button><button class="btn" id="printBtn">Print register</button></div></div>
+    <div class="panel"><h3>Storage</h3>
+      <p>${S.demo ? 'Demo mode. Everything is held in this browser tab and is lost when you close it.' : `Hidden app folder in the Google Drive of ${esc(S.user.email)}.`} ${S.key ? 'Scans, the register and BAFZ 2043 are encrypted with your passphrase.' : 'Encryption is off.'}</p>
+      <button class="btn" id="outBtn">${S.demo ? 'Leave the demo' : 'Sign out'}</button></div>`;
+  $('#pf').onsubmit = async e => {
+    e.preventDefault();
+    const terms = $('#sTerms').value.split(',').map(s => s.trim()).filter(Boolean);
+    Object.assign(p, {ba:$('#sBa').value.trim(), rank:$('#sRank').value.trim(), name:$('#sName').value.trim(), unit:$('#sUnit').value.trim(), startYear:Number($('#sYear').value) || p.startYear, ipftTerms: terms.length ? terms : [...DEFAULT_TERMS]});
+    render(); await saveIndex(); toast('Changes saved.');
+  };
+  $('#phBtn').onclick = () => { $('#photoFile').value = ''; $('#photoFile').click(); };
+  if ($('#phRm')) $('#phRm').onclick = async () => { delete S.index.photo; render(); await saveIndex(); };
+  $('#exportBtn').onclick = exportAll;
+  $('#printBtn').onclick = () => { S.view = 'reg'; S.cat = 0; S.q = ''; render(); setTimeout(() => window.print(), 50); };
+  $('#outBtn').onclick = () => { try { if (drive.token) google.accounts.oauth2.revoke(drive.token, () => {}); } catch {} location.reload(); };
+}
+$('#photoFile').onchange = async e => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('That file is not an image.')); i.src = URL.createObjectURL(file); });
+    const side = Math.min(img.naturalWidth, img.naturalHeight), cv = document.createElement('canvas'); cv.width = cv.height = 480;
+    cv.getContext('2d').drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, 480, 480);
+    S.index.photo = cv.toDataURL('image/jpeg', .85); URL.revokeObjectURL(img.src);
+    render(); await saveIndex();
+  } catch (err) { toast(err.message); }
+};
+
+/* ---------- clicks inside the main view ---------- */
+$('#view').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const D = t.dataset, docs = S.index.docs;
+  if (D.edit) openDoc(docs.find(d => d.id === D.edit));
+  else if (D.open) viewDoc(docs.find(d => d.id === D.open));
+  else if (D.new != null){ const c = trackerCols()[Number(D.new)]; openDoc(null, {cat:c.cat, term:c.term, type:c.type, year:Number(D.year)}); }
+  else if (D.add) openDoc(null, {cat:Number(D.add)});
+  else if (D.tab != null){ S.formTab = Number(D.tab); render(); window.scrollTo(0, 0); }
+  else if (D.go){ S.view = 'reg'; S.cat = Number(D.go); render(); window.scrollTo(0, 0); }
+  else if (D.addrow){ (S.index.form.t[D.addrow] ||= []).push(Array(Number(D.n)).fill('')); renderForm(); formChanged(); const a = document.querySelectorAll(`[data-t="${D.addrow}"][data-c="0"]`); a[a.length - 1]?.focus(); }
+  else if (D.rm){ S.index.form.t[D.rm].splice(Number(D.r), 1); renderForm(); formChanged(); }
+});
+
+/* ---------- add and edit a document ---------- */
+function openDoc(doc, preset = {}){
+  S.editing = doc || null;
+  const d = doc || preset, s = secOf(d.cat || 1), terms = S.index.profile.ipftTerms || DEFAULT_TERMS;
+  S.docCat = s.id;
+  $('#docDlgTitle').textContent = (doc ? 'Edit ' : 'Add ') + s.one;
+  $('#docSave').textContent = 'Save ' + s.one;
+  $('#typeBox').hidden = !s.types;
+  if (s.types){ const list = d.type && !s.types.includes(d.type) ? [...s.types, d.type] : s.types; $('#fType').innerHTML = list.map(t => `<option>${esc(t)}</option>`).join(''); $('#fType').value = d.type || s.types[0]; }
+  $('#yearRow').hidden = !s.yearly; $('#termBox').hidden = !s.terms;
+  if (s.terms){ const list = d.term && !terms.includes(d.term) ? [...terms, d.term] : terms; $('#fTerm').innerHTML = list.map(t => `<option>${esc(t)}</option>`).join(''); $('#fTerm').value = d.term || terms[0]; }
+  $('#fYearLb').textContent = s.id === 10 ? 'Tax year (starting year)' : 'Year';
+  $('#fYear').value = d.year || (s.yearly ? new Date().getFullYear() : '');
+  $('#fRefLb').textContent = s.refLb || 'Ref or letter no';
+  $('#fTitle').placeholder = s.ph || '';
+  $('#fTitle').value = d.title || '';
+  $('#fRef').value = d.ref || '';
+  $('#fDate').value = d.date || '';
+  $('#fPhys').checked = !!d.physical;
+  $('#fRem').value = d.remarks || '';
+  $('#fFile').value = '';
+  $('#fFileNote').textContent = doc?.fileId ? `Current scan: ${doc.fileName}. Choose a file to replace it.` : (S.key ? 'The scan is encrypted before upload.' : '');
+  $('#docDelete').hidden = !doc;
+  $('#docDlg').showModal();
+}
+
+function fileNameFor(d, original){
+  const ext = (original.match(/\.([A-Za-z0-9]{1,5})$/)?.[1] || 'pdf').toLowerCase();
+  const slug = d.title.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'document';
+  return `${d.date || 'undated'}_${secOf(d.cat).short}_${slug}.${ext}`;
+}
+
+$('#docForm').onsubmit = async e => {
+  e.preventDefault();
+  const cat = S.docCat, s = secOf(cat), old = S.editing;
+  const type = s.types ? $('#fType').value : '', term = s.terms ? $('#fTerm').value : '';
+  const year = s.yearly && $('#fYear').value ? Number($('#fYear').value) : null;
+  const tracked = cat === 3 || cat === 4 || (cat === 10 && type === 'Tax return');
+  if (tracked && !(year >= 1970 && year <= 2100)) return toast('Enter the year.');
+  const auto = cat === 3 ? `IPFT DivO ${year} ${term}` : cat === 4 ? `RET DivO ${year}` : cat === 10 && type === 'Tax return' ? `Tax return ${taxYear(year)}` : (type && type !== 'Other' ? type : '');
+  const title = $('#fTitle').value.trim() || auto;
+  if (!title) return toast('Give the document a title.');
+  const file = $('#fFile').files[0];
+  if (file && file.size > MAX_FILE) return toast('That file is over 50 MB. Scan at a lower quality and try again.');
+  if (tracked){
+    const clash = S.index.docs.find(x => x !== old && x.cat === cat && Number(x.year) === year && (cat !== 3 || x.term === term) && (cat !== 10 || x.type === type));
+    if (clash) return toast(`“${clash.title}” is already in the register. Edit that entry instead.`);
+  }
+  const d = old ? {...old} : {id:crypto.randomUUID(), added:new Date().toISOString()};
+  Object.assign(d, {cat, title, ref:$('#fRef').value.trim(), date:$('#fDate').value, physical:$('#fPhys').checked, remarks:$('#fRem').value.trim()});
+  for (const [k, v] of [['type', type], ['term', term], ['year', year]]) if (v) d[k] = v; else delete d[k];
+  $('#docDlg').close();
+  try {
+    if (file){
+      busy('Uploading the scan…');
+      const name = fileNameFor(d, file.name), mime = file.type || 'application/octet-stream';
+      let blob = file;
+      if (S.key) blob = new Blob([await seal(S.key, await file.arrayBuffer())]);
+      const id = await S.be.create(S.key ? name + '.enc' : name, S.key ? 'application/octet-stream' : mime, blob, S.demo ? null : await folderFor(cat));
+      if (old?.fileId) await S.be.remove(old.fileId).catch(() => {});
+      Object.assign(d, {fileId:id, fileName:name, mime, size:file.size, enc:!!S.key});
+    }
+    if (old) S.index.docs[S.index.docs.indexOf(old)] = d; else S.index.docs.push(d);
+    busy(''); render(); await saveIndex();
+  } catch (err) { busy(''); toast('The document was not saved: ' + err.message); }
+};
+
+$('#docDelete').onclick = async () => {
+  const d = S.editing; if (!d) return;
+  $('#docDlg').close();
+  if (!await ask(`Delete “${d.title}” from the register${d.fileId ? ' and its scan from Drive' : ''}? This cannot be undone.`, 'Delete document')) return;
+  try {
+    busy('Deleting…');
+    if (d.fileId) await S.be.remove(d.fileId).catch(() => {});
+    S.index.docs = S.index.docs.filter(x => x !== d);
+    busy(''); render(); await saveIndex();
+  } catch (err) { busy(''); toast('Could not delete: ' + err.message); }
+};
+
+/* ---------- open a scan ---------- */
+async function fetchScan(d){
+  let buf = await S.be.read(d.fileId);
+  if (d.enc) buf = await unseal(S.key, buf);
+  return new Blob([buf], {type: d.mime || 'application/octet-stream'});
+}
+let viewerUrl = null;
+async function viewDoc(d){
+  busy('Opening the scan…');
+  try {
+    const blob = await fetchScan(d);
+    if (viewerUrl) URL.revokeObjectURL(viewerUrl);
+    viewerUrl = URL.createObjectURL(blob);
+    $('#viewerTitle').textContent = d.title;
+    $('#viewerBody').innerHTML = (d.mime || '').startsWith('image/')
+      ? `<img src="${viewerUrl}" alt="Scan of ${esc(d.title)}">`
+      : (d.mime === 'application/pdf' ? `<iframe src="${viewerUrl}" title="Scan of ${esc(d.title)}"></iframe>` : '<p class="muted">This file type cannot be shown here. Download it to open it.</p>');
+    const dl = $('#viewerDl'); dl.href = viewerUrl; dl.download = d.fileName;
+    $('#viewerOpen').href = viewerUrl;
+    busy(''); $('#viewer').showModal();
+  } catch (err) { busy(''); toast('Could not open the scan: ' + err.message); }
+}
+
+/* ---------- export everything ---------- */
+function registerCsv(){
+  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const rows = [['S/No','Section','Type','Document','Ref/Letter No','Date','Physical file','Scanned','File name','Remarks']];
+  [...S.index.docs].sort((a, b) => a.cat - b.cat || byDateDesc(a, b)).forEach((d, i) => { const c = secOf(d.cat);
+    rows.push([i + 1, `${pad2(c.id)} ${c.name}`, d.type || '', d.title, d.ref, d.date, d.physical ? 'Yes' : 'No', d.fileId ? 'Yes' : 'No', d.fileName || '', d.remarks]); });
+  return '\uFEFF' + rows.map(r => r.map(q).join(',')).join('\r\n');
+}
+async function exportAll(){
+  try {
+    busy('Preparing the export…');
+    if (!window.JSZip) await loadScript(ZIP_LIB, 'zip');
+    const zip = new JSZip(), p = S.index.profile;
+    const root = zip.folder(`SENANOTHI - ${[p.ba, p.name].filter(Boolean).join(' ')}`.replace(/[\\/:*?"<>|]/g, ''));
+    root.file('Register.csv', registerCsv());
+    root.file('Form-2043-data.json', JSON.stringify({app:APP_ID, form2043:S.index.form}, null, 1));
+    const withScan = S.index.docs.filter(d => d.fileId);
+    for (let i = 0; i < withScan.length; i++){
+      const d = withScan[i], c = secOf(d.cat);
+      busy(`Downloading scan ${i + 1} of ${withScan.length}…`);
+      root.folder(`${pad2(c.id)}_${c.name}`).file(d.fileName, await fetchScan(d));
+    }
+    busy('Building the zip…');
+    download(await zip.generateAsync({type:'blob'}), `senanothi_${new Date().toISOString().slice(0, 10)}.zip`);
+    busy(''); toast(S.key ? 'Exported. The files in the zip are decrypted, so store it on an encrypted drive.' : 'Exported.');
+  } catch (err) { busy(''); toast('Export failed: ' + err.message); }
+}
+
+gateSignIn();
+</script>
+</body>
+</html>
