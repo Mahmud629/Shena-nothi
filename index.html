@@ -9,6 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="সেনানথি">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
@@ -84,6 +87,8 @@ textarea{min-height:4.2rem;resize:vertical}
 .cover code{background:var(--soft);padding:.1rem .3rem;border-radius:4px;font-size:.875em}
 #setup{border:1px solid var(--line);border-radius:8px;padding:1rem;margin-top:1rem;animation:rise .3s ease-out}
 #demo{display:block;margin:.9rem auto 0}
+.credit{margin:2rem 0 0;padding-top:.8rem;border-top:1px solid var(--line);text-align:center;font-size:.8rem;color:var(--muted);letter-spacing:.02em}
+.cover .credit{margin:1.25rem 0 0}
 
 /* ---- header band ---- */
 #top{background:linear-gradient(120deg,var(--band),var(--band2));color:var(--band-ink);border-bottom:1px solid var(--band-line);display:flex;align-items:center;gap:1rem;padding:calc(.6rem + env(safe-area-inset-top,0px)) 1.25rem .6rem;position:sticky;top:0;z-index:20}
@@ -170,7 +175,7 @@ button,a,summary{-webkit-tap-highlight-color:transparent;touch-action:manipulati
 .trk > b{font:600 1.05rem var(--cond);font-variant-numeric:tabular-nums;white-space:nowrap;overflow-wrap:normal}
 .cell{border:1px solid var(--line);background:none;border-radius:6px;padding:.28rem .5rem;cursor:pointer;font-size:.85rem;display:flex;gap:.4rem;align-items:center;text-align:left;min-width:0;font-weight:600;color:var(--st)}
 .cell::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:var(--st);flex:none}
-.cell.ok{--st:var(--ok)} .cell.warn{--st:var(--warn)} .cell.bad{--st:var(--bad);border-style:dashed}
+.cell.ok{--st:var(--ok)} .cell.warn{--st:var(--warn)} .cell.bad{--st:var(--bad);border-style:dashed} .cell.pend{--st:var(--muted);border-style:dashed;font-weight:500}
 .cell:hover{border-color:var(--st)}
 .list{list-style:none;margin:0;padding:0}
 .list li{display:flex;gap:.6rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--line)}
@@ -219,6 +224,7 @@ table.reg{width:100%;border-collapse:separate;border-spacing:0;background:var(--
 .item h3{color:var(--ink);text-transform:none;letter-spacing:0;font:600 1rem/1.35 Barlow,"Hind Siliguri",sans-serif}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(15rem,100%),1fr));gap:.1rem .8rem}
 .fgrid .wide{grid-column:1/-1}
+.fgrid input:placeholder-shown,.fgrid textarea:placeholder-shown{background:color-mix(in srgb, var(--bad) 10%, var(--card2));border-color:color-mix(in srgb, var(--bad) 45%, var(--line))}
 .fgrid .field{display:flex;flex-direction:column;justify-content:flex-end}
 .ftwrap{overflow-x:auto;margin:.3rem 0 .6rem}
 table.ft{border-collapse:collapse;width:100%;min-width:38rem;overflow-wrap:break-word}
@@ -241,14 +247,14 @@ dialog h2{margin-bottom:1rem}
 .photoRow .disc{width:4.2rem;height:4.2rem;font-size:1.5rem}
 
 @media (max-width:900px){
-  #top{padding:.5rem .9rem;gap:.7rem}
-  #top{flex-wrap:wrap;gap:.4rem .6rem}
-  .who{flex:1 1 calc(100% - 10rem);margin:0;padding-left:.7rem}
-  #status{margin-right:auto}
-  .who .disc{width:2rem;height:2rem;font-size:.85rem}
-  #hName{font-size:1rem} #hSub{font-size:.75rem}
-  .clock{border:0;padding:0;display:flex;gap:.45rem;align-items:baseline} #cTime{font-size:1.05rem} #cDate{font-size:.75rem}
-  .brand b{font-size:1.2rem} .brand .logo{width:2.2rem;height:2.2rem}
+  #top{padding:calc(.5rem + env(safe-area-inset-top,0px)) .75rem .5rem;gap:.55rem;flex-wrap:nowrap}
+  .brand > span + span{display:none} .brand .logo{width:2.2rem;height:2.2rem}
+  .who{flex:1 1 auto;margin:0;padding-left:.6rem}
+  .who .disc{display:none}
+  #hName{font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} #hSub{font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .clock{border:0;padding:0;flex:none} #cTime{font-size:1.02rem;white-space:nowrap;overflow-wrap:normal} #cDate{display:none}
+  #hName{font-size:.92rem}
+  #themeBtn,#outTop{width:2.1rem;height:2.1rem;min-height:0;flex:none}
   #demoStrip{padding:.4rem .9rem}
   #shell{display:block}
   #rail{display:none}
@@ -297,7 +303,10 @@ dialog h2{margin-bottom:1rem}
   .sgo{padding-right:2.4rem}
   .panel{padding:.85rem .85rem}
   dialog{padding:1.1rem;width:calc(100% - 1rem);max-height:calc(100% - 1rem)}
-  #status span{max-width:5.5rem;overflow:hidden;text-overflow:ellipsis}
+  #status span{display:none}
+  .reg .fn,.reg td.scy{display:none}
+  .reg td.acts .btn{min-height:2rem;padding:.15rem .4rem}
+  .credit{margin-top:1.4rem}
   .reg tr{display:flex;flex-wrap:wrap;gap:.05rem .9rem;align-items:baseline}
   .reg td:nth-child(2),.reg td[data-l="Remarks"],.reg td.acts{flex:1 1 100%}
 }
@@ -351,7 +360,7 @@ dialog[open]{animation:pop .2s ease-out} dialog[open]::backdrop{animation:fade .
   <div id="demoStrip" hidden><b>DEMO</b>Sample data. Nothing is saved, so do not add real documents here.</div>
   <div id="shell">
     <nav id="rail" aria-label="Sections"></nav>
-    <main id="main"><div id="view"></div></main>
+    <main id="main"><div id="view"></div><footer class="credit">Prepared by: BA 11108 Capt Asif Mahmud, Sigs</footer></main>
   </div>
   <nav id="tabbar" aria-label="Main"></nav>
 </div>
@@ -370,7 +379,6 @@ dialog[open]{animation:pop .2s ease-out} dialog[open]::backdrop{animation:fade .
       <div class="field"><label for="fDate">Date of document</label><input type="date" id="fDate"></div>
     </div>
     <div class="field"><label for="fFile">Scan (PDF or photo)</label><input type="file" id="fFile" accept="application/pdf,image/*"><div class="small muted" id="fFileNote"></div></div>
-    <div class="field"><label class="check"><input type="checkbox" id="fPhys"> The paper copy is in my physical file</label></div>
     <div class="field"><label for="fRem">Remarks</label><textarea id="fRem" maxlength="400"></textarea></div>
     <div class="actions">
       <button class="btn primary" type="submit" id="docSave">Save</button>
@@ -425,6 +433,7 @@ const SECS = [
   {id:3, one:'IPFT DivO', refLb:'DivO no', name:'IPFT DivO', short:'IPFT', color:'#059669', yearly:true, terms:true, ph:'Leave blank to name it automatically'},
   {id:4, one:'RET DivO', refLb:'DivO no', name:'RET DivO', short:'RET', color:'#D97706', yearly:true, ph:'Leave blank to name it automatically'},
   {id:5, one:'course document', name:'Courses', short:'Course', color:'#DB2777', types:['Course report','Course certificate'], ph:'OBC-47'},
+  {id:12, one:'exam result', refLb:'Auth or letter no', name:'Exam results', short:'Exam', color:'#0E7490', types:['Promotion exam','Advanced map reading','Standard map reading','Other exam'], ph:'Promotion exam Lt to Capt, Part I'},
   {id:6, one:'CORO', refLb:'CORO no', name:'CORO', short:'CORO', color:'#0891B2', ph:'Promotion to Capt'},
   {id:7, one:'BAO', refLb:'BAO no', name:'BAO', short:'BAO', color:'#4338CA', ph:'Subject of the Bangladesh Army Order'},
   {id:8, one:'posting order', refLb:'PO or letter no', name:'Posting orders', short:'PO', color:'#EA580C', ph:'Posting to 5 Sig Bn'},
@@ -864,7 +873,8 @@ function gateSignIn(){
       <div class="field"><label for="cid">OAuth client ID</label><input type="text" id="cid" placeholder="1234567890-abc.apps.googleusercontent.com"></div>
       <button class="btn primary" id="cidSave">Save and login</button>
     </div>
-    <button class="btn plain" id="demo">Look around without logging in</button>`;
+    <button class="btn plain" id="demo">Look around without logging in</button>
+    <p class="credit">Prepared by: BA 11108 Capt Asif Mahmud, Sigs</p>`;
   const login = async () => { try { await requestToken(''); await enter(drive, false); } catch (e) { toast(e.message); } };
   $('#signin').onclick = () => { if (!clientId()){ $('#setup').hidden = false; $('#cid').focus(); return; } login(); };
   $('#cidSave').onclick = () => {
@@ -1010,7 +1020,7 @@ function render(){
   $('#rail').innerHTML =
     nv('dash', null, IC.home, 'Home') + nv('form', null, IC.form, 'BAFZ 2043') + nv('reg', 0, IC.docs, 'All documents', docs.length) +
     '<div class="rail-sep"></div>' +
-    SECS.map(s => nv('reg', s.id, pad2(s.id), s.name, docs.filter(d => d.cat === s.id).length)).join('') +
+    SECS.map((s, i) => nv('reg', s.id, pad2(i + 1), s.name, docs.filter(d => d.cat === s.id).length)).join('') +
     '<div class="rail-sep"></div>' + nv('settings', null, IC.gear, 'Settings');
   $('#tabbar').innerHTML = [['dash', IC.home, 'Home'], ['form', IC.form, 'BAFZ 2043'], ['reg', IC.docs, 'Documents'], ['settings', IC.gear, 'Settings']]
     .map(([v, ic, lb]) => `<button data-view="${v}" data-cat="${v === 'reg' ? 0 : ''}" aria-current="${S.view === v}">${ic}${lb}</button>`).join('');
@@ -1032,6 +1042,13 @@ function trackerCols(){
   const terms = S.index.profile.ipftTerms?.length ? S.index.profile.ipftTerms : DEFAULT_TERMS;
   return [...terms.map(t => ({label:'IPFT ' + t, cat:3, term:t})), {label:'RET', cat:4}];
 }
+function trackerPending(c, y){
+  const d = new Date(), Y = d.getFullYear(), M = d.getMonth();
+  if (c.cat !== 3 || y !== Y) return false;
+  if (c.term === '1') return M <= 5;   // IPFT 1: January to June
+  if (c.term === '2') return true;     // IPFT 2: July to December
+  return false;
+}
 const trackerHit = (c, y) => S.index.docs.find(d => d.cat === c.cat && Number(d.year) === y && (!c.term || d.term === c.term) && (!c.type || d.type === c.type));
 function formProgress(){ const f = S.index.form.f; const done = FORM_KEYS.filter(k => String(f[k] ?? '').trim()).length; return {done, total:FORM_KEYS.length, pct:Math.round(100 * done / FORM_KEYS.length)}; }
 
@@ -1039,13 +1056,14 @@ function renderDash(){
   const p = S.index.profile, docs = S.index.docs, now = new Date().getFullYear();
   const cols = trackerCols(), start = Math.min(Number(p.startYear) || now, now), years = now - start + 1;
   let missing = 0, rows = `<div class="trk" style="--n:${cols.length}"><span class="h">Year</span>${cols.map(c => `<span class="h">${esc(c.label)}</span>`).join('')}`;
-  const missBy = {};
+  const missBy = {}, pendBy = {};
   for (let y = now; y >= start; y--){
     rows += `<b>${y}</b>`;
     cols.forEach((c, i) => {
       const d = trackerHit(c, y), al = `${c.label} ${y}: `;
       if (d && d.fileId) rows += `<button class="cell ok" data-edit="${d.id}" aria-label="${esc(al)}scanned">Scanned</button>`;
       else if (d) rows += `<button class="cell warn" data-edit="${d.id}" aria-label="${esc(al)}no scan">No scan</button>`;
+      else if (trackerPending(c, y)){ pendBy[c.cat] = (pendBy[c.cat] || 0) + 1; rows += `<button class="cell pend" data-new="${i}" data-year="${y}" aria-label="${esc(al)}pending, add it">Pending</button>`; }
       else { missing++; missBy[c.cat] = (missBy[c.cat] || 0) + 1; rows += `<button class="cell bad" data-new="${i}" data-year="${y}" aria-label="${esc(al)}missing, add it">Missing</button>`; }
     });
   }
@@ -1053,11 +1071,11 @@ function renderDash(){
   const stored = docs.filter(d => d.fileId).length, noScan = docs.filter(d => !d.fileId).sort(byDateDesc), fp = formProgress();
   const total = docs.length + missing, pct = total ? Math.round(100 * stored / total) : 0, C = 2 * Math.PI * 42;
   const seg = (s, i) => {
-    const ds = docs.filter(d => d.cat === s.id), ns = ds.filter(d => !d.fileId).length, n = cols.filter(c => c.cat === s.id).length, miss = missBy[s.id] || 0;
+    const ds = docs.filter(d => d.cat === s.id), ns = ds.filter(d => !d.fileId).length, n = cols.filter(c => c.cat === s.id).length, miss = missBy[s.id] || 0, pend = pendBy[s.id] || 0;
     const state = miss ? 'bad' : ns ? 'warn' : ds.length ? 'ok' : '';
-    const note = miss ? `${miss} missing` : ns ? `${ns} without scan` : ds.length ? 'All in order' : 'Nothing filed';
+    const note = miss ? `${miss} missing` : ns ? `${ns} without scan` : pend ? `${pend} pending` : ds.length ? 'All in order' : 'Nothing filed';
     return `<div class="seg ${state}" style="--i:${i}"><button class="sgo" data-go="${s.id}" aria-label="Open ${esc(s.name)}">
-      <span class="nm">${esc(s.name)}</span><span class="ln"><span class="ct">${n ? `${n * years - miss}<small>/${n * years}</small>` : ds.length}</span><span class="nt">${note}</span></span></button>
+      <span class="nm">${esc(s.name)}</span><span class="ln"><span class="ct">${n ? `${n * years - miss - pend}<small>/${n * years - pend}</small>` : ds.length}</span><span class="nt">${note}</span></span></button>
       <button class="sadd" data-add="${s.id}" aria-label="Add ${esc(s.one)}" title="Add ${esc(s.one)}">+</button></div>`;
   };
   const li = d => `<li><span class="dot"></span><span class="t">${esc(d.title)} <span class="muted small">${esc(secOf(d.cat).name)}${d.date ? ', ' + fmtDate(d.date) : ''}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`;
@@ -1089,14 +1107,13 @@ function renderRegister(){
   if (!rows.length){
     body = `<div class="empty"><p>${q ? 'Nothing here matches your search.' : c ? `No ${esc(c.one)} filed yet. Add the first one, with or without a scan.` : 'Nothing filed yet. Choose a section and add its first document.'}</p>${!q && c ? `<button class="btn primary" data-add="${c.id}">Add ${esc(c.one)}</button>` : ''}</div>`;
   } else {
-    body = `<table class="reg"><thead><tr><th>S/No</th><th>Document</th><th>Ref or letter no</th><th>Date</th><th>Paper copy</th><th>Scan</th><th>Remarks</th><th></th></tr></thead><tbody>` +
+    body = `<table class="reg"><thead><tr><th>S/No</th><th>Document</th><th>Ref or letter no</th><th>Date</th><th>Scan</th><th>Remarks</th><th></th></tr></thead><tbody>` +
       rows.map((d, i) => { const k = secOf(d.cat); const tag = c ? d.type : k.name; return `<tr style="--i:${i}">
         <td class="num">${i + 1}</td>
         <td>${tag ? `<span class="badge">${esc(tag)}</span>` : ''}<strong>${esc(d.title)}</strong>${d.fileName ? `<span class="fn">${esc(d.fileName)}</span>` : ''}</td>
         <td data-l="Ref">${esc(d.ref)}</td>
         <td data-l="Date" style="white-space:nowrap">${fmtDate(d.date)}</td>
-        <td data-l="Paper copy">${d.physical ? '<span class="yes">Yes</span>' : '<span class="no-">No</span>'}</td>
-        <td data-l="Scan">${d.fileId ? '<span class="yes">Yes</span>' : '<span class="no-">No</span>'}</td>
+        <td data-l="Scan" class="${d.fileId ? 'scy' : ''}">${d.fileId ? '<span class="yes">Yes</span>' : '<span class="no-">No</span>'}</td>
         <td data-l="Remarks">${esc(d.remarks)}</td>
         <td class="acts">${d.fileId ? `<button class="btn plain" data-open="${d.id}">Open scan</button>` : ''}<button class="btn plain" data-edit="${d.id}">Edit</button></td>
       </tr>`; }).join('') + `</tbody></table>`;
@@ -1116,7 +1133,7 @@ function tabState(i){
 function renderForm(){
   const F = S.index.form, fp = formProgress(), ti = S.formTab || 0;
   const field = ([k, label, long]) => `<div class="field ${long ? 'wide' : ''}"><label for="f_${k}">${esc(label)}</label>${long
-    ? `<textarea id="f_${k}" data-f="${k}">${esc(F.f[k])}</textarea>` : `<input type="text" id="f_${k}" data-f="${k}" value="${esc(F.f[k])}">`}</div>`;
+    ? `<textarea id="f_${k}" data-f="${k}" placeholder=" ">${esc(F.f[k])}</textarea>` : `<input type="text" id="f_${k}" data-f="${k}" placeholder=" " value="${esc(F.f[k])}">`}</div>`;
   const tbl = t => { const rows = F.t[t.key] || []; return `${t.title ? `<h3 class="small" style="margin:.4rem 0 0">${esc(t.title)}</h3>` : ''}
     <div class="ftwrap"><table class="ft"><thead><tr>${t.cols.map(c => `<th>${esc(colLabel(c))}</th>`).join('')}<th></th></tr></thead><tbody>
     ${rows.map((r, ri) => `<tr>${t.cols.map((c, ci) => `<td data-l="${esc(colLabel(c))}"><textarea data-t="${t.key}" data-r="${ri}" data-c="${ci}" aria-label="${esc(colLabel(c))}, row ${ri + 1}">${esc(r[ci])}</textarea></td>`).join('')}<td><button class="rm" data-rm="${t.key}" data-r="${ri}" title="Remove this row" aria-label="Remove row ${ri + 1}">✕</button></td></tr>`).join('')}
@@ -1136,8 +1153,9 @@ function renderForm(){
       const info = st.keys ? `${st.done}/${st.keys}` : st.rows ? String(st.rows) : '';
       return `<button aria-pressed="${i === ti}" data-tab="${i}" title="${esc(t[0])}" class="${(st.keys ? st.done === st.keys : st.rows > 0) ? 'full' : ''}"><span><span class="fu">${esc(t[0])}</span><span class="sh">${esc(t[3])}</span></span>${info ? `<i>${info}</i>` : ''}</button>`; }).join('')}</nav>
     <div class="panel formpanel"><h3>${esc(TABS[ti][0])}</h3>${items}
-      <div class="actions">${ti > 0 ? `<button class="btn" data-tab="${ti - 1}">Back: ${esc(TABS[ti - 1][0])}</button>` : ''}${ti < TABS.length - 1 ? `<button class="btn primary" data-tab="${ti + 1}">Next: ${esc(TABS[ti + 1][0])}</button>` : ''}</div></div></div>`;
+      <div class="actions">${ti > 0 ? `<button class="btn" data-tab="${ti - 1}">Back: ${esc(TABS[ti - 1][0])}</button>` : ''}${ti < TABS.length - 1 ? `<button class="btn primary" data-tab="${ti + 1}">Next: ${esc(TABS[ti + 1][0])}</button>` : '<button class="btn primary" id="saveForm">Save BAFZ 2043</button>'}</div></div></div>`;
   $('#dlDocx').onclick = downloadDocx;
+  if ($('#saveForm')) $('#saveForm').onclick = async () => { clearTimeout(formTimer); formTimer = null; await saveIndex(); toast(S.status === 'Not saved' ? 'BAFZ 2043 could not be saved. Check your connection and try again.' : 'BAFZ 2043 saved.'); };
   $('#expBtn').onclick = () => download(new Blob([JSON.stringify({app:APP_ID, form2043:S.index.form}, null, 1)], {type:'application/json'}), `2043-data_${(S.index.form.f.personalNo || 'form').replace(/[^\w-]+/g, '')}.json`);
   $('#impBtn').onclick = () => { $('#importFile').value = ''; $('#importFile').click(); };
 }
@@ -1253,7 +1271,6 @@ function openDoc(doc, preset = {}){
   $('#fTitle').value = d.title || '';
   $('#fRef').value = d.ref || '';
   $('#fDate').value = d.date || '';
-  $('#fPhys').checked = !!d.physical;
   $('#fRem').value = d.remarks || '';
   $('#fFile').value = '';
   $('#fFileNote').textContent = doc?.fileId ? `Current scan: ${doc.fileName}. Choose a file to replace it.` : (S.key ? 'The scan is encrypted before upload.' : '');
@@ -1284,7 +1301,7 @@ $('#docForm').onsubmit = async e => {
     if (clash) return toast(`“${clash.title}” is already in the register. Edit that entry instead.`);
   }
   const d = old ? {...old} : {id:crypto.randomUUID(), added:new Date().toISOString()};
-  Object.assign(d, {cat, title, ref:$('#fRef').value.trim(), date:$('#fDate').value, physical:$('#fPhys').checked, remarks:$('#fRem').value.trim()});
+  Object.assign(d, {cat, title, ref:$('#fRef').value.trim(), date:$('#fDate').value, remarks:$('#fRem').value.trim()});
   for (const [k, v] of [['type', type], ['term', term], ['year', year]]) if (v) d[k] = v; else delete d[k];
   $('#docDlg').close();
   try {
@@ -1340,9 +1357,9 @@ async function viewDoc(d){
 /* ---------- export everything ---------- */
 function registerCsv(){
   const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-  const rows = [['S/No','Section','Type','Document','Ref/Letter No','Date','Physical file','Scanned','File name','Remarks']];
+  const rows = [['S/No','Section','Type','Document','Ref/Letter No','Date','Scanned','File name','Remarks']];
   [...S.index.docs].sort((a, b) => a.cat - b.cat || byDateDesc(a, b)).forEach((d, i) => { const c = secOf(d.cat);
-    rows.push([i + 1, `${pad2(c.id)} ${c.name}`, d.type || '', d.title, d.ref, d.date, d.physical ? 'Yes' : 'No', d.fileId ? 'Yes' : 'No', d.fileName || '', d.remarks]); });
+    rows.push([i + 1, `${pad2(c.id)} ${c.name}`, d.type || '', d.title, d.ref, d.date, d.fileId ? 'Yes' : 'No', d.fileName || '', d.remarks]); });
   return '\uFEFF' + rows.map(r => r.map(q).join(',')).join('\r\n');
 }
 async function exportAll(){
@@ -1365,6 +1382,7 @@ async function exportAll(){
   } catch (err) { busy(''); toast('Export failed: ' + err.message); }
 }
 
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
 gateSignIn();
 </script>
 </body>
