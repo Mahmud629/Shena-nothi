@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.application'
+}
+
+// The signing key comes from GitHub secrets (see PUBLISHING.md). Without it, a temporary debug key is used.
+def ksPath = System.getenv('KEYSTORE_PATH')
+def runNo = (System.getenv('GITHUB_RUN_NUMBER') ?: '1').toInteger()
+
+android {
+    namespace 'io.github.mahmud629.senanothi'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'io.github.mahmud629.senanothi'
+        minSdk 21
+        targetSdk 35
+        versionCode runNo
+        versionName "1.0.${runNo}"
+    }
+
+    signingConfigs {
+        if (ksPath) {
+            release {
+                storeFile file(ksPath)
+                storePassword System.getenv('KEYSTORE_PASSWORD')
+                keyAlias System.getenv('KEY_ALIAS')
+                keyPassword System.getenv('KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksPath ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // Trusted Web Activity: opens the web app full screen in Chrome, so Google sign-in works.
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}
