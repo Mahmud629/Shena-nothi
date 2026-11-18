@@ -49,6 +49,12 @@ All data stays in a **hidden folder in the user's own Google Drive**. There is n
 
 **Try it first:** press *Look around without logging in* on the login screen to open a demo with sample data. Nothing is saved in the demo.
 
+## Android app
+
+Download the latest **senanothi.apk** from the [Releases page](https://github.com/Mahmud629/Shena-nothi/releases/latest) and open it on an Android phone. Allow the browser or Files app to install unknown apps if asked. The app needs Google Chrome on the phone.
+
+The APK is a Trusted Web Activity: it opens the live web app full screen inside Chrome, so it always runs the latest version and Google sign-in works as on the web. It is built automatically by GitHub Actions; see [PUBLISHING.md](PUBLISHING.md).
+
 ## Privacy and security
 
 - The app requests only the `drive.appdata` permission. It can read and write **its own hidden folder** and nothing else in the user's Drive.
@@ -65,6 +71,10 @@ All data stays in a **hidden folder in the user's own Google Drive**. There is n
 | `manifest.webmanifest` | Lets the app install on a phone's home screen |
 | `sw.js` | Service worker that caches the app's own files |
 | `icon-512.png`, `icon-192.png`, `apple-touch-icon.png` | App icons |
+| `android/` | Android app project (Trusted Web Activity) |
+| `.github/workflows/build-apk.yml` | Builds the APK on GitHub and publishes it as a release |
+| `user-site/` | Files for the `mahmud629.github.io` repository that let the Android app open full screen |
+| `PUBLISHING.md` | Step-by-step publishing guide |
 
 ## Running your own copy
 
