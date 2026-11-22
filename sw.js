@@ -1,7 +1,7 @@
 // সেনানথি: keeps the app's own files so it opens fast and installs as an app.
 // Only this site's files are cached; Google sign-in and Drive always go to the network.
-const CACHE = 'senanothi-v1';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
+const CACHE = 'senanothi-v2';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192-v2.png', './icon-512-v2.png', './apple-touch-icon-v2.png'];
 self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).catch(() => {})); });
 self.addEventListener('activate', (e) => e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', (e) => {
