@@ -180,6 +180,8 @@ button,a,summary{-webkit-tap-highlight-color:transparent;touch-action:manipulati
 .cell::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:var(--st);flex:none}
 .cell.ok{--st:var(--ok)} .cell.warn{--st:var(--warn)} .cell.bad{--st:var(--bad);border-style:dashed} .cell.pend{--st:var(--muted);border-style:dashed;font-weight:500}
 .cell:hover{border-color:var(--st)}
+.cell.na{--st:transparent;border-style:dotted;color:var(--muted);opacity:.5;cursor:default;justify-content:center}
+.cell.na::before{display:none}
 .list{list-style:none;margin:0;padding:0}
 .list li{display:flex;gap:.6rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--line)}
 .list li:first-child{border-top:0}
@@ -1206,6 +1208,16 @@ function trackerCols(){
   const terms = S.index.profile.ipftTerms?.length ? S.index.profile.ipftTerms : DEFAULT_TERMS;
   return [...terms.map(t => ({label:'IPFT ' + t, cat:3, term:t})), {label:'RET', cat:4}];
 }
+function trackStart(){
+  const p = S.index.profile, now = new Date().getFullYear(), base = Math.min(Number(p.startYear) || now, now), t = p.track || {};
+  const terms = p.ipftTerms?.length ? p.ipftTerms : DEFAULT_TERMS;
+  return {ipftYear: Math.min(Number(t.ipftYear) || base, now), ipftTerm: terms.includes(t.ipftTerm) ? t.ipftTerm : terms[0], retYear: Math.min(Number(t.retYear) || base, now), terms};
+}
+function trackerCounts(c, y, ts){
+  if (c.cat === 3){ if (y < ts.ipftYear) return false; if (y === ts.ipftYear) return ts.terms.indexOf(c.term) >= ts.terms.indexOf(ts.ipftTerm); return true; }
+  if (c.cat === 4) return y >= ts.retYear;
+  return true;
+}
 function trackerPending(c, y){
   const d = new Date(), Y = d.getFullYear(), M = d.getMonth();
   if (c.cat !== 3 || y !== Y) return false;
@@ -1218,13 +1230,16 @@ function formProgress(){ const f = S.index.form.f; const done = FORM_KEYS.filter
 
 function renderDash(){
   const p = S.index.profile, docs = S.index.docs, now = new Date().getFullYear();
-  const cols = trackerCols(), start = Math.min(Number(p.startYear) || now, now), years = now - start + 1;
+  const cols = trackerCols(), ts = trackStart(), start = Math.min(ts.ipftYear, ts.retYear);
   let missing = 0, rows = `<div class="trk" style="--n:${cols.length}"><span class="h">Year</span>${cols.map(c => `<span class="h">${esc(c.label)}</span>`).join('')}`;
-  const missBy = {}, pendBy = {};
+  const missBy = {}, pendBy = {}, expBy = {};
   for (let y = now; y >= start; y--){
     rows += `<b>${y}</b>`;
     cols.forEach((c, i) => {
-      const d = trackerHit(c, y), al = `${c.label} ${y}: `;
+      const d = trackerHit(c, y), al = `${c.label} ${y}: `, counts = trackerCounts(c, y, ts);
+      if (counts) expBy[c.cat] = (expBy[c.cat] || 0) + 1;
+      if (!counts && !d){ rows += `<span class="cell na" aria-label="${esc(al)}not counted">–</span>`; return; }
+      if (!counts) expBy[c.cat] = (expBy[c.cat] || 0) + 1;
       if (d && d.fileId) rows += `<button class="cell ok" data-edit="${d.id}" aria-label="${esc(al)}scanned">Scanned</button>`;
       else if (d) rows += `<button class="cell warn" data-edit="${d.id}" aria-label="${esc(al)}no scan">No scan</button>`;
       else if (trackerPending(c, y)){ pendBy[c.cat] = (pendBy[c.cat] || 0) + 1; rows += `<button class="cell pend" data-new="${i}" data-year="${y}" aria-label="${esc(al)}pending, add it">Pending</button>`; }
@@ -1235,11 +1250,11 @@ function renderDash(){
   const stored = docs.filter(d => d.fileId).length, noScan = docs.filter(d => !d.fileId).sort(byDateDesc), fp = formProgress();
   const total = docs.length + missing, pct = total ? Math.round(100 * stored / total) : 0, C = 2 * Math.PI * 42;
   const seg = (s, i) => {
-    const ds = docs.filter(d => d.cat === s.id), ns = ds.filter(d => !d.fileId).length, n = cols.filter(c => c.cat === s.id).length, miss = missBy[s.id] || 0, pend = pendBy[s.id] || 0;
+    const ds = docs.filter(d => d.cat === s.id), ns = ds.filter(d => !d.fileId).length, n = cols.filter(c => c.cat === s.id).length, exp = expBy[s.id] || 0, miss = missBy[s.id] || 0, pend = pendBy[s.id] || 0;
     const state = miss ? 'bad' : ns ? 'warn' : ds.length ? 'ok' : '';
     const note = miss ? `${miss} missing` : ns ? `${ns} without scan` : pend ? `${pend} pending` : ds.length ? 'All in order' : 'Nothing filed';
     return `<div class="seg ${state}" style="--i:${i}"><button class="sgo" data-go="${s.id}" aria-label="Open ${esc(s.name)}">
-      <span class="nm">${esc(s.name)}</span><span class="ln"><span class="ct">${n ? `${n * years - miss - pend}<small>/${n * years - pend}</small>` : ds.length}</span><span class="nt">${note}</span></span></button>
+      <span class="nm">${esc(s.name)}</span><span class="ln"><span class="ct">${n ? `${exp - miss - pend}<small>/${exp - pend}</small>` : ds.length}</span><span class="nt">${note}</span></span></button>
       <button class="sadd" data-add="${s.id}" aria-label="Add ${esc(s.one)}" title="Add ${esc(s.one)}">+</button></div>`;
   };
   const li = d => `<li><span class="dot"></span><span class="t">${esc(d.title)} <span class="muted small">${esc(secOf(d.cat).name)}${d.date ? ', ' + fmtDate(d.date) : ''}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`;
@@ -1374,6 +1389,13 @@ function renderSettings(){
         <div class="field"><label for="sTerms">IPFT tests in a year, separated by commas</label><input type="text" id="sTerms" value="${esc((p.ipftTerms || DEFAULT_TERMS).join(', '))}"></div></div>
         <button class="btn primary" type="submit">Save changes</button>
       </form></div>
+    <div class="panel"><h3>IPFT and RET tracking</h3>
+      <p class="muted small">Choose when your IPFT and RET results start being counted. Years before this show a dash and are not counted as missing.</p>
+      ${(() => { const ts = trackStart(); return `<form id="tf">
+        <div class="row2"><div class="field"><label for="tIy">IPFT counted from (year)</label><input type="number" id="tIy" value="${ts.ipftYear}" min="1970" max="${new Date().getFullYear()}"></div>
+        <div class="field"><label for="tIt">First IPFT counted that year</label><select id="tIt">${ts.terms.map(t => `<option value="${esc(t)}" ${t === ts.ipftTerm ? 'selected' : ''}>IPFT ${esc(t)}</option>`).join('')}</select></div></div>
+        <div class="row2"><div class="field"><label for="tRy">RET counted from (year)</label><input type="number" id="tRy" value="${ts.retYear}" min="1970" max="${new Date().getFullYear()}"></div></div>
+        <button class="btn primary" type="submit">Save tracking</button></form>`; })()}</div>
     <div class="panel"><h3>Backup</h3>
       <p class="muted small">The Drive folder is hidden, so this app is the only way in. Export a copy regularly and keep it on an offline drive. The export holds every scan in section folders, the register as a spreadsheet file and your BAFZ 2043 data.</p>
       <div class="actions" style="margin-top:0"><button class="btn primary" id="exportBtn">Export everything</button><button class="btn" id="printBtn">Print register</button></div></div>
@@ -1395,6 +1417,13 @@ function renderSettings(){
   $('#exportBtn').onclick = exportAll;
   $('#printBtn').onclick = () => { S.view = 'reg'; S.cat = 0; S.q = ''; render(); setTimeout(() => window.print(), 50); };
   $('#outBtn').onclick = signOut;
+  $('#tf').onsubmit = async e => {
+    e.preventDefault();
+    const now = new Date().getFullYear(), iy = Number($('#tIy').value), ry = Number($('#tRy').value);
+    if (!(iy >= 1970 && iy <= now) || !(ry >= 1970 && ry <= now)) return toast(`Enter years between 1970 and ${now}.`);
+    p.track = {ipftYear:iy, ipftTerm:$('#tIt').value, retYear:ry};
+    await saveIndex(); toast('Tracking saved. Home now counts from these dates.');
+  };
   if ($('#cpf')){
     $('#cpf').onsubmit = async e => {
       e.preventDefault();
