@@ -32,7 +32,8 @@ All data stays in a **hidden folder in the user's own Google Drive**. There is n
 | **BAFZ 2043** | The full particulars and record of service form, in sub-sections. Empty fields are shaded red. **Save**, and **Download as Word** (.docx) at any time. Import or export the form data as a file. |
 | **Settings** | Photo and personal details, IPFT tests per year, **Export everything** (all scans, the register and BAFZ 2043 data in one zip), print the register. |
 | **Day and night mode** | Switch from the header. |
-| **Optional encryption** | Set a passphrase at first login and everything is encrypted (AES-256) on the device before upload. |
+| **Optional encryption** | Set a passphrase at first login and everything is encrypted (AES-256) on the device before upload. A forgotten passphrase is reset by signing in again with the same Gmail; change it any time in Settings. |
+| **Switch account** | *Not you?* on the login and unlock screens signs in with a different Gmail. |
 | **Install as an app** | Add to the home screen on iPhone or Android. Can be packaged as an Android APK. |
 
 ## How to use
@@ -59,7 +60,7 @@ The APK is a Trusted Web Activity: it opens the live web app full screen inside 
 
 - The app requests only the `drive.appdata` permission. It can read and write **its own hidden folder** and nothing else in the user's Drive.
 - Documents never pass through any other server.
-- With encryption on, a forgotten passphrase **cannot be recovered**, so the files would be unreadable.
+- Forgot the passphrase? Use **Forgot passphrase?** and sign in again with the same Gmail to set a new one. Because of this, the real protection is your Gmail account: turn on Google's 2-Step Verification.
 - Use **Export everything** in Settings regularly and keep the backup offline.
 - **Upload only documents you are permitted to keep on a personal Google account.** Do not upload classified documents. Follow your unit's IT and security instructions.
 

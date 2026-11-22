@@ -80,7 +80,10 @@ textarea{min-height:4.2rem;resize:vertical}
 .hero h1{font-size:2.2rem}
 .hero p{font:500 .95rem var(--cond);letter-spacing:.14em;text-transform:uppercase}
 .btn.big{display:flex;width:100%;justify-content:center;align-items:center;gap:.6rem;font-size:1.05rem;padding:.75rem 1rem;border-radius:8px}
-.btn.big svg{width:1.3rem;height:1.3rem}
+.btn.big svg{width:1.3rem;height:1.3rem;flex:none}
+.btn.big .bl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}
+.btn.big .bl small{font-size:.8rem;font-weight:500;opacity:.8}
+.rk{font:600 1.35rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;text-align:center;background:var(--card2);border:1px dashed var(--accent);border-radius:8px;padding:.8rem;margin:.8rem 0;user-select:all;overflow-wrap:anywhere}
 .cover p{margin-bottom:1rem}
 .cover ol{padding-left:1.2rem;margin:0 0 1rem}
 .cover li{margin-bottom:.35rem}
@@ -724,6 +727,18 @@ async function seal(key, buf){
   const ct = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, buf));
   const out = new Uint8Array(12 + ct.length); out.set(iv); out.set(ct, 12); return out;
 }
+const RK_ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function newRecoveryKey(){ const b = crypto.getRandomValues(new Uint8Array(24)); let s = ''; for (let i = 0; i < 24; i++){ s += RK_ALPHA[b[i] % 32]; if (i % 4 === 3 && i < 23) s += '-'; } return s; }
+const normRK = s => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+async function pbkdfBits(secret, salt, iter){
+  const base = await crypto.subtle.importKey('raw', te.encode(secret), 'PBKDF2', false, ['deriveBits']);
+  return new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2', salt, iterations:iter, hash:'SHA-256'}, base, 256));
+}
+const aesKey = raw => crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt','decrypt']);
+async function wrapWith(secret, raw, iter){ const salt = crypto.getRandomValues(new Uint8Array(16)); const k = await aesKey(await pbkdfBits(secret, salt, iter)); return {salt:b64(salt), iter, ct:b64(await seal(k, raw))}; }
+async function unwrapWith(secret, w){ const k = await aesKey(await pbkdfBits(secret, unb64(w.salt), w.iter)); return new Uint8Array(await unseal(k, unb64(w.ct))); }
+const acctSecret = () => 'senanothi:' + String(S.user?.email || '').toLowerCase();
+async function addAccountCopy(){ S.encMeta.g = await wrapWith(acctSecret(), S.rawKey, 20000); }
 async function unseal(key, buf){ const u = new Uint8Array(buf); return crypto.subtle.decrypt({name:'AES-GCM', iv:u.slice(0, 12)}, key, u.slice(12)); }
 
 /* ---------- Google sign-in ---------- */
@@ -732,7 +747,7 @@ function clientId(){
   if (CONFIG.CLIENT_ID) return CONFIG.CLIENT_ID;
   try { return localStorage.getItem('pf_client_id') || ''; } catch { return ''; }
 }
-function requestToken(prompt){
+function requestToken(prompt, pick){
   return new Promise((resolve, reject) => {
     if (!window.google?.accounts?.oauth2) return reject(new Error('Google sign-in did not load. Check your connection, and that this page is opened from its https address.'));
     if (!tokenClient) tokenClient = google.accounts.oauth2.initTokenClient({
@@ -746,7 +761,7 @@ function requestToken(prompt){
     });
     tokenWait = {resolve, reject};
     let hint = ''; try { hint = localStorage.getItem('sn_email') || ''; } catch {}
-    tokenClient.requestAccessToken(hint ? {prompt, login_hint:hint} : {prompt});
+    tokenClient.requestAccessToken(pick ? {prompt:'select_account'} : hint ? {prompt, login_hint:hint} : {prompt});
   });
 }
 async function reauth(){
@@ -791,7 +806,15 @@ const drive = {
     return (await (await this.req(loc, {method:'PUT', body: blob})).json()).id;
   },
   async update(id, mime, blob){ await this.req(`${UP}/files/${id}?uploadType=media`, {method:'PATCH', headers:{'Content-Type':mime}, body: blob}); },
-  async remove(id){ await this.req(`${API}/files/${id}`, {method:'DELETE'}); }
+  async remove(id){ await this.req(`${API}/files/${id}`, {method:'DELETE'}); },
+  async listAll(){
+    const out = []; let pt = '';
+    do {
+      const j = await (await this.req(`${API}/files?spaces=appDataFolder&fields=nextPageToken,files(id)&pageSize=1000${pt ? '&pageToken=' + encodeURIComponent(pt) : ''}`)).json();
+      out.push(...(j.files || []).map(f => f.id)); pt = j.nextPageToken || '';
+    } while (pt);
+    return out;
+  }
 };
 
 /* ---------- storage: in-memory, for the demo ---------- */
@@ -858,8 +881,8 @@ function gateSignIn(){
   let last = ''; try { last = localStorage.getItem('sn_email') || ''; } catch {}
   $('#gateBody').innerHTML = `
     <div class="hero">${LOGO}<h1>সেনানথি</h1><p class="muted">Shenanothi, my service file</p></div>
-    <button class="btn primary big" id="signin">${MAIL}Login with Gmail</button>
-    ${last ? `<p class="small muted center" style="margin:.5rem 0 0">Last used: ${esc(last)}</p>` : ''}
+    <button class="btn primary big" id="signin">${MAIL}<span class="bl"><span>Login with Gmail</span>${last ? `<small>${esc(last)}</small>` : ''}</span></button>
+    ${last ? '<button class="btn plain" id="notyou" style="display:block;margin:.6rem auto 0">Not you? Use another Gmail</button>' : ''}
     <div id="setup" hidden>
       <h3 style="margin-bottom:.3rem">One-time set-up</h3>
       <p class="small muted">Login needs a Google OAuth client ID for this site. Do this once; after that it is one press on Login with Gmail.</p>
@@ -883,7 +906,16 @@ function gateSignIn(){
     try { localStorage.setItem('pf_client_id', v); } catch {}
     CONFIG.CLIENT_ID = v; login();
   };
+  if ($('#notyou')) $('#notyou').onclick = () => { if (!clientId()){ $('#setup').hidden = false; return; } switchAccount(); };
   $('#demo').onclick = startDemo;
+}
+
+// Sign in with a different Gmail: forget the last account and always show Google's account chooser.
+async function switchAccount(){
+  try { if (drive.token) google.accounts.oauth2.revoke(drive.token, () => {}); } catch {}
+  drive.token = null; Object.assign(S, {key:null, rawKey:null, index:null, indexId:null, encMeta:null, sealed:null, user:null});
+  try { localStorage.removeItem('sn_email'); } catch {}
+  try { await requestToken('', true); await enter(drive, false); } catch (e) { toast(e.message); gateSignIn(); }
 }
 
 async function enter(be, demo){
@@ -921,7 +953,7 @@ function gateOnboard(){
           <div class="field"><label for="oP1">Passphrase</label><input type="password" id="oP1" autocomplete="new-password"></div>
           <div class="field"><label for="oP2">Repeat passphrase</label><input type="password" id="oP2" autocomplete="new-password"></div>
         </div>
-        <p class="small" style="color:var(--red)">A forgotten passphrase cannot be reset. The scans would be unreadable for good.</p>
+        <p class="small muted">Forgot it later? You can reset it by signing in with this Gmail again.</p>
       </div>
       <div class="actions"><button class="btn primary" type="submit">Create my file</button></div>
     </form>`;
@@ -936,9 +968,10 @@ function gateOnboard(){
     busy('Creating the hidden folder…');
     try {
       if (pass){
-        const salt = crypto.getRandomValues(new Uint8Array(16));
-        S.encMeta = {salt:b64(salt), iter:PBKDF2_ITER};
-        S.key = await deriveKey(pass, salt, PBKDF2_ITER);
+        S.rawKey = crypto.getRandomValues(new Uint8Array(32));
+        S.key = await aesKey(S.rawKey);
+        S.encMeta = {v:2, pw: await wrapWith(pass, S.rawKey, PBKDF2_ITER)};
+        await addAccountCopy();
       }
       const ids = await Promise.all(SECS.map(c => S.be.mkdir(`${pad2(c.id)}_${c.name}`)));
       const folders = {}; SECS.forEach((c, i) => folders[c.id] = ids[i]);
@@ -955,18 +988,148 @@ function gateUnlock(){
     <p>This file is encrypted. Enter the passphrase you chose when you created it.</p>
     <form id="ul">
       <div class="field"><label for="uP">Passphrase</label><input type="password" id="uP" autocomplete="current-password" required></div>
-      <div class="actions"><button class="btn primary" type="submit">Unlock</button></div>
-    </form>`;
+      <div class="actions"><button class="btn primary" type="submit">Unlock</button><button class="btn plain" type="button" id="forgot">Forgot passphrase?</button></div>
+    </form>
+    <p class="small muted" style="margin:1.2rem 0 0">Signed in as ${esc(S.user?.email || '')}. <button class="btn plain" id="notyou">Not you?</button></p>`;
   $('#uP').focus();
+  $('#forgot').onclick = gateForgot;
+  $('#notyou').onclick = switchAccount;
   $('#ul').onsubmit = async e => {
     e.preventDefault();
     busy('Unlocking…');
+    const pass = $('#uP').value, m = S.encMeta;
+    let raw;
     try {
-      const key = await deriveKey($('#uP').value, unb64(S.encMeta.salt), S.encMeta.iter);
-      S.index = JSON.parse(td.decode(await unseal(key, unb64(S.sealed))));
-      S.key = key; S.sealed = null; busy(''); showApp();
-    } catch { busy(''); toast('Wrong passphrase.'); }
+      raw = m.pw ? await unwrapWith(pass, m.pw) : await pbkdfBits(pass, unb64(m.salt), m.iter);
+      await openWith(raw);
+    } catch { busy(''); return toast('Wrong passphrase.'); }
+    // Files made before recovery keys existed: keep the same key, now wrapped by the passphrase, so a recovery key can be added.
+    const upgrade = !m.pw || !m.g;
+    if (!m.pw) S.encMeta = {...m, v:2, pw: await wrapWith(pass, raw, PBKDF2_ITER)};
+    if (!S.encMeta.g) await addAccountCopy();
+    delete S.encMeta.salt; delete S.encMeta.iter;
+    busy(''); showApp();
+    if (upgrade) await saveIndex();
   };
+}
+async function openWith(raw){
+  const key = await aesKey(raw);
+  const index = JSON.parse(td.decode(await unseal(key, unb64(S.sealed))));
+  Object.assign(S, {index, key, rawKey:raw, sealed:null});
+}
+
+function gateForgot(){
+  if (S.encMeta.g){
+    const email = S.user?.email || '';
+    $('#gateBody').innerHTML = `${MARK}
+      <h3 style="margin-bottom:.5rem">Reset your passphrase</h3>
+      <p>Confirm it is you by signing in again with <b>${esc(email)}</b>, then choose a new passphrase. Your documents stay as they are.</p>
+      <div class="actions"><button class="btn primary big" id="gconf" style="width:auto">${MAIL}<span>Confirm with Gmail</span></button></div>
+      <form id="gf" hidden style="margin-top:1rem">
+        <p class="small" style="color:var(--ok)">Confirmed as ${esc(email)}.</p>
+        <div class="row2">
+          <div class="field"><label for="gP1">New passphrase</label><input type="password" id="gP1" autocomplete="new-password" required></div>
+          <div class="field"><label for="gP2">Repeat new passphrase</label><input type="password" id="gP2" autocomplete="new-password" required></div>
+        </div>
+        <div class="actions"><button class="btn primary" type="submit">Save new passphrase</button></div>
+      </form>
+      <div class="actions"><button class="btn" id="back">Back</button>${S.encMeta.rec ? '<button class="btn plain" id="useRk">Use a recovery key instead</button>' : ''}</div>`;
+    $('#back').onclick = gateUnlock;
+    if ($('#useRk')) $('#useRk').onclick = () => gateForgotKey();
+    $('#gconf').onclick = async () => {
+      try {
+        await requestToken('', true);
+        const u = await S.be.who();
+        if (String(u.email || '').toLowerCase() !== email.toLowerCase()) return toast(`That was ${u.email}. Sign in with ${email} to reset this file's passphrase.`);
+        $('#gconf').closest('.actions').hidden = true; $('#gf').hidden = false; $('#gP1').focus();
+      } catch (e) { toast(e.message); }
+    };
+    $('#gf').onsubmit = async e => {
+      e.preventDefault();
+      const p1 = $('#gP1').value;
+      if (p1.length < 8) return toast('Use a passphrase of at least 8 characters.');
+      if (p1 !== $('#gP2').value) return toast('The two passphrases do not match.');
+      busy('Resetting…');
+      try { await openWith(await unwrapWith(acctSecret(), S.encMeta.g)); }
+      catch { busy(''); return toast('This file could not be reset with this account.'); }
+      S.encMeta.pw = await wrapWith(p1, S.rawKey, PBKDF2_ITER);
+      busy(''); showApp(); await saveIndex();
+      toast('Passphrase reset. Use the new one from now on.');
+    };
+    return;
+  }
+  gateForgotKey();
+}
+function gateForgotKey(){
+  if (!S.encMeta.rec){
+    $('#gateBody').innerHTML = `${MARK}
+      <h3 style="margin-bottom:.5rem">No recovery key on this file</h3>
+      <p>This file was created before recovery keys were added, or its recovery key was never saved. Without the passphrase, nobody can open it, including the developer. That is what keeps it private.</p>
+      <p>You can start a new, empty file instead. This permanently deletes the old encrypted documents from your Drive.</p>
+      <div class="actions"><button class="btn" id="back">Back</button><button class="btn danger" id="wipe">Delete and start again</button></div>`;
+    $('#back').onclick = gateUnlock;
+    $('#wipe').onclick = async () => {
+      if (!await ask('Delete every document and scan in this file for good, and start a new empty file? This cannot be undone.', 'Delete everything')) return;
+      try {
+        busy('Deleting the old file…');
+        const ids = await S.be.listAll();
+        for (let i = 0; i < ids.length; i += 5) await Promise.all(ids.slice(i, i + 5).map(id => S.be.remove(id).catch(() => {})));
+        Object.assign(S, {encMeta:null, sealed:null, indexId:null, key:null, rawKey:null});
+        busy(''); gateOnboard();
+      } catch (err) { busy(''); toast('Could not delete: ' + err.message); }
+    };
+    return;
+  }
+  $('#gateBody').innerHTML = `${MARK}
+    <h3 style="margin-bottom:.5rem">Reset your passphrase</h3>
+    <p>Enter the recovery key you saved when you set up encryption, then choose a new passphrase.</p>
+    <form id="rf">
+      <div class="field"><label for="rK">Recovery key</label><input type="text" id="rK" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" required></div>
+      <div class="row2">
+        <div class="field"><label for="rP1">New passphrase</label><input type="password" id="rP1" autocomplete="new-password" required></div>
+        <div class="field"><label for="rP2">Repeat new passphrase</label><input type="password" id="rP2" autocomplete="new-password" required></div>
+      </div>
+      <div class="actions"><button class="btn primary" type="submit">Reset passphrase</button><button class="btn" type="button" id="back">Back</button></div>
+    </form>`;
+  $('#back').onclick = gateForgot;
+  $('#rf').onsubmit = async e => {
+    e.preventDefault();
+    const p1 = $('#rP1').value;
+    if (p1.length < 8) return toast('Use a passphrase of at least 8 characters.');
+    if (p1 !== $('#rP2').value) return toast('The two passphrases do not match.');
+    busy('Checking the recovery key…');
+    try { await openWith(await unwrapWith(normRK($('#rK').value), S.encMeta.rec)); }
+    catch { busy(''); return toast('That recovery key does not match this file. Check it and try again.'); }
+    S.encMeta.pw = await wrapWith(p1, S.rawKey, PBKDF2_ITER);
+    busy(''); showApp(); await saveIndex();
+    toast('Passphrase reset. Use the new one from now on.');
+  };
+}
+
+// Make a new recovery key, wrap the data key with it, and make the user save it before going on.
+function showRecoveryKey(){
+  return new Promise(async res => {
+    const rk = newRecoveryKey();
+    S.encMeta.rec = await wrapWith(normRK(rk), S.rawKey, 100000);
+    S.encMeta.recAt = new Date().toISOString();
+    const email = S.user?.email || '';
+    const text = `সেনানথি (Shenanothi) recovery key\nAccount: ${email}\nCreated: ${new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'})}\n\n${rk}\n\nUse it with "Forgot passphrase?" on the unlock screen. Anyone who has this key and your Gmail can open your file, so keep it private.`;
+    let d = $('#rkDlg'); if (!d){ d = document.createElement('dialog'); d.id = 'rkDlg'; document.body.append(d); }
+    d.innerHTML = `<h2>Save your recovery key</h2>
+      <p>If you forget your passphrase, this key is the only way to open your file. Nobody can reset it for you, not even the developer.</p>
+      <div class="rk" id="rkTxt">${rk}</div>
+      <div class="actions" style="margin-top:0"><button class="btn primary" id="rkDl">Download</button><button class="btn" id="rkCp">Copy</button>${email ? '<button class="btn" id="rkMail">Email it to myself</button>' : ''}</div>
+      <p class="small muted" style="margin-top:.8rem">Safest: download it and keep it offline, or write it down. Emailing it is easy, but anyone who gets into your Gmail could then open your file.</p>
+      <div class="field" style="margin-top:.8rem"><label class="check"><input type="checkbox" id="rkOk"> I have saved my recovery key</label></div>
+      <div class="actions"><button class="btn primary" id="rkGo" disabled>Continue</button></div>`;
+    d.querySelector('#rkDl').onclick = () => download(new Blob([text], {type:'text/plain'}), 'senanothi-recovery-key.txt');
+    d.querySelector('#rkCp').onclick = async () => { try { await navigator.clipboard.writeText(rk); toast('Recovery key copied.'); } catch { toast('Copy did not work. Select the key and copy it by hand.'); } };
+    if (email) d.querySelector('#rkMail').onclick = () => { location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('সেনানথি recovery key')}&body=${encodeURIComponent(text)}`; };
+    d.querySelector('#rkOk').onchange = e => d.querySelector('#rkGo').disabled = !e.target.checked;
+    d.querySelector('#rkGo').onclick = () => { d.close(); res(); };
+    d.oncancel = e => e.preventDefault();
+    d.showModal();
+  });
 }
 
 async function startDemo(){
@@ -1213,6 +1376,10 @@ function renderSettings(){
     <div class="panel"><h3>Backup</h3>
       <p class="muted small">The Drive folder is hidden, so this app is the only way in. Export a copy regularly and keep it on an offline drive. The export holds every scan in section folders, the register as a spreadsheet file and your BAFZ 2043 data.</p>
       <div class="actions" style="margin-top:0"><button class="btn primary" id="exportBtn">Export everything</button><button class="btn" id="printBtn">Print register</button></div></div>
+    ${S.key ? `<div class="panel"><h3>Passphrase</h3>
+      <p class="muted small">Forgot it? Use “Forgot passphrase?” on the unlock screen and sign in with ${esc(S.user?.email || 'this Gmail')} again to set a new one.</p>
+      <form id="cpf"><div class="row2"><div class="field"><label for="cp1">New passphrase</label><input type="password" id="cp1" autocomplete="new-password"></div><div class="field"><label for="cp2">Repeat new passphrase</label><input type="password" id="cp2" autocomplete="new-password"></div></div>
+      <div class="actions" style="margin-top:0"><button class="btn primary" type="submit">Change passphrase</button></div></form></div>` : ''}
     <div class="panel"><h3>Storage</h3>
       <p>${S.demo ? 'Demo mode. Everything is held in this browser tab and is lost when you close it.' : `Hidden app folder in the Google Drive of ${esc(S.user.email)}.`} ${S.key ? 'Scans, the register and BAFZ 2043 are encrypted with your passphrase.' : 'Encryption is off.'}</p>
       <button class="btn" id="outBtn">${S.demo ? 'Leave the demo' : 'Logout'}</button></div>`;
@@ -1227,6 +1394,16 @@ function renderSettings(){
   $('#exportBtn').onclick = exportAll;
   $('#printBtn').onclick = () => { S.view = 'reg'; S.cat = 0; S.q = ''; render(); setTimeout(() => window.print(), 50); };
   $('#outBtn').onclick = signOut;
+  if ($('#cpf')){
+    $('#cpf').onsubmit = async e => {
+      e.preventDefault();
+      const p1 = $('#cp1').value;
+      if (p1.length < 8) return toast('Use a passphrase of at least 8 characters.');
+      if (p1 !== $('#cp2').value) return toast('The two passphrases do not match.');
+      S.encMeta.pw = await wrapWith(p1, S.rawKey, PBKDF2_ITER);
+      await saveIndex(); renderSettings(); toast('Passphrase changed. Use the new one from now on.');
+    };
+  }
 }
 $('#photoFile').onchange = async e => {
   const file = e.target.files[0]; if (!file) return;
