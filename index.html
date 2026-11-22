@@ -1063,9 +1063,10 @@ function gateForgot(){
 function gateForgotKey(){
   if (!S.encMeta.rec){
     $('#gateBody').innerHTML = `${MARK}
-      <h3 style="margin-bottom:.5rem">No recovery key on this file</h3>
-      <p>This file was created before recovery keys were added, or its recovery key was never saved. Without the passphrase, nobody can open it, including the developer. That is what keeps it private.</p>
-      <p>You can start a new, empty file instead. This permanently deletes the old encrypted documents from your Drive.</p>
+      <h3 style="margin-bottom:.5rem">This file can’t be reset yet</h3>
+      <p>Your file was made with an older version of the app. Reset through Gmail is added the first time you unlock it with your passphrase in this version.</p>
+      <p><b>If you remember your passphrase,</b> press Back and unlock once. After that, “Forgot passphrase?” works through Gmail.</p>
+      <p><b>If you have forgotten it,</b> nobody can open this file, including the developer. You can start a new, empty file instead. This permanently deletes the old encrypted documents from your Drive.</p>
       <div class="actions"><button class="btn" id="back">Back</button><button class="btn danger" id="wipe">Delete and start again</button></div>`;
     $('#back').onclick = gateUnlock;
     $('#wipe').onclick = async () => {
