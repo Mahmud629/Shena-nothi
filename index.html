@@ -379,6 +379,79 @@ dialog[open]{animation:pop .2s ease-out} dialog[open]::backdrop{animation:fade .
   #shell{display:block} body{background:#fff;color:#000}
   table.reg{border:1px solid #999} .reg th,.reg td{border-bottom:1px solid #bbb}
 }
+
+/* ---- v3 polish: soft cards, profile, tiles, sheets, timeline, recent, skeleton ---- */
+:root{--shadow:0 1px 2px rgba(16,40,30,.05),0 6px 18px rgba(16,40,30,.07)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35)}
+.panel,.sum,table.reg,.secmenu,.empty,.prof{box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--line) 50%,transparent)}
+.seg{box-shadow:var(--shadow);border-top-color:transparent;border-right-color:transparent;border-bottom-color:transparent;padding-bottom:3px;overflow:hidden}
+.prof{display:flex;gap:1rem;align-items:center;background:var(--card);border:1px solid color-mix(in srgb,var(--line) 50%,transparent);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
+.prof::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--accent)}
+.prof .disc{width:4.2rem;height:4.2rem;font-size:1.4rem;flex:none}
+.prof .gr{font-size:.85rem;color:var(--muted)}
+.prof .nm{font:700 1.45rem/1.15 var(--cond);letter-spacing:.04em;text-transform:uppercase;overflow-wrap:normal}
+.prof .meta{display:flex;flex-wrap:wrap;gap:.1rem .9rem;font-size:.85rem;color:var(--muted);margin-top:.2rem}
+.prof .at{margin-top:.35rem;font-size:.9rem} .prof .at b{color:var(--bad)}
+.tile{border:0;background:var(--card2);border-radius:10px;padding:.55rem .7rem;text-align:left;cursor:pointer;color:inherit;transition:transform .15s,background-color .15s;display:block;width:100%}
+.tile:hover{transform:translateY(-2px);background:var(--soft)}
+.tile b{font-size:2rem !important}
+.seg .pb{position:absolute;left:0;right:0;bottom:0;height:3px;background:color-mix(in srgb,var(--line) 70%,transparent)}
+.seg .pb i{display:block;height:100%;background:var(--st,var(--accent));transition:width .8s ease-out}
+.rec{display:flex;gap:.6rem;overflow-x:auto;padding:.2rem .15rem .7rem;margin:0 -.15rem .4rem;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.rc{flex:none;width:8.4rem;scroll-snap-align:start;background:var(--card);border:0;border-radius:10px;box-shadow:var(--shadow);padding:.5rem;text-align:left;cursor:pointer;color:inherit;display:grid;gap:.3rem;align-content:start}
+.rt{height:5.4rem;border-radius:6px;background:var(--card2);overflow:hidden;display:grid;place-items:center;color:var(--accent)}
+.rt img{width:100%;height:100%;object-fit:cover;object-position:top}
+.rt svg,.tl-c svg{width:1.8rem;height:1.8rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rn{font-weight:600;font-size:.85rem;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:normal}
+.rs{font-size:.72rem;color:var(--muted)}
+.dtl{border:0;background:none;padding:0;text-align:left;color:inherit;cursor:pointer;font:inherit;display:block;width:100%}
+.dtl:hover strong{color:var(--accent)}
+.chipx{border:1px solid var(--accent);background:var(--soft);color:var(--accent);border-radius:999px;padding:.15rem .7rem;font-size:.82rem;font-weight:600;cursor:pointer;margin-left:.6rem;vertical-align:.2em}
+.docs .viewhead{position:sticky;top:var(--stick,4rem);z-index:6;background:var(--bg);padding:.5rem 0;margin-top:-.5rem}
+dialog.sheet{padding:1rem 1.1rem 1.1rem}
+.sh-h{display:flex;gap:.8rem;align-items:center;margin-bottom:.8rem}
+.sh-th{width:3.2rem;height:4.2rem;border-radius:6px;background:var(--card2);overflow:hidden;display:grid;place-items:center;color:var(--accent);flex:none}
+.sh-th img{width:100%;height:100%;object-fit:cover;object-position:top}
+.sh-th svg{width:1.6rem;height:1.6rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sh-h h2{margin:0;font-size:1.25rem}
+.sh-list{display:grid;gap:.35rem}
+.sh-list button{display:flex;align-items:center;gap:.7rem;width:100%;border:0;background:var(--card2);border-radius:10px;padding:.8rem .9rem;font-weight:600;cursor:pointer;color:inherit;text-align:left;min-height:3rem}
+.sh-list button:hover{background:var(--soft)}
+.sh-list button.danger{color:var(--bad)}
+.sh-list svg{width:1.25rem;height:1.25rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tl{list-style:none;margin:0 0 1.1rem .45rem;padding:0 0 0 1.1rem;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:.35rem 0 .35rem .2rem}
+.tl li::before{content:"";position:absolute;left:-1.55rem;top:1.15rem;width:.75rem;height:.75rem;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--bg)}
+.tl li.ns::before{background:var(--warn)}
+.tl-d{display:block;font:600 .74rem var(--cond);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:.2rem}
+.tl-c{display:flex;gap:.7rem;align-items:center;width:100%;text-align:left;background:var(--card);border:0;border-radius:10px;box-shadow:var(--shadow);padding:.55rem .7rem;cursor:pointer;color:inherit}
+.tl-c b{display:block;overflow-wrap:normal} .tl-c small{display:block;color:var(--muted);font-size:.78rem}
+.tl-y > h3{margin:.6rem 0 .5rem}
+.nextfab{position:fixed;right:1.2rem;bottom:1.4rem;z-index:25;border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:600;padding:.75rem 1.1rem;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer;display:flex;gap:.45rem;align-items:center}
+.nextfab:hover{filter:brightness(1.08)}
+#skel{position:fixed;inset:0;z-index:45;background:var(--bg)}
+.sk-top{height:calc(3.6rem + env(safe-area-inset-top,0px));background:linear-gradient(120deg,var(--band),var(--band2))}
+.sk-wrap{max-width:60rem;margin:1rem auto;padding:0 1rem;display:grid;gap:.8rem}
+.sk{border-radius:12px;background:linear-gradient(90deg,var(--card2) 25%,color-mix(in srgb,var(--card2) 55%,var(--line)) 50%,var(--card2) 75%);background-size:200% 100%;animation:shim 1.2s linear infinite}
+.sk-a{height:6rem} .sk-b{height:7.5rem} .sk-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem} .sk-row .sk{height:4rem} .sk-c{height:9rem}
+@keyframes shim{from{background-position:200% 0}to{background-position:-200% 0}}
+#offline{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--stick,4rem) + .5rem);z-index:40;background:var(--warn);color:#1a1200;border-radius:999px;padding:.4rem 1rem;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);max-width:calc(100% - 2rem);text-align:center}
+@keyframes inR{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes inL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+#view.enter.fr{animation:inR .3s ease-out} #view.enter.fl{animation:inL .3s ease-out}
+#view.enter .prof{animation:rise .4s ease-out backwards} #view.enter .sum{animation:rise .4s .06s ease-out backwards}
+#view.enter .rec{animation:rise .4s .1s ease-out backwards} #view.enter .attn{animation:rise .4s .14s ease-out backwards}
+#view.enter .tl li{animation:rise .35s ease-out backwards}
+@media (max-width:900px){
+  .reg td.acts{display:none}
+  .nextfab{bottom:calc(4.9rem + env(safe-area-inset-bottom,0px));right:1rem}
+  .fgrid input,.fgrid textarea{min-height:2.9rem;font-size:16px}
+  .prof{padding:.85rem .9rem;gap:.8rem} .prof .disc{width:3.4rem;height:3.4rem;font-size:1.15rem} .prof .nm{font-size:1.2rem}
+  .tile b{font-size:1.7rem !important}
+  #tabbar{grid-template-columns:repeat(5,1fr)} #tabbar button{font-size:.64rem;letter-spacing:.06em}
+}
+@media (prefers-reduced-motion:reduce){.sk{animation:none}}
 </style>
 </head>
 <body>
@@ -425,11 +498,20 @@ dialog[open]{animation:pop .2s ease-out} dialog[open]::backdrop{animation:fade .
   </form>
 </dialog>
 
+<div id="skel" hidden aria-hidden="true"><div class="sk-top"></div><div class="sk-wrap"><div class="sk sk-a"></div><div class="sk sk-b"></div><div class="sk-row"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div><div class="sk sk-c"></div></div></div>
+<div id="offline" hidden role="status">You are offline. Nothing can be opened or saved until the connection is back.</div>
+<dialog id="actDlg" class="sheet">
+  <div class="sh-h"><div class="sh-th" id="actTh"></div><div style="min-width:0"><h2 id="actTitle"></h2><p class="muted small" id="actSub" style="margin:0"></p></div></div>
+  <div class="sh-list" id="actList"></div>
+  <button class="btn" data-close style="width:100%;margin-top:.6rem">Cancel</button>
+</dialog>
+
 <dialog id="viewer">
   <h2 id="viewerTitle"></h2>
   <div id="viewerBody"></div>
   <div class="actions">
     <a class="btn primary" id="viewerDl">Download</a>
+    <button class="btn" id="viewerShare" type="button">Share</button>
     <a class="btn" id="viewerOpen" target="_blank" rel="noopener">Open in new tab</a>
     <button class="btn" data-close>Close</button>
   </div>
@@ -743,6 +825,7 @@ function loadScript(src, what){ return new Promise((res, rej) => { const s = doc
 function systemDark(){ return window.matchMedia?.('(prefers-color-scheme: dark)').matches; }
 function currentTheme(){ return document.documentElement.dataset.theme || (systemDark() ? 'dark' : 'light'); }
 const IC = {
+  time:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5v17"/><circle cx="6" cy="7" r="1.8"/><circle cx="6" cy="17" r="1.8"/><path d="M10.5 7h9M10.5 12h6M10.5 17h9"/></svg>',
   home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.8V20h13V9.8"/><path d="M10 20v-5.5h4V20"/></svg>',
   form:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h8l4 4V20.5h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9 12h6M9 15.5h6M9 8.5h2.5"/></svg>',
   docs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6.5h6l2 2.5h9v10h-17z"/><path d="M3.5 11.5h17"/></svg>',
@@ -969,19 +1052,20 @@ async function switchAccount(){
 
 async function enter(be, demo){
   S.be = be; S.demo = demo;
-  busy('Opening your file…');
+  skel(true);
   try {
     S.user = await be.who();
     if (!demo && S.user.email) try { localStorage.setItem('sn_email', S.user.email); } catch {}
     const id = await be.findIndex();
-    if (!id){ busy(''); return gateOnboard(); }
+    if (!id){ skel(false); return gateOnboard(); }
     S.indexId = id;
     const wrap = JSON.parse(td.decode(await be.read(id)));
-    busy('');
+    skel(false);
     if (wrap.enc){ S.encMeta = wrap.enc; S.sealed = wrap.data; return gateUnlock(); }
     S.index = wrap.data; showApp();
-  } catch (e) { busy(''); toast('Could not open your file: ' + e.message); }
+  } catch (e) { skel(false); toast('Could not open your file: ' + e.message); }
 }
+function skel(on){ $('#skel').hidden = !on; }
 
 function gateOnboard(){
   $('#gateBody').innerHTML = `${MARK}
@@ -1208,17 +1292,30 @@ async function startDemo(){
 }
 
 /* ---------- app shell ---------- */
+function netState(){ $('#offline').hidden = navigator.onLine !== false; }
+addEventListener('online', netState); addEventListener('offline', netState);
 function showApp(){
   migrate(S.index);
   $('#gate').hidden = true; $('#app').hidden = false; $('#demoStrip').hidden = !S.demo;
   const ob = $('#outTop'), lb = S.demo ? 'Leave demo' : 'Logout'; ob.innerHTML = IC.out + `<span>${lb}</span>`; ob.setAttribute('aria-label', lb); ob.title = lb; ob.onclick = signOut;
   $('#homeBtn').onclick = () => { S.view = 'dash'; render(); window.scrollTo(0, 0); };
   applyTheme(); setInterval(tick, 15000); setStick(); addEventListener('resize', () => { setStick(); tick(); });
-  setStatus(idleStatus());
+  setStatus(idleStatus()); netState();
   render();
 }
 async function signOut(){ await flushForm(); try { if (drive.token) google.accounts.oauth2.revoke(drive.token, () => {}); } catch {} location.reload(); }
 function setStick(){ document.documentElement.style.setProperty('--stick', $('#top').offsetHeight + 'px'); }
+function parseDay(s){
+  const t = String(s || '').trim(), M = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  let m = t.match(/(\d{1,2})[\s\-\/.]+([A-Za-z]{3,})[\s\-\/.,]+(\d{4})/); if (m && M.indexOf(m[2].slice(0, 3).toLowerCase()) >= 0) return new Date(+m[3], M.indexOf(m[2].slice(0, 3).toLowerCase()), +m[1]);
+  m = t.match(/(\d{1,2})[\-\/.](\d{1,2})[\-\/.](\d{2,4})/); if (m) return new Date(m[3].length === 2 ? 2000 + +m[3] : +m[3], +m[2] - 1, +m[1]);
+  return null;
+}
+function serviceLen(){
+  const p = S.index.profile, a = parseDay(S.index.form.f.commDate), n = new Date();
+  if (a && a < n){ let m = (n.getFullYear() - a.getFullYear()) * 12 + n.getMonth() - a.getMonth(); if (n.getDate() < a.getDate()) m--; return `${Math.floor(m / 12)} yrs ${m % 12} mo service`; }
+  return p.startYear ? `Commissioned ${p.startYear}` : '';
+}
 function initials(p){ return (p.name || '?').trim().split(/\s+/).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join(''); }
 function renderHeader(){
   const p = S.index.profile;
@@ -1231,19 +1328,23 @@ function render(){
   const docs = S.index.docs, cur = (v, c) => S.view === v && (c == null || S.cat === c);
   const nv = (view, cat, chip, label, count) => `<button class="nv" data-view="${view}" data-cat="${cat ?? ''}" aria-current="${cur(view, cat)}"><span class="chip">${chip}</span><span class="lb">${esc(label)}</span>${count == null ? '' : `<span class="ct">${count}</span>`}</button>`;
   $('#rail').innerHTML =
-    nv('dash', null, IC.home, 'Home') + nv('form', null, IC.form, 'BAFZ 2043') + nv('reg', 0, IC.docs, 'All documents', docs.length) +
+    nv('dash', null, IC.home, 'Home') + nv('form', null, IC.form, 'BAFZ 2043') + nv('reg', 0, IC.docs, 'All documents', docs.length) + nv('time', null, IC.time, 'Timeline') +
     '<div class="rail-sep"></div>' +
     SECS.map((s, i) => nv('reg', s.id, pad2(i + 1), s.name, docs.filter(d => d.cat === s.id).length)).join('') +
     '<div class="rail-sep"></div>' + nv('settings', null, IC.gear, 'Settings');
-  $('#tabbar').innerHTML = [['dash', IC.home, 'Home'], ['form', IC.form, 'BAFZ 2043'], ['reg', IC.docs, 'Documents'], ['settings', IC.gear, 'Settings']]
+  $('#tabbar').innerHTML = [['dash', IC.home, 'Home'], ['form', IC.form, 'BAFZ 2043'], ['reg', IC.docs, 'Docs'], ['time', IC.time, 'Timeline'], ['settings', IC.gear, 'Settings']]
     .map(([v, ic, lb]) => `<button data-view="${v}" data-cat="${v === 'reg' ? 0 : ''}" aria-current="${S.view === v}">${ic}${lb}</button>`).join('');
-  ({dash:renderDash, form:renderForm, reg:renderRegister, settings:renderSettings})[S.view]();
+  ({dash:renderDash, form:renderForm, reg:renderRegister, time:renderTimeline, settings:renderSettings})[S.view]();
   tick();
   const key = [S.view, S.cat, S.formTab].join('|'), v = $('#view');
-  v.classList.remove('enter');
-  if (key !== S.lastKey){ void v.offsetWidth; v.classList.add('enter'); S.lastKey = key; }
+  v.classList.remove('enter', 'fr', 'fl');
+  if (key !== S.lastKey){
+    const ord = ['dash', 'form', 'reg', 'time', 'settings'], a = ord.indexOf(S.lastView), b = ord.indexOf(S.view);
+    void v.offsetWidth; v.classList.add('enter'); if (a >= 0 && a !== b) v.classList.add(b > a ? 'fr' : 'fl');
+    S.lastKey = key; S.lastView = S.view;
+  }
 }
-const navClick = e => { const b = e.target.closest('button[data-view]'); if (!b) return; S.view = b.dataset.view; if (b.dataset.cat !== '') S.cat = Number(b.dataset.cat); S.q = ''; render(); window.scrollTo(0, 0); };
+const navClick = e => { const b = e.target.closest('button[data-view]'); if (!b) return; S.view = b.dataset.view; S.only = null; if (b.dataset.cat !== '') S.cat = Number(b.dataset.cat); S.q = ''; render(); window.scrollTo(0, 0); };
 $('#rail').onclick = navClick; $('#tabbar').onclick = navClick;
 
 const byDateDesc = (a, b) => (b.date || '').localeCompare(a.date || '') || (b.added || '').localeCompare(a.added || '');
@@ -1298,28 +1399,33 @@ function renderDash(){
   const total = docs.length + missing, pct = total ? Math.round(100 * stored / total) : 0, C = 2 * Math.PI * 42;
   const seg = (s, i) => {
     const ds = docs.filter(d => d.cat === s.id), ns = ds.filter(d => !d.fileId).length, n = cols.filter(c => c.cat === s.id).length, exp = expBy[s.id] || 0, miss = missBy[s.id] || 0, pend = pendBy[s.id] || 0;
+    const prog = n ? (exp - pend > 0 ? Math.round(100 * (exp - miss - pend) / (exp - pend)) : 0) : (ds.length ? Math.round(100 * (ds.length - ns) / ds.length) : 0);
     const state = miss ? 'bad' : ns ? 'warn' : ds.length ? 'ok' : '';
     const note = miss ? `${miss} missing` : ns ? `${ns} without scan` : pend ? `${pend} pending` : ds.length ? 'All in order' : 'Nothing filed';
     return `<div class="seg ${state}" style="--i:${i}"><button class="sgo" data-go="${s.id}" aria-label="Open ${esc(s.name)}">${secIcon(s.id)}
       <span class="nm">${esc(s.name)}</span><span class="ln"><span class="ct">${n ? `${exp - miss - pend}<small>/${exp - pend}</small>` : ds.length}</span><span class="nt">${note}</span></span></button>
-      <button class="sadd" data-add="${s.id}" aria-label="Add ${esc(s.one)}" title="Add ${esc(s.one)}">+</button></div>`;
+      <button class="sadd" data-add="${s.id}" aria-label="Add ${esc(s.one)}" title="Add ${esc(s.one)}">+</button><span class="pb" aria-hidden="true"><i style="width:${prog}%"></i></span></div>`;
   };
   const attn = [...missList.map(m => `<li><span class="dot bad"></span><span class="t">${esc(m.c.label)} DivO ${m.y}<br><span class="ty">Missing</span></span><button class="btn plain" data-new="${m.i}" data-year="${m.y}">Add</button></li>`),
     ...noScan.map(d => `<li><span class="dot"></span><span class="t">${esc(d.title)}<br><span class="ty">No scan · ${esc(secOf(d.cat).name)}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`)];
+  const recent = [...docs].sort((a, b) => (b.seen || b.added || '').localeCompare(a.seen || a.added || '')).slice(0, 6);
   const hr = new Date().getHours(), greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
   const who = [p.rank, titleCase(p.name || '')].filter(Boolean).join(' ');
   $('#view').innerHTML = `
-    <div class="hello"><div class="disc">${S.index.photo ? `<img src="${S.index.photo}" alt="">` : esc(initials(p))}</div>
-      <div><div class="hi">${greet}${who ? ', ' + esc(who) : ''}</div><div class="sb">${attn.length ? `<b>${attn.length}</b> item${attn.length > 1 ? 's' : ''} need${attn.length > 1 ? '' : 's'} your attention` : 'Everything is in order'}</div></div></div>
+    <div class="prof"><div class="disc">${S.index.photo ? `<img src="${S.index.photo}" alt="">` : esc(initials(p))}</div>
+      <div style="min-width:0"><div class="gr">${greet}</div><div class="nm">${esc(who || 'Add your details in Settings')}</div>
+      <div class="meta">${[p.ba, p.unit, S.index.form.f.arm, serviceLen()].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('')}</div>
+      <div class="at">${attn.length ? `<b>${attn.length}</b> item${attn.length > 1 ? 's' : ''} need${attn.length > 1 ? '' : 's'} your attention` : 'Everything is in order'}</div></div></div>
     <div class="sum">
       <div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="tr" cx="50" cy="50" r="42"/><circle class="pr" cx="50" cy="50" r="42" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - pct / 100)).toFixed(1)}"/></svg><div><b>${pct}%</b><span>Complete</span></div></div>
       <div class="nums">
-        <div class="ok"><b>${stored}</b><span class="lab">Stored</span></div>
-        <div class="bad"><b>${missing}</b><span class="lab">Missing</span></div>
-        <div class="warn"><b>${noScan.length}</b><span class="lab">No scan</span></div>
-        <div><b>${fp.pct}%</b><span class="lab">BAFZ 2043</span>${S.index.form.updated ? `<span class="upd">Updated ${esc(fmtStamp(S.index.form.updated).split(",")[0])}</span>` : ""}</div>
+        <button class="tile ok" data-act="all"><b>${stored}</b><span class="lab">Stored</span></button>
+        <button class="tile bad" data-act="miss"><b>${missing}</b><span class="lab">Missing</span></button>
+        <button class="tile warn" data-act="noscan"><b>${noScan.length}</b><span class="lab">No scan</span></button>
+        <button class="tile" data-act="form"><b>${fp.pct}%</b><span class="lab">BAFZ 2043</span>${S.index.form.updated ? `<span class="upd">Updated ${esc(fmtStamp(S.index.form.updated).split(",")[0])}</span>` : ""}</button>
       </div></div>
-    ${attn.length ? `<div class="panel attn"><h3>Needs attention</h3><ul class="list">${attn.slice(0, 5).join('')}</ul>${attn.length > 5 ? `<p class="muted small" style="margin:.4rem 0 0">and ${attn.length - 5} more below.</p>` : ''}</div>` : ''}
+    ${recent.length ? `<h3>Recent</h3><div class="rec">${recent.map(d => `<button class="rc" data-sheet="${d.id}"><span class="rt">${d.thumb ? `<img src="${d.thumb}" alt="">` : `<svg viewBox="0 0 24 24">${SEC_ICON[d.cat] || SEC_ICON[11]}</svg>`}</span><span class="rn">${esc(d.title)}</span><span class="rs">${esc(secOf(d.cat).name)}</span></button>`).join('')}</div>` : ''}
+    ${attn.length ? `<div class="panel attn" id="attnPanel"><h3>Needs attention</h3><ul class="list">${attn.slice(0, 5).join('')}</ul>${attn.length > 5 ? `<p class="muted small" style="margin:.4rem 0 0">and ${attn.length - 5} more below.</p>` : ''}</div>` : ''}
     <h3>Sections</h3>
     <div class="segs">${SECS.map(seg).join('')}</div>
     <div class="panel"><h3>IPFT and RET by year</h3>
@@ -1330,9 +1436,9 @@ function renderDash(){
 /* ---------- register ---------- */
 function renderRegister(){
   const c = S.cat ? secOf(S.cat) : null, q = S.q.trim().toLowerCase();
-  const rows = S.index.docs.filter(d => (!c || d.cat === c.id) && (!q || [d.title, d.ref, d.remarks, d.type, d.fileName].some(v => (v || '').toLowerCase().includes(q)))).sort(byDateDesc);
+  const rows = S.index.docs.filter(d => (!c || d.cat === c.id) && (S.only !== 'noscan' || !d.fileId) && (!q || [d.title, d.ref, d.remarks, d.type, d.fileName].some(v => (v || '').toLowerCase().includes(q)))).sort(byDateDesc);
   const menu = `<nav class="secmenu" aria-label="Document sections">${[{id:0, short:'All'}, ...SECS].map(x => `<button data-go="${x.id}" aria-pressed="${S.cat === x.id}">${esc(x.short)}<i>${x.id ? S.index.docs.filter(d => d.cat === x.id).length : S.index.docs.length}</i></button>`).join('')}</nav>`;
-  const head = `<div class="viewhead"><div class="ttl"><h2>${c ? esc(c.name) : 'All documents'}</h2></div>
+  const head = `<div class="viewhead"><div class="ttl"><h2>${c ? esc(c.name) : 'All documents'}${S.only === 'noscan' ? '<button class="chipx" data-clearonly>Without a scan ✕</button>' : ''}</h2></div>
     <input type="search" id="q" placeholder="Search" value="${esc(S.q)}" aria-label="Search the register">${c ? `<button class="btn primary" data-add="${c.id}">Add ${esc(c.one)}</button>` : ''}</div>`;
   let body;
   if (!rows.length){
@@ -1342,7 +1448,7 @@ function renderRegister(){
       rows.map((d, i) => { const k = secOf(d.cat); const tag = c ? d.type : k.name; return `<tr style="--i:${i}">
         <td class="num">${i + 1}</td>
         <td class="thc">${d.fileId ? `<button class="thumb" data-open="${d.id}" aria-label="Open the scan of ${esc(d.title)}">${d.thumb ? `<img src="${d.thumb}" alt="">` : `<span class="ft">${/pdf/.test(d.mime || '') ? 'PDF' : 'IMG'}</span>`}</button>` : `<button class="thumb none" data-edit="${d.id}" aria-label="Add a scan to ${esc(d.title)}">+</button>`}</td>
-        <td>${tag ? `<span class="badge">${esc(tag)}</span>` : ''}<strong>${esc(d.title)}</strong>${d.fileName ? `<span class="fn">${esc(d.fileName)}</span>` : ''}</td>
+        <td><button class="dtl" data-sheet="${d.id}">${tag ? `<span class="badge">${esc(tag)}</span>` : ''}<strong>${esc(d.title)}</strong>${d.fileName ? `<span class="fn">${esc(d.fileName)}</span>` : ''}</button></td>
         <td data-l="Ref">${esc(d.ref)}</td>
         <td data-l="Date" style="white-space:nowrap">${fmtDate(d.date)}</td>
         <td data-l="Scan" class="${d.fileId ? 'scy' : ''}">${d.fileId ? '<span class="yes">Yes</span>' : '<span class="no-">No</span>'}</td>
@@ -1352,6 +1458,88 @@ function renderRegister(){
   }
   $('#view').innerHTML = `<div class="docwrap docs">${menu}<div>${head}${body}</div></div>`;
   $('#q').oninput = e => { S.q = e.target.value; const pos = e.target.selectionStart; renderRegister(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
+}
+
+/* ---------- timeline ---------- */
+function renderTimeline(){
+  const docs = S.index.docs, groups = new Map();
+  [...docs].sort(byDateDesc).forEach(d => { const y = d.date ? d.date.slice(0, 4) : 'No date'; if (!groups.has(y)) groups.set(y, []); groups.get(y).push(d); });
+  const day = d => { if (!d.date) return 'Undated'; const [y, m, dd] = d.date.split('-'); return `${dd} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m - 1]}`; };
+  let i = 0;
+  const body = docs.length ? [...groups].map(([y, list]) => `<div class="tl-y"><h3>${esc(y)}</h3><ol class="tl">${list.map(d => `<li class="${d.fileId ? '' : 'ns'}" style="animation-delay:${Math.min(i++, 14) * 25}ms"><span class="tl-d">${day(d)}</span><button class="tl-c" data-sheet="${d.id}"><svg viewBox="0 0 24 24" style="color:var(--accent)">${SEC_ICON[d.cat] || SEC_ICON[11]}</svg><span style="min-width:0"><b>${esc(d.title)}</b><small>${esc(secOf(d.cat).name)}${d.fileId ? '' : ' · No scan'}</small></span></button></li>`).join('')}</ol></div>`).join('')
+    : '<div class="empty"><p>Add documents with their dates and they appear here as a timeline of your career.</p></div>';
+  $('#view').innerHTML = `<div class="viewhead"><div class="ttl"><h2>Timeline</h2><span class="muted small">Your service record at a glance, newest first.</span></div></div>${body}`;
+}
+
+/* ---------- document actions sheet ---------- */
+const SH_IC = {
+  open:'<svg viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  share:'<svg viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4.1M8.2 13.2l7.6 4.1"/></svg>',
+  edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  scan:'<svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg>',
+  del:'<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></svg>'
+};
+let sheetBlob = null;
+function openSheet(d){
+  if (!d) return;
+  $('#actTitle').textContent = d.title;
+  $('#actSub').textContent = [secOf(d.cat).name, d.date ? fmtDate(d.date) : '', d.ref].filter(Boolean).join(' · ');
+  $('#actTh').innerHTML = d.thumb ? `<img src="${d.thumb}" alt="">` : `<svg viewBox="0 0 24 24">${SEC_ICON[d.cat] || SEC_ICON[11]}</svg>`;
+  const b = (a, ic, lb, cls) => `<button data-a="${a}" class="${cls || ''}">${SH_IC[ic]}<span>${lb}</span></button>`;
+  $('#actList').innerHTML = (d.fileId ? b('open', 'open', 'Open scan') + b('share', 'share', 'Share scan') : b('scan', 'scan', 'Add a scan')) + b('edit', 'edit', 'Edit details') + b('del', 'del', 'Delete', 'danger');
+  sheetBlob = d.fileId ? fetchScan(d).catch(() => null) : null;
+  $('#actList').onclick = async e => {
+    const a = e.target.closest('button')?.dataset.a; if (!a) return;
+    $('#actDlg').close();
+    if (a === 'open') viewDoc(d);
+    else if (a === 'share') shareDoc(d, await sheetBlob);
+    else if (a === 'scan' || a === 'edit') openDoc(d);
+    else if (a === 'del') deleteDoc(d);
+  };
+  $('#actDlg').showModal();
+}
+async function shareDoc(d, blob){
+  try {
+    blob = blob || await fetchScan(d);
+    const file = new File([blob], d.fileName || 'scan', {type: d.mime || blob.type});
+    if (navigator.canShare && navigator.canShare({files:[file]})) await navigator.share({files:[file], title:d.title});
+    else { download(blob, d.fileName || 'scan'); toast('Sharing is not available here, so the scan was downloaded instead.'); }
+  } catch (err) {
+    if (err?.name === 'AbortError') return;
+    if (blob){ download(blob, d.fileName || 'scan'); toast('Could not open sharing, so the scan was downloaded instead.'); }
+    else toast('Could not share the scan: ' + err.message);
+  }
+}
+async function deleteDoc(d){
+  if (!await ask(`Delete “${d.title}” from the register${d.fileId ? ' and its scan from Drive' : ''}? This cannot be undone.`, 'Delete document')) return;
+  try {
+    busy('Deleting…');
+    if (d.fileId) await S.be.remove(d.fileId).catch(() => {});
+    S.index.docs = S.index.docs.filter(x => x !== d);
+    busy(''); render(); await saveIndex();
+  } catch (err) { busy(''); toast('Could not delete: ' + err.message); }
+}
+
+/* ---------- BAFZ 2043: jump to the next empty field ---------- */
+function nextEmpty(){
+  const list = [...document.querySelectorAll('.formpanel [data-f]')].filter(e => !e.value.trim());
+  const cur = document.activeElement, inForm = !!cur?.dataset?.f;
+  const go = el => { el.scrollIntoView({block:'center', behavior:'smooth'}); el.focus({preventScroll:true}); };
+  const after = inForm && list.find(e => e !== cur && (cur.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING));
+  if (after) return go(after);
+  if (!inForm && list.length) return go(list[0]);
+  const ti = S.formTab || 0;
+  for (let k = 1; k <= TABS.length; k++){
+    const j = (ti + k) % TABS.length, st = tabState(j);
+    if (st.keys > st.done){
+      if (j === ti){ if (list.length) return go(list[0]); break; }
+      S.formTab = j; render(); window.scrollTo(0, 0);
+      const f = [...document.querySelectorAll('.formpanel [data-f]')].find(e => !e.value.trim());
+      if (f) setTimeout(() => go(f), 80);
+      return;
+    }
+  }
+  toast('Every field in BAFZ 2043 is filled.');
 }
 
 /* ---------- form 2043 ---------- */
@@ -1387,6 +1575,7 @@ function renderForm(){
     <div class="panel formpanel"><h3>${esc(TABS[ti][0])}</h3>${items}
       <div class="actions">${ti > 0 ? `<button class="btn" data-tab="${ti - 1}">Back: ${esc(TABS[ti - 1][0])}</button>` : ''}${ti < TABS.length - 1 ? `<button class="btn primary" data-tab="${ti + 1}">Next: ${esc(TABS[ti + 1][0])}</button>` : '<button class="btn primary" id="saveForm">Save BAFZ 2043</button>'}</div></div></div>`;
   $('#dlDocx').onclick = downloadDocx;
+  if (formProgress().done < FORM_KEYS.length){ $('#view').insertAdjacentHTML('beforeend', '<button class="nextfab" id="nextEmpty" type="button">Next empty field <span aria-hidden="true">↓</span></button>'); $('#nextEmpty').onmousedown = e => e.preventDefault(); $('#nextEmpty').onclick = nextEmpty; }
   if ($('#saveForm')) $('#saveForm').onclick = async () => { clearTimeout(formTimer); formTimer = null; await saveIndex(); toast(S.status === 'Not saved' ? 'BAFZ 2043 could not be saved. Check your connection and try again.' : 'BAFZ 2043 saved.'); };
   $('#expBtn').onclick = () => download(new Blob([JSON.stringify({app:APP_ID, form2043:S.index.form}, null, 1)], {type:'application/json'}), `2043-data_${(S.index.form.f.personalNo || 'form').replace(/[^\w-]+/g, '')}.json`);
   $('#impBtn').onclick = () => { $('#importFile').value = ''; $('#importFile').click(); };
@@ -1520,7 +1709,15 @@ $('#view').addEventListener('click', e => {
   else if (D.new != null){ const c = trackerCols()[Number(D.new)]; openDoc(null, {cat:c.cat, term:c.term, type:c.type, year:Number(D.year)}); }
   else if (D.add) openDoc(null, {cat:Number(D.add)});
   else if (D.tab != null){ S.formTab = Number(D.tab); render(); window.scrollTo(0, 0); }
-  else if (D.go != null){ S.view = 'reg'; S.cat = Number(D.go); S.q = ''; render(); window.scrollTo(0, 0); }
+  else if (D.go != null){ S.view = 'reg'; S.cat = Number(D.go); S.q = ''; S.only = null; render(); window.scrollTo(0, 0); }
+  else if (D.sheet) openSheet(docs.find(d => d.id === D.sheet));
+  else if ('clearonly' in D){ S.only = null; renderRegister(); }
+  else if (D.act){
+    if (D.act === 'all'){ S.view = 'reg'; S.cat = 0; S.q = ''; S.only = null; render(); window.scrollTo(0, 0); }
+    else if (D.act === 'noscan'){ S.view = 'reg'; S.cat = 0; S.q = ''; S.only = 'noscan'; render(); window.scrollTo(0, 0); }
+    else if (D.act === 'form'){ S.view = 'form'; render(); window.scrollTo(0, 0); }
+    else if (D.act === 'miss'){ const el = $('#attnPanel') || $('.trk'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
   else if (D.addrow){ (S.index.form.t[D.addrow] ||= []).push(Array(Number(D.n)).fill('')); renderForm(); formChanged(); const a = document.querySelectorAll(`[data-t="${D.addrow}"][data-c="0"]`); a[a.length - 1]?.focus(); }
   else if (D.rm){ S.index.form.t[D.rm].splice(Number(D.r), 1); renderForm(); formChanged(); }
 });
@@ -1588,22 +1785,13 @@ $('#docForm').onsubmit = async e => {
       busy('Making a preview…');
       const th = await makeThumb(file, mime); if (th) d.thumb = th; else delete d.thumb;
     }
+    d.seen = new Date().toISOString();
     if (old) S.index.docs[S.index.docs.indexOf(old)] = d; else S.index.docs.push(d);
     busy(''); render(); await saveIndex();
   } catch (err) { busy(''); toast('The document was not saved: ' + err.message); }
 };
 
-$('#docDelete').onclick = async () => {
-  const d = S.editing; if (!d) return;
-  $('#docDlg').close();
-  if (!await ask(`Delete “${d.title}” from the register${d.fileId ? ' and its scan from Drive' : ''}? This cannot be undone.`, 'Delete document')) return;
-  try {
-    busy('Deleting…');
-    if (d.fileId) await S.be.remove(d.fileId).catch(() => {});
-    S.index.docs = S.index.docs.filter(x => x !== d);
-    busy(''); render(); await saveIndex();
-  } catch (err) { busy(''); toast('Could not delete: ' + err.message); }
-};
+$('#docDelete').onclick = () => { const d = S.editing; if (!d) return; $('#docDlg').close(); deleteDoc(d); };
 
 /* ---------- open a scan ---------- */
 const PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
@@ -1651,6 +1839,8 @@ async function viewDoc(d){
     const dl = $('#viewerDl'); dl.href = viewerUrl; dl.download = d.fileName;
     $('#viewerOpen').href = viewerUrl;
     busy(''); $('#viewer').showModal();
+    $('#viewerShare').onclick = () => shareDoc(d, blob);
+    d.seen = new Date().toISOString(); saveIndex();
   } catch (err) { busy(''); toast('Could not open the scan: ' + err.message); }
 }
 
