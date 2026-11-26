@@ -157,7 +157,7 @@ button,a,summary{-webkit-tap-highlight-color:transparent;touch-action:manipulati
 .nums{display:grid;grid-template-columns:repeat(4,minmax(4.5rem,1fr));gap:.6rem 1.4rem;flex:1;min-width:12rem}
 .nums b{display:block;font:600 1.7rem/1 var(--cond);font-variant-numeric:tabular-nums}
 .nums .ok b{color:var(--ok)} .nums .bad b{color:var(--bad)} .nums .warn b{color:var(--warn)}
-.segs{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.2rem,1fr));gap:.45rem;margin:.45rem 0 1.1rem}
+.segs{display:grid;grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr));gap:.45rem;margin:.45rem 0 1.1rem}
 .seg{position:relative;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--st,var(--line));border-radius:6px;transition:border-color .15s,transform .15s}
 .seg:hover{border-color:var(--accent);border-left-color:var(--st,var(--accent))}
 .seg.ok{--st:var(--ok)} .seg.warn{--st:var(--warn)} .seg.bad{--st:var(--bad)}
@@ -169,6 +169,31 @@ button,a,summary{-webkit-tap-highlight-color:transparent;touch-action:manipulati
 .sgo .ct small{font-size:.85rem;color:var(--muted);font-weight:500}
 .sgo .nt{font-size:.76rem;color:var(--muted)}
 .sadd{position:absolute;top:.3rem;right:.3rem;width:1.55rem;height:1.55rem;border:1px solid var(--line) !important;border-radius:5px;display:grid;place-items:center;font-size:1.05rem;line-height:1;font-weight:600;color:var(--accent) !important;padding:0}
+.sgo{display:grid !important;grid-template-columns:auto minmax(0,1fr);column-gap:.6rem;align-items:center}
+.sgo .nm,.sgo .ln{grid-column:2}
+.seg .nm,.seg .nt,.seg .ct{overflow-wrap:normal;word-break:normal}
+.seg .ct{white-space:nowrap}
+.reg th{white-space:nowrap}
+.si{grid-row:1 / span 2;width:2.15rem;height:2.15rem;border-radius:9px;background:var(--soft);color:var(--accent);display:grid;place-items:center}
+.si svg{width:1.2rem;height:1.2rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.upd{display:block;font-size:.78rem;color:var(--muted);margin-top:.15rem}
+#bafzUpd{color:var(--accent);font-weight:500}
+.hello{display:flex;align-items:center;gap:.9rem;margin:.1rem 0 1rem}
+.hello .disc{width:3.3rem;height:3.3rem;font-size:1.2rem;flex:none}
+.hello .hi{font:700 1.65rem/1.15 var(--cond);letter-spacing:.02em}
+.hello .sb{color:var(--muted);font-size:.95rem}
+.hello .sb b{color:var(--bad)}
+.attn{border-left:3px solid var(--bad)}
+.attn.clear{border-left-color:var(--ok)}
+.attn li .ty{font-size:.78rem;color:var(--muted)}
+.dot.bad{background:var(--bad)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.thumb{width:44px;height:58px;border:1px solid var(--line);border-radius:6px;background:var(--card2);padding:0;overflow:hidden;display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb .ft{font:600 .72rem var(--cond);letter-spacing:.08em}
+.thumb.none{border-style:dashed;font-size:1.25rem;line-height:1}
+.thumb:hover{border-color:var(--accent)}
+.reg td.thc{width:56px;padding-right:0}
 .sadd:hover{background:var(--accent) !important;color:var(--accent-ink) !important;border-color:var(--accent) !important}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;margin-bottom:.9rem}
 .panel > h3{margin-bottom:.5rem}
@@ -312,8 +337,15 @@ dialog h2{margin-bottom:1rem}
   .reg .fn,.reg td.scy{display:none}
   .reg td.acts .btn{min-height:2rem;padding:.15rem .4rem}
   .credit{margin-top:1.4rem}
-  .reg tr{display:flex;flex-wrap:wrap;gap:.05rem .9rem;align-items:baseline}
-  .reg td:nth-child(2),.reg td[data-l="Remarks"],.reg td.acts{flex:1 1 100%}
+  .reg tr{display:grid;grid-template-columns:52px minmax(0,1fr);column-gap:.75rem;row-gap:.05rem;align-items:start}
+  .reg td{grid-column:2}
+  .reg td.thc{grid-column:1;grid-row:1 / span 6;width:auto}
+  .hello .hi{font-size:1.35rem}
+  .reg td[data-l="Scan"]{display:none}
+  .segs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sgo{column-gap:.45rem;padding-left:.5rem !important}
+  .si{width:1.8rem;height:1.8rem;border-radius:7px} .si svg{width:1.05rem;height:1.05rem}
+  .sgo .nm{font-size:.8rem}
 }
 @media (max-width:600px){
   .trk{grid-template-columns:2.9rem repeat(var(--n),minmax(0,1fr));gap:.25rem}
@@ -446,6 +478,21 @@ const SECS = [
   {id:10, one:'tax document', name:'Tax', short:'Tax', color:'#0D9488', types:['Tax return','Tax certificate','TIN certificate','Other'], yearly:true, ph:'Leave blank to name it automatically'},
   {id:11, one:'other document', name:'Other documents', short:'Other', color:'#64748B', types:['Commission','Promotion','Mov order','Leave','Medical','Misc'], ph:'Short description'}
 ];
+const SEC_ICON = {
+  1:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M6 16c.6-1.6 1.7-2.3 3-2.3s2.4.7 3 2.3M14.5 10h3.5M14.5 13.5h3.5"/>',
+  2:'<path d="M2.5 9 12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v4.2c0 1.4 2.5 2.8 5.5 2.8s5.5-1.4 5.5-2.8V11M21.5 9v5"/>',
+  3:'<circle cx="12" cy="13.5" r="7"/><path d="M12 13.5V9.8M10 3h4M18.4 6.6l1.6-1.6"/>',
+  4:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.2"/>',
+  5:'<path d="M3.5 5.5c2.9-1 5.7-1 8.5.8 2.8-1.8 5.6-1.8 8.5-.8V18c-2.9-1-5.7-1-8.5.8-2.8-1.8-5.6-1.8-8.5-.8z"/><path d="M12 6.3v12.5"/>',
+  12:'<rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.5V3.5h6v1M9 13l2 2 4-4.5"/>',
+  6:'<path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4M9.5 12h6M9.5 15.5h6"/>',
+  7:'<path d="M4 10v4h3l7 4V6L7 10z"/><path d="M17.5 9.5a3.5 3.5 0 0 1 0 5"/>',
+  8:'<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+  9:'<circle cx="12" cy="15" r="5"/><path d="M8.6 3.5 12 10l3.4-6.5M12 13v4M10 15h4"/>',
+  10:'<path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/>',
+  11:'<path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/>'
+};
+const secIcon = id => `<span class="si" aria-hidden="true"><svg viewBox="0 0 24 24">${SEC_ICON[id] || SEC_ICON[11]}</svg></span>`;
 const secOf = id => SECS.find(s => s.id === Number(id)) || SECS[10];
 const pad2 = n => String(n).padStart(2, '0');
 
@@ -1232,7 +1279,7 @@ function renderDash(){
   const p = S.index.profile, docs = S.index.docs, now = new Date().getFullYear();
   const cols = trackerCols(), ts = trackStart(), start = Math.min(ts.ipftYear, ts.retYear);
   let missing = 0, rows = `<div class="trk" style="--n:${cols.length}"><span class="h">Year</span>${cols.map(c => `<span class="h">${esc(c.label)}</span>`).join('')}`;
-  const missBy = {}, pendBy = {}, expBy = {};
+  const missBy = {}, pendBy = {}, expBy = {}, missList = [];
   for (let y = now; y >= start; y--){
     rows += `<b>${y}</b>`;
     cols.forEach((c, i) => {
@@ -1243,7 +1290,7 @@ function renderDash(){
       if (d && d.fileId) rows += `<button class="cell ok" data-edit="${d.id}" aria-label="${esc(al)}scanned">Scanned</button>`;
       else if (d) rows += `<button class="cell warn" data-edit="${d.id}" aria-label="${esc(al)}no scan">No scan</button>`;
       else if (trackerPending(c, y)){ pendBy[c.cat] = (pendBy[c.cat] || 0) + 1; rows += `<button class="cell pend" data-new="${i}" data-year="${y}" aria-label="${esc(al)}pending, add it">Pending</button>`; }
-      else { missing++; missBy[c.cat] = (missBy[c.cat] || 0) + 1; rows += `<button class="cell bad" data-new="${i}" data-year="${y}" aria-label="${esc(al)}missing, add it">Missing</button>`; }
+      else { missing++; missList.push({c, y, i}); missBy[c.cat] = (missBy[c.cat] || 0) + 1; rows += `<button class="cell bad" data-new="${i}" data-year="${y}" aria-label="${esc(al)}missing, add it">Missing</button>`; }
     });
   }
   rows += '</div>';
@@ -1253,26 +1300,31 @@ function renderDash(){
     const ds = docs.filter(d => d.cat === s.id), ns = ds.filter(d => !d.fileId).length, n = cols.filter(c => c.cat === s.id).length, exp = expBy[s.id] || 0, miss = missBy[s.id] || 0, pend = pendBy[s.id] || 0;
     const state = miss ? 'bad' : ns ? 'warn' : ds.length ? 'ok' : '';
     const note = miss ? `${miss} missing` : ns ? `${ns} without scan` : pend ? `${pend} pending` : ds.length ? 'All in order' : 'Nothing filed';
-    return `<div class="seg ${state}" style="--i:${i}"><button class="sgo" data-go="${s.id}" aria-label="Open ${esc(s.name)}">
+    return `<div class="seg ${state}" style="--i:${i}"><button class="sgo" data-go="${s.id}" aria-label="Open ${esc(s.name)}">${secIcon(s.id)}
       <span class="nm">${esc(s.name)}</span><span class="ln"><span class="ct">${n ? `${exp - miss - pend}<small>/${exp - pend}</small>` : ds.length}</span><span class="nt">${note}</span></span></button>
       <button class="sadd" data-add="${s.id}" aria-label="Add ${esc(s.one)}" title="Add ${esc(s.one)}">+</button></div>`;
   };
-  const li = d => `<li><span class="dot"></span><span class="t">${esc(d.title)} <span class="muted small">${esc(secOf(d.cat).name)}${d.date ? ', ' + fmtDate(d.date) : ''}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`;
+  const attn = [...missList.map(m => `<li><span class="dot bad"></span><span class="t">${esc(m.c.label)} DivO ${m.y}<br><span class="ty">Missing</span></span><button class="btn plain" data-new="${m.i}" data-year="${m.y}">Add</button></li>`),
+    ...noScan.map(d => `<li><span class="dot"></span><span class="t">${esc(d.title)}<br><span class="ty">No scan · ${esc(secOf(d.cat).name)}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`)];
+  const hr = new Date().getHours(), greet = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  const who = [p.rank, titleCase(p.name || '')].filter(Boolean).join(' ');
   $('#view').innerHTML = `
+    <div class="hello"><div class="disc">${S.index.photo ? `<img src="${S.index.photo}" alt="">` : esc(initials(p))}</div>
+      <div><div class="hi">${greet}${who ? ', ' + esc(who) : ''}</div><div class="sb">${attn.length ? `<b>${attn.length}</b> item${attn.length > 1 ? 's' : ''} need${attn.length > 1 ? '' : 's'} your attention` : 'Everything is in order'}</div></div></div>
     <div class="sum">
       <div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="tr" cx="50" cy="50" r="42"/><circle class="pr" cx="50" cy="50" r="42" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - pct / 100)).toFixed(1)}"/></svg><div><b>${pct}%</b><span>Complete</span></div></div>
       <div class="nums">
         <div class="ok"><b>${stored}</b><span class="lab">Stored</span></div>
         <div class="bad"><b>${missing}</b><span class="lab">Missing</span></div>
         <div class="warn"><b>${noScan.length}</b><span class="lab">No scan</span></div>
-        <div><b>${fp.pct}%</b><span class="lab">BAFZ 2043</span></div>
+        <div><b>${fp.pct}%</b><span class="lab">BAFZ 2043</span>${S.index.form.updated ? `<span class="upd">Updated ${esc(fmtStamp(S.index.form.updated).split(",")[0])}</span>` : ""}</div>
       </div></div>
+    ${attn.length ? `<div class="panel attn"><h3>Needs attention</h3><ul class="list">${attn.slice(0, 5).join('')}</ul>${attn.length > 5 ? `<p class="muted small" style="margin:.4rem 0 0">and ${attn.length - 5} more below.</p>` : ''}</div>` : ''}
     <h3>Sections</h3>
     <div class="segs">${SECS.map(seg).join('')}</div>
     <div class="panel"><h3>IPFT and RET by year</h3>
       <p class="muted small">${missing ? 'Select a Missing box to add that result.' : `Nothing is missing since ${start}.`}</p>${rows}</div>
-    <div class="panel"><h3>Entered without a scan</h3>
-      ${noScan.length ? `<ul class="list">${noScan.slice(0, 12).map(li).join('')}</ul>${noScan.length > 12 ? `<p class="muted small" style="margin:.5rem 0 0">and ${noScan.length - 12} more in the register.</p>` : ''}` : '<p class="muted" style="margin:0">Every entry in the register has a scan.</p>'}</div>`;
+    ${noScan.length > 5 ? `<div class="panel"><h3>Entered without a scan</h3><ul class="list">${noScan.slice(0, 12).map(d => `<li><span class="dot"></span><span class="t">${esc(d.title)} <span class="muted small">${esc(secOf(d.cat).name)}${d.date ? ', ' + fmtDate(d.date) : ''}</span></span><button class="btn plain" data-edit="${d.id}">Add scan</button></li>`).join('')}</ul></div>` : ''}`;
 }
 
 /* ---------- register ---------- */
@@ -1286,9 +1338,10 @@ function renderRegister(){
   if (!rows.length){
     body = `<div class="empty"><p>${q ? 'Nothing here matches your search.' : c ? `No ${esc(c.one)} filed yet. Add the first one, with or without a scan.` : 'Nothing filed yet. Choose a section and add its first document.'}</p>${!q && c ? `<button class="btn primary" data-add="${c.id}">Add ${esc(c.one)}</button>` : ''}</div>`;
   } else {
-    body = `<table class="reg"><thead><tr><th>S/No</th><th>Document</th><th>Ref or letter no</th><th>Date</th><th>Scan</th><th>Remarks</th><th></th></tr></thead><tbody>` +
+    body = `<table class="reg"><thead><tr><th>S/No</th><th><span class="sr-only">Preview</span></th><th>Document</th><th>Ref or letter no</th><th>Date</th><th>Scan</th><th>Remarks</th><th></th></tr></thead><tbody>` +
       rows.map((d, i) => { const k = secOf(d.cat); const tag = c ? d.type : k.name; return `<tr style="--i:${i}">
         <td class="num">${i + 1}</td>
+        <td class="thc">${d.fileId ? `<button class="thumb" data-open="${d.id}" aria-label="Open the scan of ${esc(d.title)}">${d.thumb ? `<img src="${d.thumb}" alt="">` : `<span class="ft">${/pdf/.test(d.mime || '') ? 'PDF' : 'IMG'}</span>`}</button>` : `<button class="thumb none" data-edit="${d.id}" aria-label="Add a scan to ${esc(d.title)}">+</button>`}</td>
         <td>${tag ? `<span class="badge">${esc(tag)}</span>` : ''}<strong>${esc(d.title)}</strong>${d.fileName ? `<span class="fn">${esc(d.fileName)}</span>` : ''}</td>
         <td data-l="Ref">${esc(d.ref)}</td>
         <td data-l="Date" style="white-space:nowrap">${fmtDate(d.date)}</td>
@@ -1326,7 +1379,7 @@ function renderForm(){
       ${it.f ? `<div class="fgrid">${it.f.map(field).join('')}</div>` : ''}
       ${it.t ? tbl(it.t) : ''}</div></div>`; }).join('');
   $('#view').innerHTML = `
-    <div class="viewhead formhead"><div class="ttl"><h2>BAFZ 2043</h2><span class="muted small">Particulars and record of service. ${fp.done} of ${fp.total} fields filled.</span><div class="bar"><i style="width:${fp.pct}%"></i></div></div>
+    <div class="viewhead formhead"><div class="ttl"><h2>BAFZ 2043</h2><span class="muted small">Particulars and record of service. ${fp.done} of ${fp.total} fields filled.</span><span class="upd" id="bafzUpd">${bafzUpdated()}</span><div class="bar"><i style="width:${fp.pct}%"></i></div></div>
       <button class="btn primary" id="dlDocx">Download as Word</button><button class="btn" id="impBtn">Import data file</button><button class="btn" id="expBtn">Export data file</button></div>
     <div class="docwrap"><nav class="secmenu" id="subtabs" aria-label="Sub-sections of BAFZ 2043">${TABS.map((t, i) => { const st = tabState(i);
       const info = st.keys ? `${st.done}/${st.keys}` : st.rows ? String(st.rows) : '';
@@ -1339,7 +1392,9 @@ function renderForm(){
   $('#impBtn').onclick = () => { $('#importFile').value = ''; $('#importFile').click(); };
 }
 let formTimer = null;
-function formChanged(){ setStatus('Unsaved changes'); clearTimeout(formTimer); formTimer = setTimeout(() => { formTimer = null; saveIndex(); }, 1500); }
+const fmtStamp = iso => { if (!iso) return ''; const d = new Date(iso); return d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) + ', ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); };
+const bafzUpdated = () => S.index.form.updated ? 'Last updated ' + fmtStamp(S.index.form.updated) : 'Last update not recorded yet';
+function formChanged(){ S.index.form.updated = new Date().toISOString(); const u = $('#bafzUpd'); if (u) u.textContent = bafzUpdated(); setStatus('Unsaved changes'); clearTimeout(formTimer); formTimer = setTimeout(() => { formTimer = null; saveIndex(); }, 1500); }
 function flushForm(){ if (formTimer){ clearTimeout(formTimer); formTimer = null; return saveIndex(); } return saveChain; }
 document.addEventListener('visibilitychange', () => { if (document.hidden && S.index) flushForm(); });
 $('#view').addEventListener('input', e => {
@@ -1356,7 +1411,7 @@ $('#importFile').onchange = async e => {
     const f = {}, t = {};
     for (const k of FORM_KEYS) if (data.f[k] != null) f[k] = String(data.f[k]);
     for (const it of FORM.flatMap(p => p.items)) if (it.t && Array.isArray(data.t[it.t.key])) t[it.t.key] = data.t[it.t.key].filter(Array.isArray).map(r => it.t.cols.map((c, i) => String(r[i] ?? '')));
-    S.index.form = {f, t}; render(); await saveIndex(); toast('Form data imported.');
+    S.index.form = {f, t, updated:new Date().toISOString()}; render(); await saveIndex(); toast('Form data imported.');
   } catch (err) { toast('Import failed: ' + err.message); }
 };
 async function photoBytes(){ if (!S.index.photo) return null; return unb64(S.index.photo.split(',')[1]); }
@@ -1396,6 +1451,7 @@ function renderSettings(){
         <div class="field"><label for="tIt">First IPFT counted that year</label><select id="tIt">${ts.terms.map(t => `<option value="${esc(t)}" ${t === ts.ipftTerm ? 'selected' : ''}>IPFT ${esc(t)}</option>`).join('')}</select></div></div>
         <div class="row2"><div class="field"><label for="tRy">RET counted from (year)</label><input type="number" id="tRy" value="${ts.retYear}" min="1970" max="${new Date().getFullYear()}"></div></div>
         <button class="btn primary" type="submit">Save tracking</button></form>`; })()}</div>
+    ${(() => { const need = S.index.docs.filter(d => d.fileId && !d.thumb).length; return need ? `<div class="panel"><h3>Scan previews</h3><p class="muted small">${need} older scan${need > 1 ? 's have' : ' has'} no preview picture in the document list yet.</p><button class="btn primary" id="thumbsBtn">Make previews</button></div>` : ''; })()}
     <div class="panel"><h3>Backup</h3>
       <p class="muted small">The Drive folder is hidden, so this app is the only way in. Export a copy regularly and keep it on an offline drive. The export holds every scan in section folders, the register as a spreadsheet file and your BAFZ 2043 data.</p>
       <div class="actions" style="margin-top:0"><button class="btn primary" id="exportBtn">Export everything</button><button class="btn" id="printBtn">Print register</button></div></div>
@@ -1415,6 +1471,15 @@ function renderSettings(){
   $('#phBtn').onclick = () => { $('#photoFile').value = ''; $('#photoFile').click(); };
   if ($('#phRm')) $('#phRm').onclick = async () => { delete S.index.photo; render(); await saveIndex(); };
   $('#exportBtn').onclick = exportAll;
+  if ($('#thumbsBtn')) $('#thumbsBtn').onclick = async () => {
+    const need = S.index.docs.filter(d => d.fileId && !d.thumb); let made = 0;
+    for (let i = 0; i < need.length; i++){
+      busy(`Making previews: ${i + 1} of ${need.length}…`);
+      try { const th = await makeThumb(await fetchScan(need[i]), need[i].mime); if (th){ need[i].thumb = th; made++; } } catch {}
+    }
+    busy(''); if (made) await saveIndex(); renderSettings();
+    toast(made ? `Made ${made} preview${made > 1 ? 's' : ''}.` : 'No previews could be made for these files.');
+  };
   $('#printBtn').onclick = () => { S.view = 'reg'; S.cat = 0; S.q = ''; render(); setTimeout(() => window.print(), 50); };
   $('#outBtn').onclick = signOut;
   $('#tf').onsubmit = async e => {
@@ -1520,6 +1585,8 @@ $('#docForm').onsubmit = async e => {
       const id = await S.be.create(S.key ? name + '.enc' : name, S.key ? 'application/octet-stream' : mime, blob, S.demo ? null : await folderFor(cat));
       if (old?.fileId) await S.be.remove(old.fileId).catch(() => {});
       Object.assign(d, {fileId:id, fileName:name, mime, size:file.size, enc:!!S.key});
+      busy('Making a preview…');
+      const th = await makeThumb(file, mime); if (th) d.thumb = th; else delete d.thumb;
     }
     if (old) S.index.docs[S.index.docs.indexOf(old)] = d; else S.index.docs.push(d);
     busy(''); render(); await saveIndex();
@@ -1539,6 +1606,32 @@ $('#docDelete').onclick = async () => {
 };
 
 /* ---------- open a scan ---------- */
+const PDF_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+// A small preview of a scan (first page of a PDF, or the photo), kept in the register.
+async function makeThumb(blob, mime){
+  try {
+    const W = 112, cv = document.createElement('canvas');
+    if ((mime || '').startsWith('image/')){
+      const url = URL.createObjectURL(blob);
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+      const h = Math.min(160, Math.max(60, Math.round(W * img.naturalHeight / img.naturalWidth)));
+      cv.width = W; cv.height = h;
+      const k = Math.max(W / img.naturalWidth, h / img.naturalHeight), ctx = cv.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, h);
+      ctx.drawImage(img, (W - img.naturalWidth * k) / 2, 0, img.naturalWidth * k, img.naturalHeight * k);
+      URL.revokeObjectURL(url);
+    } else if (mime === 'application/pdf'){
+      if (!window.pdfjsLib) await loadScript(PDF_LIB, 'PDF');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_LIB.replace('pdf.min.js', 'pdf.worker.min.js');
+      const pdf = await pdfjsLib.getDocument({data: new Uint8Array(await blob.arrayBuffer())}).promise, pg = await pdf.getPage(1);
+      const vp = pg.getViewport({scale: W / pg.getViewport({scale:1}).width});
+      cv.width = W; cv.height = Math.min(160, Math.round(vp.height));
+      const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+      await pg.render({canvasContext:ctx, viewport:vp}).promise; pdf.destroy();
+    } else return null;
+    return cv.toDataURL('image/jpeg', 0.72);
+  } catch { return null; }
+}
 async function fetchScan(d){
   let buf = await S.be.read(d.fileId);
   if (d.enc) buf = await unseal(S.key, buf);
