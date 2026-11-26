@@ -441,7 +441,7 @@ dialog.sheet{padding:1rem 1.1rem 1.1rem}
 @keyframes inL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
 #view.enter.fr{animation:inR .3s ease-out} #view.enter.fl{animation:inL .3s ease-out}
 #view.enter .prof{animation:rise .4s ease-out backwards} #view.enter .sum{animation:rise .4s .06s ease-out backwards}
-#view.enter .rec{animation:rise .4s .1s ease-out backwards} #view.enter .attn{animation:rise .4s .14s ease-out backwards}
+#view.enter .attn{animation:rise .4s .14s ease-out backwards}
 #view.enter .tl li{animation:rise .35s ease-out backwards}
 @media (max-width:900px){
   .reg td.acts{display:none}
@@ -452,6 +452,23 @@ dialog.sheet{padding:1rem 1.1rem 1.1rem}
   #tabbar{grid-template-columns:repeat(5,1fr)} #tabbar button{font-size:.64rem;letter-spacing:.06em}
 }
 @media (prefers-reduced-motion:reduce){.sk{animation:none}}
+.segs{grid-template-columns:repeat(auto-fill,minmax(14.5rem,1fr));gap:.7rem}
+.sgo{padding:.85rem 2.8rem .95rem .85rem !important;column-gap:.8rem}
+.si{width:2.75rem;height:2.75rem;border-radius:11px} .si svg{width:1.5rem;height:1.5rem}
+.sgo .nm{font-size:1rem !important;line-height:1.2}
+.sgo .ln{margin-top:.25rem}
+.sgo .ct{font-size:1.45rem}
+.sgo .nt{font-size:.85rem}
+.sadd{width:1.9rem !important;height:1.9rem !important;top:.55rem !important;right:.55rem !important;font-size:1.15rem !important;border-radius:7px !important}
+.seg .pb{height:4px}
+@media (max-width:900px){
+  .segs{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+  .sgo{padding:.75rem 2.4rem .8rem .65rem !important;column-gap:.55rem}
+  .si{width:2.3rem;height:2.3rem;border-radius:9px} .si svg{width:1.3rem;height:1.3rem}
+  .sgo .nm{font-size:.86rem !important}
+  .sgo .ct{font-size:1.3rem}
+  .sadd{width:1.75rem !important;height:1.75rem !important;top:.45rem !important;right:.45rem !important}
+}
 </style>
 </head>
 <body>
@@ -1424,7 +1441,6 @@ function renderDash(){
         <button class="tile warn" data-act="noscan"><b>${noScan.length}</b><span class="lab">No scan</span></button>
         <button class="tile" data-act="form"><b>${fp.pct}%</b><span class="lab">BAFZ 2043</span>${S.index.form.updated ? `<span class="upd">Updated ${esc(fmtStamp(S.index.form.updated).split(",")[0])}</span>` : ""}</button>
       </div></div>
-    ${recent.length ? `<h3>Recent</h3><div class="rec">${recent.map(d => `<button class="rc" data-sheet="${d.id}"><span class="rt">${d.thumb ? `<img src="${d.thumb}" alt="">` : `<svg viewBox="0 0 24 24">${SEC_ICON[d.cat] || SEC_ICON[11]}</svg>`}</span><span class="rn">${esc(d.title)}</span><span class="rs">${esc(secOf(d.cat).name)}</span></button>`).join('')}</div>` : ''}
     ${attn.length ? `<div class="panel attn" id="attnPanel"><h3>Needs attention</h3><ul class="list">${attn.slice(0, 5).join('')}</ul>${attn.length > 5 ? `<p class="muted small" style="margin:.4rem 0 0">and ${attn.length - 5} more below.</p>` : ''}</div>` : ''}
     <h3>Sections</h3>
     <div class="segs">${SECS.map(seg).join('')}</div>
